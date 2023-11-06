@@ -2808,21 +2808,16 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     // print(responseJson);
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-      print("got it device");
-      // print(selectDevice);
-      print(selectJournal);
+
+
       print("got it device movement journal");
 
       setState(() {
         movementJournals = responseJson[0]['InventJourName'];
-        final int item = movementJournals
-            .indexWhere((e) => e['journalNameId'] == selectJournal);
-        // stores.removeAt(item);
+
       });
 
-      movementJournals.forEach((element) {
-        print(element);
-      });
+
     }
   }
 }

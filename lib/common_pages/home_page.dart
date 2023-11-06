@@ -559,7 +559,10 @@ class _LandingHomePageState extends State<LandingHomePage> {
 
     dt.asMap().containsKey(12) ?
     homeList.add({
-      "icon": Icons.list_alt,
+      "icon":  dt[12]['type'] == "History" ?
+      Icons.history_outlined
+          :
+      Icons.list_alt,
       "type": dt[12]['type'],
       "value": dt[12]['value']
     }):null;
