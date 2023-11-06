@@ -204,6 +204,15 @@ pushTransactionToClose(
     'Authorization': tk
   };
 
+
+  print("Line 208 .. ${ transType.toString()}");
+  transactionData = await _sqlHelper.getTRANSHEADERRepost(
+      transType.toString() == "22"
+      ? "22"
+      : "");
+
+  print(transactionData);
+
   transactionDetailsList = [];
   setState(() {});
 
@@ -252,10 +261,13 @@ pushTransactionToClose(
     "contract": {
 
 
-      "DeviceNumSeq":
-
+      "JournalName" :
       transType.toString()
-
+          == "22"
+          ? transactionData[0]['JournalName']
+          :"",
+      "DeviceNumSeq":
+      transType.toString()
           == "1" ?
       APPGENERALDATASave['STNEXTDOCNO']
           :

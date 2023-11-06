@@ -559,9 +559,17 @@ class _LandingHomePageState extends State<LandingHomePage> {
 
     dt.asMap().containsKey(12) ?
     homeList.add({
-      "icon": Icons.history_outlined,
+      "icon": Icons.list_alt,
       "type": dt[12]['type'],
       "value": dt[12]['value']
+    }):null;
+
+
+    dt.asMap().containsKey(13) ?
+    homeList.add({
+      "icon": Icons.history_outlined,
+      "type": dt[13]['type'],
+      "value": dt[13]['value']
     }):null;
 
     setState(() {
@@ -1374,7 +1382,7 @@ class _LandingHomePageState extends State<LandingHomePage> {
 
                                                 homeList .length ==4 ?
                                                 60 :
-                                                40,
+                                                30,
                                               )),
                                         ],
                                       ),

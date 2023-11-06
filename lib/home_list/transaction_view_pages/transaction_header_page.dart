@@ -26,10 +26,7 @@ class TranscationHeaderPage extends StatefulWidget {
 }
 
 class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
-
-
   List<dynamic> stores = [];
-
 
   String? selectStore;
   String? activatedStore;
@@ -49,12 +46,10 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
   String? selectOrder;
   String? selectLocation;
   List<dynamic> orderNos = [];
-  String ? selectJournal;
-
+  String? selectJournal;
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
-
 
   @override
   void reassemble() {
@@ -65,12 +60,9 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     controller?.resumeCamera();
   }
 
-
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
-
-
 
 // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initConnectivity() async {
@@ -101,18 +93,14 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     });
   }
 
-
-
   @override
   void dispose() {
     _connectivitySubscription.cancel();
     super.dispose();
   }
 
-
   @override
   void initState() {
-
     initConnectivity();
 
     _connectivitySubscription =
@@ -124,10 +112,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     getToken();
     super.initState();
   }
-
-
-
-
 
   String? companyCode;
 
@@ -145,13 +129,12 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
   String? pushStockTakeApi;
   String? getStore;
   String? getDevice;
-  String ? getMovementJournals;
+  String? getMovementJournals;
   String? getDeactivate;
   String? updateDevice;
   String? token;
   TextEditingController? documentNoController = TextEditingController();
   TextEditingController? descriptionController = TextEditingController();
-
 
   // setValues() async {
   //   await _sqlHelper.getLastColumnAPPGENERALDATA();
@@ -211,38 +194,31 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
   //   }
   // }
 
-
-
-
   getOrderNos() async {
     orderNos = [];
     orderNos = await _sqlHelper.getHeaderOrders(widget.type == 'ST'
         ? "1"
         : widget.type == 'PO'
-        ? "3"
-        : widget.type == 'GRN'
-        ? "4"
-        : widget.type == 'RO'
-        ? "9"
-        : widget.type == 'RP'
-        ? "10"
-        : widget.type == 'TO-OUT'
-        ? "5"
-        : widget.type == 'TO-IN'
-        ? "6"
-        : "");
-
+            ? "3"
+            : widget.type == 'GRN'
+                ? "4"
+                : widget.type == 'RO'
+                    ? "9"
+                    : widget.type == 'RP'
+                        ? "10"
+                        : widget.type == 'TO-OUT'
+                            ? "5"
+                            : widget.type == 'TO-IN'
+                                ? "6"
+                                : "");
 
     orderNos.forEach((element) {
       print("elements 160");
       print(element);
     });
-
-
   }
 
-
-  List<dynamic> transactionData=[];
+  List<dynamic> transactionData = [];
   List<dynamic> transactionDetails = [];
   List<dynamic> transactionDetailsList = [];
   getToken() async {
@@ -250,23 +226,24 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     transactionData = await _sqlHelper.getTRANSHEADER(widget.type == 'ST'
         ? "1"
         : widget.type == 'PO'
-        ? "3"
-        : widget.type == 'GRN'
-        ? "4"
-        : widget.type == 'RO'
-        ? "9"
-        : widget.type == 'RP'
-        ? "10"
-        : widget.type == 'TO'
-        ? "11"
-        : widget.type == "TO-OUT"
-        ? "5"
-        : widget.type == "TO-IN"
-        ? "6"
-    :
-    widget.type == "MJ"
-        ? "22"
-        : "");
+            ? "3"
+            : widget.type == 'GRN'
+                ? "4"
+                : widget.type == 'RO'
+                    ? "9"
+                    : widget.type == 'RP'
+                        ? "10"
+                        : widget.type == 'TO'
+                            ? "11"
+                            : widget.type == "TO-OUT"
+                                ? "5"
+                                : widget.type == "TO-IN"
+                                    ? "6"
+                                    : widget.type == "MJ"
+                                        ? "22"
+                                        : widget.type == "MJ"
+                                            ? "22"
+                                            : "");
 
     print("data is 94 : ${widget.type}");
     print(transactionData);
@@ -280,32 +257,28 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       print("list is not empty : $transactionData");
       isActivateNew = true;
       isActivateSave = true;
-
     }
 
-
-    transactionDetails = await _sqlHelper
-        .getTRANSDETAILSINHeader(
-        widget.type == 'ST'
+    transactionDetails =
+        await _sqlHelper.getTRANSDETAILSINHeader(widget.type == 'ST'
             ? "1"
             : widget.type == 'PO'
-            ? "3"
-            : widget.type == 'GRN'
-            ? "4"
-            : widget.type == 'RO'
-            ? "9"
-            : widget.type == 'RP'
-            ? "10"
-            : widget.type == 'TO'
-            ? "11"
-            : widget.type == "TO-OUT"
-            ? "5"
-            : widget.type == "TO-IN"
-            ? "6"
-            :
-        widget.type == "MJ"
-            ? "22"
-            : "");
+                ? "3"
+                : widget.type == 'GRN'
+                    ? "4"
+                    : widget.type == 'RO'
+                        ? "9"
+                        : widget.type == 'RP'
+                            ? "10"
+                            : widget.type == 'TO'
+                                ? "11"
+                                : widget.type == "TO-OUT"
+                                    ? "5"
+                                    : widget.type == "TO-IN"
+                                        ? "6"
+                                        : widget.type == "MJ"
+                                            ? "22"
+                                            : "");
 
     print(transactionDetails.length);
     print("Line 224 ");
@@ -319,15 +292,14 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     // isPostTransactions =false;
     // isCloseTransactions =false;
 
-
     if (transactionData.length > 0) {
       transactionData[0]['STATUS'] == 0
           ? isActivateSave = true
           : transactionData[0]['STATUS'] == 2
-          ? isPostTransactions = true
-          : transactionData[0]['STATUS'] == 3
-          ? isActivateNew = false
-          : "";
+              ? isPostTransactions = true
+              : transactionData[0]['STATUS'] == 3
+                  ? isActivateNew = false
+                  : "";
       setState(() {});
       if (transactionData[0]['STATUS'] < 3) {
         // widget.type == 'PO' ?
@@ -348,12 +320,9 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
           setState(() {});
         }
 
-        if(transactionData[0]['TYPEDESCR']=="MJ"){
-
-          selectJournal = transactionData[0]['JournalName']??"";
-          setState((){
-
-          });
+        if (transactionData[0]['TYPEDESCR'] == "MJ") {
+          selectJournal = transactionData[0]['JournalName'] ?? "";
+          setState(() {});
         }
 
         print("137 ..data : ${transactionData[0]['AXDOCNO']}");
@@ -402,10 +371,9 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
     getDevice = await prefs!.getString("getDevice");
     getStore = await prefs!.getString("getStore");
-    getMovementJournals = await prefs!.getString("getJournal")??"";
+    getMovementJournals = await prefs!.getString("getJournal") ?? "";
     getDeactivate = await prefs!.getString("deactivate");
     updateDevice = await prefs!.getString("updateDevice");
-
 
     await prefs!.setBool("lineDeleted", false);
     print("...169");
@@ -526,7 +494,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       setState(() {
         stores = responseJson[0]['Stores'];
         final int item =
-        stores.indexWhere((e) => e['storecode'] == activatedStore);
+            stores.indexWhere((e) => e['storecode'] == activatedStore);
         stores.removeAt(item);
       });
 
@@ -535,10 +503,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       });
     }
   }
-
-
-
-
 
   pushTransactionToPost() async {
     print(_connectionStatus.runtimeType);
@@ -555,7 +519,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     //   showDialogGotData("");
     // }
 
-    
     transactionDetails.forEach((element) {
       print("445 .. line");
       print(element);
@@ -573,9 +536,9 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
         "QTY": element['QTY'],
         "BATCHNO": element['BATCHNO'],
         "EXPDATE": element['EXPDATE'],
-        "PRODDATE":element['PRODDATE'],
-        "BatchEnabled": element['BatchEnabled'] == 1  ? true:false,
-        "BatchedItem":  element['BatchedItem'] == 1  ? true:false,
+        "PRODDATE": element['PRODDATE'],
+        "BatchEnabled": element['BatchEnabled'] == 1 ? true : false,
+        "BatchedItem": element['BatchedItem'] == 1 ? true : false,
         "LOCATION": "",
         "DEVICEID": element['DEVICEID'],
         "CREATEDDATE": element['CREATEDDATE']
@@ -586,119 +549,68 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     });
     print(transactionDetailsList.length);
     print("element transaction list 331");
-    transactionDetailsList.forEach((ele){
+    transactionDetailsList.forEach((ele) {
       print(json.encode(ele));
     });
 
     print(activatedStore);
     print(activatedDevice);
 
-    print("The line header is : ${transactionData[0]['TRANSTYPE'].runtimeType}");
-
+    print(
+        "The line header is : ${transactionData[0]['TRANSTYPE'].runtimeType}");
 
     // return;
 
-    var body =
-    {
-
+    var body = {
       "contract": {
 
-    // PONextDocNoController.text = APPGENERALDATASave[''].toString();
-    // GRNNextDocNoController.text =
-    //     APPGENERALDATASave[''].toString();
-    // TOINNextDocNoController.text =
-    //     (APPGENERALDATASave['TOINNEXTDOCNO']).toString();
-    // TOOutNextDocNoController.text =
-    //     APPGENERALDATASave['TOOUTNEXTDOCNO'].toString();
-    // TONextDocNoController.text =
-    //     (APPGENERALDATASave['TOINNEXTDOCNO']).toString();
-    //
-    // STNextDocNoController.text = APPGENERALDATASave[''].toString();
-    // RPNextDocNoController.text = APPGENERALDATASave['RPNEXTDOCNO'].toString();
-    // RONextDocNoController.text = APPGENERALDATASave['RONEXTDOCNO'].toString();
 
-    //     transType == "STOCK COUNT"
-    //         ? 1
-    //         : widget.type == "GRN"
-    //         ? 4
-    //         : widget.type == "RP"
-    //         ? 10
-    //         : widget.type == "TO-OUT"
-    //         ? 5
-    //         : widget.type == "TO-IN"
-    //         ? 6
-    // : transType == "RETURN ORDER"
-    // ? 9
-    //     : transType == "TRANSFER ORDER"
-    // ? 11
+        //     transType == "STOCK COUNT"
+        //         ? 1
+        //         : widget.type == "GRN"
+        //         ? 4
+        //         : widget.type == "RP"
+        //         ? 10
+        //         : widget.type == "TO-OUT"
+        //         ? 5
+        //         : widget.type == "TO-IN"
+        //         ? 6
+        // : transType == "RETURN ORDER"
+        // ? 9
+        //     : transType == "TRANSFER ORDER"
+        // ? 11
 
 
-
-        "JournalName" : transactionData[0]['TRANSTYPE'].toString()
-    == "22" ?transactionData[0]['JournalName']  :"",
-    "DeviceNumSeq":
-
-        transactionData[0]['TRANSTYPE'].toString()
-
-        == "1" ?
-        APPGENERALDATASave['STNEXTDOCNO']
-            :
-
-    transactionData[0]['TRANSTYPE'].toString()
-
-    == "3" ?
-    APPGENERALDATASave['PONEXTDOCNO']
-        :
-
-        transactionData[0]['TRANSTYPE'].toString()
-
-            == "4" ?  APPGENERALDATASave['GRNNEXTDOCNO']
-    :
-        transactionData[0]['TRANSTYPE'].toString()
-
-            == "10"  ?  APPGENERALDATASave['RPNEXTDOCNO']
-    :
-        transactionData[0]['TRANSTYPE'].toString()
-
-            == "5"  ?
-    APPGENERALDATASave['TOOUTNEXTDOCNO']
-
-   :
-
-        transactionData[0]['TRANSTYPE'].toString()
-
-            == "6"  ?
-
-    APPGENERALDATASave['TOINNEXTDOCNO']
-
-    :
-    transactionData[0]['TRANSTYPE'].toString()
-
-    == "9" ?
-
-    APPGENERALDATASave['RONEXTDOCNO']
-
- :
-
-        transactionData[0]['TRANSTYPE'].toString()
-
-            == "11"  ?
-            APPGENERALDATASave['TONEXTDOCNO']
-
-    :
-    transactionData[0]['TRANSTYPE'].toString()
-
-    == "22" ?
-    APPGENERALDATASave['MJNEXTDOCNO']
-    :
-    ""
-        ,
+        "JournalName": transactionData[0]['TRANSTYPE'].toString() == "22"
+            ? transactionData[0]['JournalName']
+            : "",
+        "DeviceNumSeq": transactionData[0]['TRANSTYPE'].toString() == "1"
+            ? APPGENERALDATASave['STNEXTDOCNO']
+            : transactionData[0]['TRANSTYPE'].toString() == "3"
+                ? APPGENERALDATASave['PONEXTDOCNO']
+                : transactionData[0]['TRANSTYPE'].toString() == "4"
+                    ? APPGENERALDATASave['GRNNEXTDOCNO']
+                    : transactionData[0]['TRANSTYPE'].toString() == "10"
+                        ? APPGENERALDATASave['RPNEXTDOCNO']
+                        : transactionData[0]['TRANSTYPE'].toString() == "5"
+                            ? APPGENERALDATASave['TOOUTNEXTDOCNO']
+                            : transactionData[0]['TRANSTYPE'].toString() == "6"
+                                ? APPGENERALDATASave['TOINNEXTDOCNO']
+                                : transactionData[0]['TRANSTYPE'].toString() ==
+                                        "9"
+                                    ? APPGENERALDATASave['RONEXTDOCNO']
+                                    : transactionData[0]['TRANSTYPE']
+                                                .toString() ==
+                                            "11"
+                                        ? APPGENERALDATASave['TONEXTDOCNO']
+                                        : transactionData[0]['TRANSTYPE']
+                                                    .toString() ==
+                                                "22"
+                                            ? APPGENERALDATASave['MJNEXTDOCNO']
+                                            : "",
 
         "DOCNO": documentNoController?.text,
-        "AXDOCNO":
-        selectOrder == ""
-            || selectOrder ==null ?
-        "" : selectOrder,
+        "AXDOCNO": selectOrder == "" || selectOrder == null ? "" : selectOrder,
         "STORECODE": activatedStore,
         "TOSTORECODE": widget.type == "TO" ? selectStore : "",
         "TRANSTYPE": transactionData[0]['TRANSTYPE'].toString(),
@@ -716,11 +628,9 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       print("request body ...435");
       print(transactionDetailsList.length);
       print(json.encode(body));
-
     }
 
     // return;
-
 
     // var ur = APIConstants.baseUrl + "pushTransactionTatmeen";
     var ur = "$pushStockTakeApi";
@@ -731,26 +641,16 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     var res;
     var responseJson;
 
-    try{
-      res = await http.post(
-          headers: headers,
-          Uri.parse(ur),
-          body: js);
+    try {
+      res = await http.post(headers: headers, Uri.parse(ur), body: js);
 
-
-    responseJson= json.decode(res.body);
-    setState((){
-
-    });
-    }
-    catch(e){
-
-
+      responseJson = json.decode(res.body);
+      setState(() {});
+    } catch (e) {
       Navigator.pop(context);
       showDialogGotData("Network Error : ${e.toString()}");
       return;
     }
-
 
     print(res.statusCode);
 
@@ -760,72 +660,54 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       print("Post closed success");
       print(res.body);
 
-
-
-
-      if(responseJson[0]['Message'].toString().contains("success")){
+      if (responseJson[0]['Message'].toString().contains("success")) {
         await _sqlHelper.updateStatusStockCount(
-            3, documentNoController?.text.trim() ?? "",
+            3,
+            documentNoController?.text.trim() ?? "",
             widget.type == 'ST'
                 ? "1"
                 : widget.type == 'PO'
-                ? "3"
-                : widget.type == 'GRN'
-                ? "4"
-                : widget.type == 'RO'
-                ? "9"
-                : widget.type == 'RP'
-                ? "10"
-                : widget.type == 'TO'
-                ? "11"
-                : widget.type == "TO-OUT"
-                ? "5"
-                : widget.type == "TO-IN"
-                ? "6"
-            : widget.type == "TO-IN" ?
-                "22":
-                 "",
-            selectOrder
-        );
-
+                    ? "3"
+                    : widget.type == 'GRN'
+                        ? "4"
+                        : widget.type == 'RO'
+                            ? "9"
+                            : widget.type == 'RP'
+                                ? "10"
+                                : widget.type == 'TO'
+                                    ? "11"
+                                    : widget.type == "TO-OUT"
+                                        ? "5"
+                                        : widget.type == "TO-IN"
+                                            ? "6"
+                                            : widget.type == "TO-IN"
+                                                ? "22"
+                                                : "",
+            selectOrder);
 
         setState(() {
-
-
-
-
           // setState(() {
           isActivated = false;
 
           isActivateSave = true;
           // });
 
-
           selectStore = null;
           selectLocation = null;
           isActivateNew = false;
           documentNoController?.clear();
           descriptionController?.clear();
-          orderNos =[];
+          orderNos = [];
           selectOrder = null;
           isPostTransactions = false;
           isCloseTransactions = false;
         });
-        showDialogGotData("Transaction Posted ${responseJson[0]['Message'].toString()}fully");
-
-      }
-
-      else{
-
-
-
+        showDialogGotData(
+            "Transaction Posted ${responseJson[0]['Message'].toString()}fully");
+      } else {
         showDialogGotData(responseJson[0]['Message'].toString());
-
       }
-
-    }
-    else
-    {
+    } else {
       showDialogGotData(responseJson[0]['Message'].toString());
     }
   }
@@ -852,22 +734,14 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                   SizedBox(
                     width: 5,
                   ),
-                  Expanded(
-                      child:
-                      Text("Store Code")
-                  ),
+                  Expanded(child: Text("Store Code")),
                   Visibility(
-                    visible:
-                    widget.type == "ST"
-                        || widget.type == "TO",
-                    child:
-                    SizedBox(
-                        width: 10),
+                    visible: widget.type == "ST" || widget.type == "TO",
+                    child: SizedBox(width: 10),
                   ),
                   Visibility(
                       visible: widget.type == "ST",
-                      child: Expanded(child:
-                      Text("Location"))),
+                      child: Expanded(child: Text("Location"))),
                   Visibility(
                       visible: widget.type == "TO",
                       child: Expanded(child: Text("TO Store Code")))
@@ -877,44 +751,38 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                 children: [
                   Expanded(
                       child: Container(
-                        height: 35,
+                    height: 35,
 
-                        // margin: EdgeInsets.only(left: 13),
-                        child: Center(
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                  activatedStore ?? "",
-                                  style:
-                                  TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15)
-                              ),
-
-                              // Spacer(),
-                              // Icon(
-                              //   Icons.arrow_forward_ios_rounded,
-                              //   size: 14,
-                              // ),
-                              // SizedBox(
-                              //   width: 10,
-                              // )
-                            ],
+                    // margin: EdgeInsets.only(left: 13),
+                    child: Center(
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 10,
                           ),
-                        ),
-                        decoration: BoxDecoration(
-                            color:
+                          Text(activatedStore ?? "",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 15)),
+
+                          // Spacer(),
+                          // Icon(
+                          //   Icons.arrow_forward_ios_rounded,
+                          //   size: 14,
+                          // ),
+                          // SizedBox(
+                          //   width: 10,
+                          // )
+                        ],
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                        color:
                             // isActivated != null && isActivated!
                             //     ? Colors.black12:
-                            Colors.black12
-                            ,
-
-                            border: Border.all(color: Colors.black, width: 0.5),
-                            borderRadius: BorderRadius.circular(5.0)),
-                      )),
+                            Colors.black12,
+                        border: Border.all(color: Colors.black, width: 0.5),
+                        borderRadius: BorderRadius.circular(5.0)),
+                  )),
                   Visibility(
                       visible: widget.type == "TO",
                       child: SizedBox(
@@ -927,155 +795,152 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                         ignoring: isActivated!,
                         child: stores.isEmpty
                             ? Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                                  height: 35,
-                                  // margin: EdgeInsets.only(left: 13),
-                                  child: Center(
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Select STORE",
-                                          style: TextStyle(
-                                              color: !isActivateNew! == true
-                                                  ? Colors.black26
-                                                  : Colors.black,
-                                              fontSize: 15),
-                                        ),
-                                        Spacer(),
-                                        Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          size: 14,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                      color:
-                                      // isActivated != null && isActivated!
-                                      //     ? Colors.black12:
-                                      Colors.white,
-                                      border: Border.all(
-                                          color: Colors.black, width: 0.5),
-                                      borderRadius:
-                                      BorderRadius.circular(10.0)),
-                                )),
-                          ],
-                        )
-                            : Container(
-                          height: 35,
-                          margin: EdgeInsets.symmetric(horizontal: 2),
-                          child: Theme(
-                            data: Theme.of(context).copyWith(
-                              canvasColor: Colors.white,
-                              // backgroundColor: Colors.black26,
-                              // cardColor: Colors.black12
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                dropdownMaxHeight: 400,
-                                // underline: Divider(
-                                //   // indent: 2,
-                                //
-                                //   height: 1,
-                                //   thickness: 1,
-                                //   color: Colors.black,
-                                // ),
-                                barrierDismissible: true,
-                                // disabledHint: false,
-                                isExpanded: true,
-                                buttonHeight: 500,
-
-                                hint: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'To Store',
-                                        style: TextStyle(
-                                          // fontSize: 14,
-                                          // fontWeight: FontWeight.bold,
-
-                                          color: Colors.black38,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                                children: [
+                                  Expanded(
+                                      child: Container(
+                                    height: 35,
+                                    // margin: EdgeInsets.only(left: 13),
+                                    child: Center(
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            "Select STORE",
+                                            style: TextStyle(
+                                                color: !isActivateNew! == true
+                                                    ? Colors.black26
+                                                    : Colors.black,
+                                                fontSize: 15),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            Icons.arrow_forward_ios_rounded,
+                                            size: 14,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          )
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                    decoration: BoxDecoration(
+                                        color:
+                                            // isActivated != null && isActivated!
+                                            //     ? Colors.black12:
+                                            Colors.white,
+                                        border: Border.all(
+                                            color: Colors.black, width: 0.5),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                  )),
+                                ],
+                              )
+                            : Container(
+                                height: 35,
+                                margin: EdgeInsets.symmetric(horizontal: 2),
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    canvasColor: Colors.white,
+                                    // backgroundColor: Colors.black26,
+                                    // cardColor: Colors.black12
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton2(
+                                      dropdownMaxHeight: 400,
+                                      // underline: Divider(
+                                      //   // indent: 2,
+                                      //
+                                      //   height: 1,
+                                      //   thickness: 1,
+                                      //   color: Colors.black,
+                                      // ),
+                                      barrierDismissible: true,
+                                      // disabledHint: false,
+                                      isExpanded: true,
+                                      buttonHeight: 500,
 
-                                items: stores
-                                    .map((item) =>
-                                    DropdownMenuItem<String>(
-                                      value: item['storecode']
-                                          .toString(),
-                                      child: Text(
-                                        item['storecode']
-                                            ?? "",
-                                        style: TextStyle(
-                                          // fontSize: 14,
-                                          // fontWeight: FontWeight.bold,
+                                      hint: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'To Store',
+                                              style: TextStyle(
+                                                // fontSize: 14,
+                                                // fontWeight: FontWeight.bold,
+
+                                                color: Colors.black38,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      items: stores
+                                          .map((item) =>
+                                              DropdownMenuItem<String>(
+                                                value: item['storecode']
+                                                    .toString(),
+                                                child: Text(
+                                                  item['storecode'] ?? "",
+                                                  style: TextStyle(
+                                                    // fontSize: 14,
+                                                    // fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ))
+                                          .toList(),
+                                      value: selectStore,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectStore =
+                                              value.toString() as String;
+                                        });
+                                      },
+                                      icon: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 13.0),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                        ),
+                                      ),
+                                      iconSize: 14,
+
+                                      buttonDecoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        border: Border.all(
+                                            color: Colors.black38, width: 0.5),
+                                        // color: isActivated != null && isActivated!
+                                        //     ? Colors.black12:
+                                        // Colors.white,
+                                      ),
+
+                                      buttonElevation: 0,
+
+                                      dropdownDecoration: BoxDecoration(
+                                        border: Border.all(
+                                          // style: BorderStyle.none,
+                                          width: 0.2,
                                           color: Colors.black,
                                         ),
-                                        overflow:
-                                        TextOverflow.ellipsis,
+                                        borderRadius: BorderRadius.circular(5),
+                                        // color: Colors.white,
                                       ),
-                                    ))
-                                    .toList(),
-                                value: selectStore,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectStore =
-                                    value.toString() as String;
-                                  });
-                                },
-                                icon: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 13.0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_outlined,
+                                      dropdownElevation: 0,
+                                      scrollbarRadius: Radius.circular(40),
+                                      scrollbarThickness: 6,
+
+                                      scrollbarAlwaysShow: true,
+                                    ),
                                   ),
                                 ),
-                                iconSize: 14,
-
-                                buttonDecoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.circular(5.0),
-                                  border: Border.all(
-                                      color: Colors.black38,
-                                      width: 0.5
-                                  ),
-                                  // color: isActivated != null && isActivated!
-                                  //     ? Colors.black12:
-                                  // Colors.white,
-                                ),
-
-                                buttonElevation: 0,
-
-                                dropdownDecoration: BoxDecoration(
-                                  border: Border.all(
-                                    // style: BorderStyle.none,
-                                    width: 0.2,
-                                    color: Colors.black,
-                                  ),
-                                  borderRadius: BorderRadius.circular(5),
-                                  // color: Colors.white,
-                                ),
-                                dropdownElevation: 0,
-                                scrollbarRadius: Radius.circular(40),
-                                scrollbarThickness: 6,
-
-                                scrollbarAlwaysShow: true,
                               ),
-                            ),
-                          ),
-                        ),
                       ),
 
                       // TextFormField(
@@ -1098,7 +963,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                       // )
                     ),
                   ),
-
                   Visibility(
                       visible: widget.type == "MJ",
                       child: SizedBox(
@@ -1111,156 +975,152 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                         ignoring: isActivated!,
                         child: stores.isEmpty
                             ? Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                                  height: 35,
-                                  // margin: EdgeInsets.only(left: 13),
-                                  child: Center(
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          "Select Journal",
-                                          style: TextStyle(
-                                              color: !isActivateNew! == true
-                                                  ? Colors.black26
-                                                  : Colors.black,
-                                              fontSize: 15),
-                                        ),
-                                        Spacer(),
-                                        Icon(
-                                          Icons.arrow_forward_ios_rounded,
-                                          size: 14,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                      color:
-                                      // isActivated != null && isActivated!
-                                      //     ? Colors.black12:
-                                      Colors.white,
-                                      border: Border.all(
-                                          color: Colors.black, width: 0.5),
-                                      borderRadius:
-                                      BorderRadius.circular(10.0)),
-                                )),
-                          ],
-                        )
-                            : Container(
-                          height: 35,
-                          margin: EdgeInsets.symmetric(horizontal: 2),
-                          child: Theme(
-                            data: Theme.of(context).copyWith(
-                              canvasColor: Colors.white,
-                              // backgroundColor: Colors.black26,
-                              // cardColor: Colors.black12
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                dropdownMaxHeight: 400,
-                                // underline: Divider(
-                                //   // indent: 2,
-                                //
-                                //   height: 1,
-                                //   thickness: 1,
-                                //   color: Colors.black,
-                                // ),
-                                barrierDismissible: true,
-                                // disabledHint: false,
-                                isExpanded: true,
-                                buttonHeight: 500,
-
-                                hint: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Journal',
-                                        style: TextStyle(
-                                          // fontSize: 14,
-                                          // fontWeight: FontWeight.bold,
-
-                                          color: Colors.black38,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                                children: [
+                                  Expanded(
+                                      child: Container(
+                                    height: 35,
+                                    // margin: EdgeInsets.only(left: 13),
+                                    child: Center(
+                                      child: Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            "Select Journal",
+                                            style: TextStyle(
+                                                color: !isActivateNew! == true
+                                                    ? Colors.black26
+                                                    : Colors.black,
+                                                fontSize: 15),
+                                          ),
+                                          Spacer(),
+                                          Icon(
+                                            Icons.arrow_forward_ios_rounded,
+                                            size: 14,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          )
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
+                                    decoration: BoxDecoration(
+                                        color:
+                                            // isActivated != null && isActivated!
+                                            //     ? Colors.black12:
+                                            Colors.white,
+                                        border: Border.all(
+                                            color: Colors.black, width: 0.5),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0)),
+                                  )),
+                                ],
+                              )
+                            : Container(
+                                height: 35,
+                                margin: EdgeInsets.symmetric(horizontal: 2),
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                    canvasColor: Colors.white,
+                                    // backgroundColor: Colors.black26,
+                                    // cardColor: Colors.black12
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton2(
+                                      dropdownMaxHeight: 400,
+                                      // underline: Divider(
+                                      //   // indent: 2,
+                                      //
+                                      //   height: 1,
+                                      //   thickness: 1,
+                                      //   color: Colors.black,
+                                      // ),
+                                      barrierDismissible: true,
+                                      // disabledHint: false,
+                                      isExpanded: true,
+                                      buttonHeight: 500,
 
-                                items: movementJournals
-                                    .map((item) =>
-                                    DropdownMenuItem<String>(
-                                      value: item['journalNameId']
-                                          .toString(),
-                                      child: Text(
-                                        item['journalNameId']
-                                            ?? "",
-                                        style: TextStyle(
-                                          // fontSize: 14,
-                                          // fontWeight: FontWeight.bold,
+                                      hint: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Journal',
+                                              style: TextStyle(
+                                                // fontSize: 14,
+                                                // fontWeight: FontWeight.bold,
+
+                                                color: Colors.black38,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      items: movementJournals
+                                          .map((item) =>
+                                              DropdownMenuItem<String>(
+                                                value: item['journalNameId']
+                                                    .toString(),
+                                                child: Text(
+                                                  item['journalNameId'] ?? "",
+                                                  style: TextStyle(
+                                                    // fontSize: 14,
+                                                    // fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ))
+                                          .toList(),
+                                      value: selectJournal,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectJournal =
+                                              value.toString() as String;
+                                        });
+                                      },
+                                      icon: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 13.0),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                        ),
+                                      ),
+                                      iconSize: 14,
+
+                                      buttonDecoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(5.0),
+                                        border: Border.all(
+                                            color: Colors.black38, width: 0.5),
+                                        // color: isActivated != null && isActivated!
+                                        //     ? Colors.black12:
+                                        // Colors.white,
+                                      ),
+
+                                      buttonElevation: 0,
+
+                                      dropdownDecoration: BoxDecoration(
+                                        border: Border.all(
+                                          // style: BorderStyle.none,
+                                          width: 0.2,
                                           color: Colors.black,
                                         ),
-                                        overflow:
-                                        TextOverflow.ellipsis,
+                                        borderRadius: BorderRadius.circular(5),
+                                        // color: Colors.white,
                                       ),
-                                    ))
-                                    .toList(),
-                                value: selectJournal,
-                                onChanged: (value) {
+                                      dropdownElevation: 0,
+                                      scrollbarRadius: Radius.circular(40),
+                                      scrollbarThickness: 6,
 
-                                  setState(() {
-                                    selectJournal =
-                                    value.toString() as String;
-                                  });
-                                },
-                                icon: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 13.0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_outlined,
+                                      scrollbarAlwaysShow: true,
+                                    ),
                                   ),
                                 ),
-                                iconSize: 14,
-
-                                buttonDecoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.circular(5.0),
-                                  border: Border.all(
-                                      color: Colors.black38,
-                                      width: 0.5
-                                  ),
-                                  // color: isActivated != null && isActivated!
-                                  //     ? Colors.black12:
-                                  // Colors.white,
-                                ),
-
-                                buttonElevation: 0,
-
-                                dropdownDecoration: BoxDecoration(
-                                  border: Border.all(
-                                    // style: BorderStyle.none,
-                                    width: 0.2,
-                                    color: Colors.black,
-                                  ),
-                                  borderRadius: BorderRadius.circular(5),
-                                  // color: Colors.white,
-                                ),
-                                dropdownElevation: 0,
-                                scrollbarRadius: Radius.circular(40),
-                                scrollbarThickness: 6,
-
-                                scrollbarAlwaysShow: true,
                               ),
-                            ),
-                          ),
-                        ),
                       ),
 
                       // TextFormField(
@@ -1335,17 +1195,17 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
                                 items: locations
                                     .map((item) => DropdownMenuItem<String>(
-                                  value: item?.toString(),
-                                  child: Text(
-                                    item?.toString() ?? "",
-                                    style: TextStyle(
-                                      // fontSize: 14,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ))
+                                          value: item?.toString(),
+                                          child: Text(
+                                            item?.toString() ?? "",
+                                            style: TextStyle(
+                                              // fontSize: 14,
+                                              // fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ))
                                     .toList(),
                                 value: selectLocation,
                                 onChanged: (value) {
@@ -1355,7 +1215,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                 },
                                 icon: Padding(
                                   padding:
-                                  EdgeInsets.symmetric(horizontal: 13.0),
+                                      EdgeInsets.symmetric(horizontal: 13.0),
                                   child: Icon(
                                     Icons.arrow_forward_ios_outlined,
                                   ),
@@ -1365,9 +1225,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                 buttonDecoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   border: Border.all(
-                                      color: Colors.black38,
-                                      width: 0.5
-                                  ),
+                                      color: Colors.black38, width: 0.5),
                                   // color: isActivated != null && isActivated!
                                   //     ? Colors.black12:
                                   // Colors.white,
@@ -1617,7 +1475,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                   SizedBox(
                     width: 5,
                   ),
-
                   Text("SEQ NO")
                 ],
               ),
@@ -1662,7 +1519,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                   child: Container(
                     child: TextFormField(
                       validator: (value) =>
-                      value!.isEmpty ? 'Required *' : null,
+                          value!.isEmpty ? 'Required *' : null,
                       controller: descriptionController,
                       decoration: InputDecoration(
                           focusedBorder: APPConstants().focusInputBorder,
@@ -1672,10 +1529,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                           contentPadding: EdgeInsets.only(
                               left: 10.0, bottom: 10.0, top: 10.0),
                           // hintText: "TOIN -Next Doc No",
-                          labelStyle: TextStyle(
-                              color:  Colors.black26
-
-                          ),
+                          labelStyle: TextStyle(color: Colors.black26),
                           labelText: "Description",
                           border: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.grey))),
@@ -1712,182 +1566,180 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                     widget.type == "ST",
                 child: orderNos.isEmpty
                     ? Row(
-                  children: [
-                    Expanded(
-                        child: Container(
-                          height: 35,
+                        children: [
+                          Expanded(
+                              child: Container(
+                            height: 35,
 
-                          // margin: EdgeInsets.only(left: 13),
-                          child: Center(
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  selectOrder ?? "Select ERP DOCNO",
-                                  style: TextStyle(
-                                      color: !isActivateNew! == true
-                                          ? Colors.black26
-                                          : Colors.black,
-                                      fontSize: 15),
-                                ),
-                                Spacer(),
-                                Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 14,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                )
-                              ],
-                            ),
-                          ),
-                          decoration: BoxDecoration(
-                              color:
-                              // isActivated != null && isActivated!
-                              //     ? Colors.black12:
-                              Colors.white,
-                              border:
-                              Border.all(color: Colors.black, width: 0.5),
-                              borderRadius: BorderRadius.circular(10.0)),
-                        )),
-                  ],
-                )
-                    : Row(
-                  children: [
-                    Expanded(
-                      child: IgnorePointer(
-                        ignoring: isActivated!,
-                        child: Container(
-                          height: 35,
-                          color: !isActivateNew! == true
-                              ? Colors.black12
-                              : Colors.white,
-                          // margin: EdgeInsets.symmetric(horizontal: 2),
-                          child: new Theme(
-                            data: Theme.of(context).copyWith(
-                              canvasColor: Colors.white,
-                              // backgroundColor: Colors.black26,
-                              // cardColor: Colors.black12
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton2(
-                                dropdownMaxHeight: 400,
-                                // underline: Divider(
-                                //   // indent: 2,
-                                //
-                                //   height: 1,
-                                //   thickness: 1,
-                                //   color: Colors.black,
-                                // ),
-                                barrierDismissible: true,
-                                // disabledHint: false,
-                                isExpanded: true,
-                                buttonHeight: 500,
-
-                                hint: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Order No ...',
-                                        style: TextStyle(
-                                          // fontSize: 14,
-                                          // fontWeight: FontWeight.bold,
-                                          color: Colors.black12,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                items: orderNos
-                                    .map((item) =>
-                                    DropdownMenuItem<String>(
-                                      value:
-                                      item['AXDOCNO']?.toString(),
-                                      child: Text(
-                                        item['AXDOCNO'] ?? "",
-                                        style: TextStyle(
-                                          // fontSize: 14,
-                                          // fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
-                                        overflow:
-                                        TextOverflow.ellipsis,
-                                      ),
-                                    ))
-                                    .toList(),
-                                value: selectOrder,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectOrder = value as String;
-                                  });
-                                },
-                                icon: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 13.0),
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_outlined,
+                            // margin: EdgeInsets.only(left: 13),
+                            child: Center(
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 10,
                                   ),
-                                ),
-                                iconSize: 14,
-
-                                buttonDecoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(
-                                      color: Colors.black38,
-                                      width: 0.5
+                                  Text(
+                                    selectOrder ?? "Select ERP DOCNO",
+                                    style: TextStyle(
+                                        color: !isActivateNew! == true
+                                            ? Colors.black26
+                                            : Colors.black,
+                                        fontSize: 15),
                                   ),
-                                  // color: isActivated != null && isActivated!
-                                  //     ? Colors.black12:
-                                  // Colors.white,
-                                ),
-
-                                buttonElevation: 0,
-
-                                dropdownDecoration: BoxDecoration(
-                                  border: Border.all(
-                                    // style: BorderStyle.none,
-                                    width: 0.2,
-                                    color: Colors.black,
+                                  Spacer(),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 14,
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
-                                  // color: Colors.white,
-                                ),
-                                dropdownElevation: 0,
-                                scrollbarRadius: Radius.circular(40),
-                                scrollbarThickness: 6,
-
-                                scrollbarAlwaysShow: true,
+                                  SizedBox(
+                                    width: 10,
+                                  )
+                                ],
                               ),
                             ),
-                          ),
-                        ),
-                      ),
+                            decoration: BoxDecoration(
+                                color:
+                                    // isActivated != null && isActivated!
+                                    //     ? Colors.black12:
+                                    Colors.white,
+                                border:
+                                    Border.all(color: Colors.black, width: 0.5),
+                                borderRadius: BorderRadius.circular(10.0)),
+                          )),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          Expanded(
+                            child: IgnorePointer(
+                              ignoring: isActivated!,
+                              child: Container(
+                                height: 35,
+                                color: !isActivateNew! == true
+                                    ? Colors.black12
+                                    : Colors.white,
+                                // margin: EdgeInsets.symmetric(horizontal: 2),
+                                child: new Theme(
+                                  data: Theme.of(context).copyWith(
+                                    canvasColor: Colors.white,
+                                    // backgroundColor: Colors.black26,
+                                    // cardColor: Colors.black12
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton2(
+                                      dropdownMaxHeight: 400,
+                                      // underline: Divider(
+                                      //   // indent: 2,
+                                      //
+                                      //   height: 1,
+                                      //   thickness: 1,
+                                      //   color: Colors.black,
+                                      // ),
+                                      barrierDismissible: true,
+                                      // disabledHint: false,
+                                      isExpanded: true,
+                                      buttonHeight: 500,
 
-                      // TextFormField(
-                      //
-                      //   validator: (value) =>
-                      //   value!.isEmpty ? 'Required *' : null,
-                      //   controller: deviceIdController,
-                      //   decoration: InputDecoration(
-                      //     isDense: true,
-                      //     contentPadding: EdgeInsets.only(left: 10.0),
-                      //       fillColor: Colors.white,
-                      //       focusColor: Colors.white,
-                      //       labelText: "Device ID",
-                      //       border: UnderlineInputBorder(
-                      //
-                      //           borderSide: BorderSide(
-                      //               color: Colors.grey
-                      //           )
-                      //       )),
-                      // )
-                    ),
-                  ],
-                ),
+                                      hint: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Order No ...',
+                                              style: TextStyle(
+                                                // fontSize: 14,
+                                                // fontWeight: FontWeight.bold,
+                                                color: Colors.black12,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      items: orderNos
+                                          .map((item) =>
+                                              DropdownMenuItem<String>(
+                                                value:
+                                                    item['AXDOCNO']?.toString(),
+                                                child: Text(
+                                                  item['AXDOCNO'] ?? "",
+                                                  style: TextStyle(
+                                                    // fontSize: 14,
+                                                    // fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ))
+                                          .toList(),
+                                      value: selectOrder,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectOrder = value as String;
+                                        });
+                                      },
+                                      icon: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 13.0),
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                        ),
+                                      ),
+                                      iconSize: 14,
+
+                                      buttonDecoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: Colors.black38, width: 0.5),
+                                        // color: isActivated != null && isActivated!
+                                        //     ? Colors.black12:
+                                        // Colors.white,
+                                      ),
+
+                                      buttonElevation: 0,
+
+                                      dropdownDecoration: BoxDecoration(
+                                        border: Border.all(
+                                          // style: BorderStyle.none,
+                                          width: 0.2,
+                                          color: Colors.black,
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                        // color: Colors.white,
+                                      ),
+                                      dropdownElevation: 0,
+                                      scrollbarRadius: Radius.circular(40),
+                                      scrollbarThickness: 6,
+
+                                      scrollbarAlwaysShow: true,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            // TextFormField(
+                            //
+                            //   validator: (value) =>
+                            //   value!.isEmpty ? 'Required *' : null,
+                            //   controller: deviceIdController,
+                            //   decoration: InputDecoration(
+                            //     isDense: true,
+                            //     contentPadding: EdgeInsets.only(left: 10.0),
+                            //       fillColor: Colors.white,
+                            //       focusColor: Colors.white,
+                            //       labelText: "Device ID",
+                            //       border: UnderlineInputBorder(
+                            //
+                            //           borderSide: BorderSide(
+                            //               color: Colors.grey
+                            //           )
+                            //       )),
+                            // )
+                          ),
+                        ],
+                      ),
               ),
 
               // SizedBox(height: 20,),
@@ -1925,33 +1777,37 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               ),
                               backgroundColor: Colors.green),
                           onPressed: () async {
-
                             await getOrderNos();
-                            transactionData = await _sqlHelper.getTRANSHEADER(widget.type == 'ST'
-                                ? "1"
-                                : widget.type == 'PO'
-                                ? "3"
-                                : widget.type == 'GRN'
-                                ? "4"
-                                : widget.type == 'RO'
-                                ? "9"
-                                : widget.type == 'RP'
-                                ? "10"
-                                : widget.type == 'TO'
-                                ? "11"
-                                : widget.type == "TO-OUT"
-                                ? "5"
-                                : widget.type == "TO-IN"
-                                ? "6"
-                                : "");
+                            transactionData = await _sqlHelper.getTRANSHEADER(
+                                widget.type == 'ST'
+                                    ? "1"
+                                    : widget.type == 'PO'
+                                        ? "3"
+                                        : widget.type == 'GRN'
+                                            ? "4"
+                                            : widget.type == 'RO'
+                                                ? "9"
+                                                : widget.type == 'RP'
+                                                    ? "10"
+                                                    : widget.type == 'TO'
+                                                        ? "11"
+                                                        : widget.type ==
+                                                                "TO-OUT"
+                                                            ? "5"
+                                                            : widget.type ==
+                                                                    "TO-IN"
+                                                                ? "6"
+                                                                : widget.type ==
+                                                                        "MJ"
+                                                                    ? "22"
+                                                                    : "");
                             print("isActivateNew : new ");
                             int i = 1050000;
-
 
                             int length = i.toString().length; // 7
 // or
                             print(length.toString());
-                            await   getOrderNos();
+                            await getOrderNos();
 
                             if (widget.type == "ST") {
                               print(APPGENERALDATASave['STNEXTDOCNO']
@@ -1959,12 +1815,12 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               if (APPGENERALDATASave['STNEXTDOCNO'] >= 0 &&
                                   APPGENERALDATASave['STNEXTDOCNO'] <= 9) {
                                 docNo =
-                                "000${APPGENERALDATASave['STNEXTDOCNO']}";
+                                    "000${APPGENERALDATASave['STNEXTDOCNO']}";
                               }
                               if (APPGENERALDATASave['STNEXTDOCNO'] >= 10 &&
                                   APPGENERALDATASave['STNEXTDOCNO'] <= 99) {
                                 docNo =
-                                "00${APPGENERALDATASave['STNEXTDOCNO']}";
+                                    "00${APPGENERALDATASave['STNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['STNEXTDOCNO'] >= 100 &&
@@ -1977,7 +1833,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               }
 
                               documentNoController?.text =
-                              "${widget.type}-${activatedDevice}-${docNo ?? ""}";
+                                  "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
                               setState(() {
                                 isActivated = false;
@@ -1994,13 +1850,13 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               if (APPGENERALDATASave['PONEXTDOCNO'] >= 0 &&
                                   APPGENERALDATASave['PONEXTDOCNO'] <= 9) {
                                 docNo =
-                                "000${APPGENERALDATASave['PONEXTDOCNO']}";
+                                    "000${APPGENERALDATASave['PONEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['PONEXTDOCNO'] >= 10 &&
                                   APPGENERALDATASave['PONEXTDOCNO'] <= 99) {
                                 docNo =
-                                "00${APPGENERALDATASave['PONEXTDOCNO']}";
+                                    "00${APPGENERALDATASave['PONEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['PONEXTDOCNO'] >= 100 &&
@@ -2013,7 +1869,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               }
 
                               documentNoController?.text =
-                              "${widget.type}-${activatedDevice}-${docNo ?? ""}";
+                                  "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
                               setState(() {
                                 isActivated = false;
@@ -2028,19 +1884,19 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               if (APPGENERALDATASave['GRNNEXTDOCNO'] >= 0 &&
                                   APPGENERALDATASave['GRNNEXTDOCNO'] <= 9) {
                                 docNo =
-                                "000${APPGENERALDATASave['GRNNEXTDOCNO']}";
+                                    "000${APPGENERALDATASave['GRNNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['GRNNEXTDOCNO'] >= 10 &&
                                   APPGENERALDATASave['GRNNEXTDOCNO'] <= 99) {
                                 docNo =
-                                "00${APPGENERALDATASave['GRNNEXTDOCNO']}";
+                                    "00${APPGENERALDATASave['GRNNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['GRNNEXTDOCNO'] >= 100 &&
                                   APPGENERALDATASave['GRNNEXTDOCNO'] <= 999) {
                                 docNo =
-                                "0${APPGENERALDATASave['GRNNEXTDOCNO']}";
+                                    "0${APPGENERALDATASave['GRNNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['GRNNEXTDOCNO'] >= 1000) {
@@ -2048,7 +1904,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               }
 
                               documentNoController?.text =
-                              "${widget.type}-${activatedDevice}-${docNo ?? ""}";
+                                  "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
                               setState(() {
                                 isActivated = false;
@@ -2065,13 +1921,13 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               if (APPGENERALDATASave['RONEXTDOCNO'] >= 0 &&
                                   APPGENERALDATASave['RONEXTDOCNO'] <= 9) {
                                 docNo =
-                                "000${APPGENERALDATASave['RONEXTDOCNO']}";
+                                    "000${APPGENERALDATASave['RONEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['RONEXTDOCNO'] >= 10 &&
                                   APPGENERALDATASave['RONEXTDOCNO'] <= 99) {
                                 docNo =
-                                "00${APPGENERALDATASave['RONEXTDOCNO']}";
+                                    "00${APPGENERALDATASave['RONEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['RONEXTDOCNO'] >= 100 &&
@@ -2084,7 +1940,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               }
 
                               documentNoController?.text =
-                              "${widget.type}-${activatedDevice}-${docNo ?? ""}";
+                                  "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
                               setState(() {
                                 isActivated = false;
@@ -2101,13 +1957,13 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               if (APPGENERALDATASave['RPNEXTDOCNO'] >= 0 &&
                                   APPGENERALDATASave['RPNEXTDOCNO'] <= 9) {
                                 docNo =
-                                "000${APPGENERALDATASave['RPNEXTDOCNO']}";
+                                    "000${APPGENERALDATASave['RPNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['RPNEXTDOCNO'] >= 10 &&
                                   APPGENERALDATASave['RPNEXTDOCNO'] <= 99) {
                                 docNo =
-                                "00${APPGENERALDATASave['RPNEXTDOCNO']}";
+                                    "00${APPGENERALDATASave['RPNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['RPNEXTDOCNO'] >= 100 &&
@@ -2120,7 +1976,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               }
 
                               documentNoController?.text =
-                              "${widget.type}-${activatedDevice}-${docNo ?? ""}";
+                                  "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
                               setState(() {
                                 isActivated = false;
@@ -2128,7 +1984,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                 isActivateSave = false;
                               });
                             }
-
 
                             if (widget.type == "MJ") {
                               print(APPGENERALDATASave['MJNEXTDOCNO']
@@ -2138,13 +1993,13 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               if (APPGENERALDATASave['MJNEXTDOCNO'] >= 0 &&
                                   APPGENERALDATASave['MJNEXTDOCNO'] <= 9) {
                                 docNo =
-                                "000${APPGENERALDATASave['MJNEXTDOCNO']}";
+                                    "000${APPGENERALDATASave['MJNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['MJNEXTDOCNO'] >= 10 &&
                                   APPGENERALDATASave['MJNEXTDOCNO'] <= 99) {
                                 docNo =
-                                "00${APPGENERALDATASave['MJNEXTDOCNO']}";
+                                    "00${APPGENERALDATASave['MJNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['MJNEXTDOCNO'] >= 100 &&
@@ -2156,10 +2011,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                 docNo = "${APPGENERALDATASave['MJNEXTDOCNO']}";
                               }
 
-
-
                               documentNoController?.text =
-                              "${widget.type}-${activatedDevice}-${docNo ?? ""}";
+                                  "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
                               setState(() {
                                 isActivated = false;
@@ -2176,13 +2029,13 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               if (APPGENERALDATASave['TONEXTDOCNO'] >= 0 &&
                                   APPGENERALDATASave['TONEXTDOCNO'] <= 9) {
                                 docNo =
-                                "000${APPGENERALDATASave['TONEXTDOCNO']}";
+                                    "000${APPGENERALDATASave['TONEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['TONEXTDOCNO'] >= 10 &&
                                   APPGENERALDATASave['TONEXTDOCNO'] <= 99) {
                                 docNo =
-                                "00${APPGENERALDATASave['TONEXTDOCNO']}";
+                                    "00${APPGENERALDATASave['TONEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['TONEXTDOCNO'] >= 100 &&
@@ -2195,7 +2048,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               }
 
                               documentNoController?.text =
-                              "${widget.type}-${activatedDevice}-${docNo ?? ""}";
+                                  "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
                               setState(() {
                                 isActivated = false;
@@ -2212,29 +2065,29 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               if (APPGENERALDATASave['TOOUTNEXTDOCNO'] >= 0 &&
                                   APPGENERALDATASave['TOOUTNEXTDOCNO'] <= 9) {
                                 docNo =
-                                "000${APPGENERALDATASave['TOOUTNEXTDOCNO']}";
+                                    "000${APPGENERALDATASave['TOOUTNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['TOOUTNEXTDOCNO'] >= 10 &&
                                   APPGENERALDATASave['TOOUTNEXTDOCNO'] <= 99) {
                                 docNo =
-                                "00${APPGENERALDATASave['TOOUTNEXTDOCNO']}";
+                                    "00${APPGENERALDATASave['TOOUTNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['TOOUTNEXTDOCNO'] >= 100 &&
                                   APPGENERALDATASave['TOOUTNEXTDOCNO'] <= 999) {
                                 docNo =
-                                "0${APPGENERALDATASave['TOOUTNEXTDOCNO']}";
+                                    "0${APPGENERALDATASave['TOOUTNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['TOOUTNEXTDOCNO'] >=
                                   1000) {
                                 docNo =
-                                "${APPGENERALDATASave['TOOUTNEXTDOCNO']}";
+                                    "${APPGENERALDATASave['TOOUTNEXTDOCNO']}";
                               }
 
                               documentNoController?.text =
-                              "${widget.type}-${activatedDevice}-${docNo ?? ""}";
+                                  "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
                               setState(() {
                                 isActivated = false;
@@ -2251,28 +2104,28 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               if (APPGENERALDATASave['TOINNEXTDOCNO'] >= 0 &&
                                   APPGENERALDATASave['TOINNEXTDOCNO'] <= 9) {
                                 docNo =
-                                "000${APPGENERALDATASave['TOINNEXTDOCNO']}";
+                                    "000${APPGENERALDATASave['TOINNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['TOINNEXTDOCNO'] >= 10 &&
                                   APPGENERALDATASave['TOINNEXTDOCNO'] <= 99) {
                                 docNo =
-                                "00${APPGENERALDATASave['TOINNEXTDOCNO']}";
+                                    "00${APPGENERALDATASave['TOINNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['TOINNEXTDOCNO'] >= 100 &&
                                   APPGENERALDATASave['TOINNEXTDOCNO'] <= 999) {
                                 docNo =
-                                "0${APPGENERALDATASave['TOINNEXTDOCNO']}";
+                                    "0${APPGENERALDATASave['TOINNEXTDOCNO']}";
                               }
 
                               if (APPGENERALDATASave['TOINNEXTDOCNO'] >= 1000) {
                                 docNo =
-                                "${APPGENERALDATASave['TOINNEXTDOCNO']}";
+                                    "${APPGENERALDATASave['TOINNEXTDOCNO']}";
                               }
 
                               documentNoController?.text =
-                              "${widget.type}-${activatedDevice}-${docNo ?? ""}";
+                                  "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
                               setState(() {
                                 isActivated = false;
@@ -2295,459 +2148,455 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                   ),
                   Expanded(
                       child: IgnorePointer(
-                        ignoring: isActivateSave!,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                backgroundColor: Colors.green),
-                            onPressed: () async {
-                              if (selectOrder == "" ||
-                                  selectOrder == null &&
-                                      widget.type != "PO" &&
-                                      widget.type != "RO" &&
-                                      widget.type != "TO"
-                              &&widget.type != "MJ") {
-                                showDialogGotData("Select ERP:Document No ");
-                                return;
-                              }
-                              if (selectLocation == "" ||
-                                  selectLocation == null &&
-                                      widget.type != "PO" &&
-                                      widget.type != 'GRN' &&
-                                      widget.type != "RO" &&
-                                      widget.type != "RP" &&
-                                      widget.type != "TO" &&
-                                      widget.type != "TO-OUT"
-                                      && widget.type != "TO-IN"
-                                      &&widget.type != "MJ") {
-                                showDialogGotData("Select Location");
-                                return;
-                              }
-                              if (widget.type == "TO") {
-                                if (selectStore == null) {
-                                  showDialogGotData("Select Store Code ");
-                                  return;
-                                }
-                                // showDialogGotData("Select ERP:Document No ");
-                                // return;
-                              }
-
-                              if (widget.type == "MJ") {
-
-                                if (selectJournal == null) {
-                                  showDialogGotData("Select Movement Journal");
-                                  return;
-                                }
-
-                                // return;
-                              }
-
-                              print("isActivateNew : save ");
-                              setState(() {
-                                isActivateSave = true;
-                                isActivateNew = false;
-                              });
-                              // 1- Counting                 2- Item master   ,
-                              //  3 - Open Purchase order lines
-                              // 4- Invoiced Purchase lines
-
-                              if (widget.type == 'ST') {
-                                await _sqlHelper.addTRANSHEADER(
-                                    DOCNO: documentNoController?.text,
-                                    AXDOCNO: selectOrder,
-                                    STORECODE: activatedStore,
-                                    TOSTORECODE:
-                                    widget.type == "TO" ? selectStore : "",
-                                    TRANSTYPE: widget.type == "ST"
-                                        ? 1
-                                        : widget.type == "PO"
-                                        ? 3
-                                        : widget.type == 'GRN'
-                                        ? 4
-                                        : "",
-                                    STATUS: 1,
-                                    USERNAME: username,
-                                    DESCRIPTION: descriptionController?.text,
-                                    CREATEDDATE: DateTime.now().toString(),
-                                    DATAAREAID: companyCode,
-                                    DEVICEID: activatedDevice,
-                                    TYPEDESCR: widget.type,
-                                    JournalName:
-                                    widget.type == "MJ" ? selectJournal : "",
-                                    VRLOCATION: selectLocation);
-                                await _sqlHelper.updateAPPGENERALDATASTNEXTDOCNO(
-                                    APPGENERALDATASave['STNEXTDOCNO'] + 1);
-                              }
-
-                              if (widget.type == 'PO') {
-                                await _sqlHelper.addTRANSHEADER(
-                                    DOCNO: documentNoController?.text,
-                                    AXDOCNO: "",
-                                    STORECODE: activatedStore,
-                                    TOSTORECODE:
-                                    widget.type == "TO" ? selectStore : "",
-                                    TRANSTYPE: widget.type == "ST"
-                                        ? 1
-                                        : widget.type == "PO"
-                                        ? 3
-                                        : widget.type == 'GRN'
-                                        ? 4
-                                        : "",
-                                    STATUS: 1,
-                                    USERNAME: username,
-                                    DESCRIPTION: descriptionController?.text,
-                                    CREATEDDATE: DateTime.now().toString(),
-                                    DATAAREAID: companyCode,
-                                    DEVICEID: activatedDevice,
-                                    TYPEDESCR: widget.type,
-                                    JournalName:
-                                    widget.type == "MJ" ? selectJournal : "",
-                                    VRLOCATION: "");
-                                await _sqlHelper.updateAPPGENERALDATAPONEXTDOCNO(
-                                    APPGENERALDATASave['PONEXTDOCNO'] + 1);
-                              }
-
-                              if (widget.type == 'GRN') {
-                                await _sqlHelper.addTRANSHEADER(
-                                    DOCNO: documentNoController?.text,
-                                    AXDOCNO: selectOrder,
-                                    STORECODE: activatedStore,
-                                    TOSTORECODE:
-                                    widget.type == "TO" ? selectStore : "",
-                                    TRANSTYPE: widget.type == "ST"
-                                        ? 1
-                                        : widget.type == "PO"
-                                        ? 3
-                                        : widget.type == 'GRN'
-                                        ? 4
-                                        : "",
-                                    STATUS: 1,
-                                    USERNAME: username,
-                                    DESCRIPTION: descriptionController?.text,
-                                    CREATEDDATE: DateTime.now().toString(),
-                                    DATAAREAID: companyCode,
-                                    DEVICEID: activatedDevice,
-                                    TYPEDESCR: widget.type,
-                                    JournalName:
-                                    widget.type == "MJ" ? selectJournal : "",
-                                    VRLOCATION: "");
-                                await _sqlHelper.updateAPPGENERALDATAGRNNEXTDOCNO(
-                                    APPGENERALDATASave['GRNNEXTDOCNO'] + 1);
-                              }
-
-                              if (widget.type == 'RO') {
-                                await _sqlHelper.addTRANSHEADER(
-                                    DOCNO: documentNoController?.text,
-                                    AXDOCNO: "",
-                                    STORECODE: activatedStore,
-                                    TOSTORECODE:
-                                    widget.type == "TO" ? selectStore : "",
-                                    TRANSTYPE: widget.type == "ST"
-                                        ? 1
-                                        : widget.type == "PO"
-                                        ? 3
-                                        : widget.type == 'GRN'
-                                        ? 4
-                                        : widget.type == 'RO'
-                                        ? 9
-                                        : "",
-                                    STATUS: 1,
-                                    USERNAME: username,
-                                    DESCRIPTION: descriptionController?.text,
-                                    CREATEDDATE: DateTime.now().toString(),
-                                    DATAAREAID: companyCode,
-                                    DEVICEID: activatedDevice,
-                                    TYPEDESCR: widget.type,
-                                    JournalName:
-                                    widget.type == "MJ" ? selectJournal : "",
-                                    VRLOCATION: "");
-                                await _sqlHelper.updateAPPGENERALDATARONEXTDOCNO(
-                                    APPGENERALDATASave['RONEXTDOCNO'] + 1);
-                              }
-
-                              if (widget.type == 'RP') {
-                                await _sqlHelper.addTRANSHEADER(
-                                    DOCNO: documentNoController?.text,
-                                    AXDOCNO: selectOrder,
-                                    STORECODE: activatedStore,
-                                    TOSTORECODE:
-                                    widget.type == "TO" ? selectStore : "",
-                                    TRANSTYPE: widget.type == "ST"
-                                        ? 1
-                                        : widget.type == "PO"
-                                        ? 3
-                                        : widget.type == 'GRN'
-                                        ? 4
-                                        : widget.type == 'RO'
-                                        ? 9
-                                        : widget.type == 'RP'
-                                        ? 10
-                                        : "",
-                                    STATUS: 1,
-                                    USERNAME: username,
-                                    DESCRIPTION: descriptionController?.text,
-                                    CREATEDDATE: DateTime.now().toString(),
-                                    DATAAREAID: companyCode,
-                                    DEVICEID: activatedDevice,
-                                    TYPEDESCR: widget.type,
-                                    JournalName:
-                                    widget.type == "MJ" ? selectJournal : "",
-                                    VRLOCATION: "");
-                                await _sqlHelper.updateAPPGENERALDATARPNEXTDOCNO(
-                                    APPGENERALDATASave['RPNEXTDOCNO'] + 1);
-                              }
-
-
-                              if (widget.type == 'MJ') {
-                                await _sqlHelper.addTRANSHEADER(
-                                    DOCNO: documentNoController?.text,
-                                    AXDOCNO: "",
-                                    STORECODE: activatedStore,
-                                    TOSTORECODE:
-                                    widget.type == "TO" ? selectStore : "",
-                                    TRANSTYPE: 22,
-                                    STATUS: 1,
-                                    USERNAME: username,
-                                    DESCRIPTION: descriptionController?.text,
-                                    CREATEDDATE: DateTime.now().toString(),
-                                    DATAAREAID: companyCode,
-                                    DEVICEID: activatedDevice,
-                                    TYPEDESCR: widget.type,
-                                    JournalName:
-                                    widget.type == "MJ" ? selectJournal : "",
-                                    VRLOCATION: "");
-                                await _sqlHelper.updateAPPGENERALDATAMJNEXTDOCNO(
-                                    APPGENERALDATASave['MJNEXTDOCNO'] + 1);
-                              }
-
-
-
-                              if (widget.type == 'TO') {
-                                await _sqlHelper.addTRANSHEADER(
-                                    DOCNO: documentNoController?.text,
-                                    AXDOCNO: "",
-                                    STORECODE: activatedStore,
-                                    TOSTORECODE:
-                                    widget.type == "TO" ? selectStore : "",
-                                    TRANSTYPE: widget.type == "ST"
-                                        ? 1
-                                        : widget.type == "PO"
-                                        ? 3
-                                        : widget.type == 'GRN'
-                                        ? 4
-                                        : widget.type == 'RO'
-                                        ? 9
-                                        : widget.type == 'RP'
-                                        ? 10
-                                        : widget.type == 'TO'
-                                        ? 11
-                                        : "",
-                                    STATUS: 1,
-                                    USERNAME: username,
-                                    DESCRIPTION: descriptionController?.text,
-                                    CREATEDDATE: DateTime.now().toString(),
-                                    DATAAREAID: companyCode,
-                                    DEVICEID: activatedDevice,
-                                    TYPEDESCR: widget.type,
-                                    JournalName:
-                                    widget.type == "MJ" ? selectJournal : "",
-                                    VRLOCATION: "");
-                                await _sqlHelper.updateAPPGENERALDATATONEXTDOCNO(
-                                    APPGENERALDATASave['TONEXTDOCNO'] + 1);
-                              }
-                              // documentNoController?.clear();
-                              // descriptionController?.clear();
-                              // selectLocation=null;
-                              // selectOrder=null;
-                              // selectStore=null;
-
-                              if (widget.type == 'TO-OUT' ||
-                                  widget.type == "TO-IN") {
-
-                                await _sqlHelper.addTRANSHEADER(
-                                    DOCNO: documentNoController?.text,
-                                    AXDOCNO: selectOrder,
-                                    STORECODE: activatedStore,
-                                    TOSTORECODE:
-                                    widget.type == "TO" ? selectStore : "",
-                                    TRANSTYPE: widget.type == "ST"
-                                        ? 1
-                                        : widget.type == "PO"
-                                        ? 3
-                                        : widget.type == 'GRN'
-                                        ? 4
-                                        : widget.type == 'RO'
-                                        ? 9
-                                        : widget.type == 'RP'
-                                        ? 10
-                                        : widget.type == 'TO'
-                                        ? 11
-                                        : widget.type ==
-                                        "TO-OUT"
-                                        ? 5
-                                        : widget.type ==
-                                        "TO-IN"
-                                        ? 6
-                                        : "",
-                                    STATUS: 1,
-                                    USERNAME: username,
-                                    DESCRIPTION: descriptionController?.text,
-                                    CREATEDDATE: DateTime.now().toString(),
-                                    DATAAREAID: companyCode,
-                                    DEVICEID: activatedDevice,
-                                    TYPEDESCR: widget.type,
-                                    JournalName:
-                                    widget.type == "MJ" ? selectJournal : "",
-                                    VRLOCATION: "");
-                                if (widget.type == "TO-OUT") {
-                                  await _sqlHelper
-                                      .updateAPPGENERALDATATOOUTNEXTDOCNO(
-                                      APPGENERALDATASave['TOOUTNEXTDOCNO'] + 1);
-                                } else {
-                                  await _sqlHelper
-                                      .updateAPPGENERALDATATOINNEXTDOCNO(
-                                      APPGENERALDATASave['TOINNEXTDOCNO'] + 1);
-                                }
-                              }
-                              transactionData = await _sqlHelper.getTRANSHEADER(
-                                  widget.type == 'ST'
-                                      ? "1"
-                                      : widget.type == 'PO'
-                                      ? "3"
-                                      : widget.type == 'GRN'
-                                      ? "4"
-                                      : widget.type == 'RO'
-                                      ? "9"
-                                      : widget.type == 'RP'
-                                      ? "10"
-                                      : widget.type == 'TO'
-                                      ? "11"
-                                      : widget.type == "TO-OUT"
-                                      ? "5"
-                                      : widget.type ==
-                                      "TO-IN"
-                                      ? "6"
-                                      : "");
-
-                              setState(() {
-                                isActivated = true;
-                                isActivateSave = true;
-                                isActivateNew = true;
-                              });
+                    ignoring: isActivateSave!,
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            backgroundColor: Colors.green),
+                        onPressed: () async {
+                          if (selectOrder == "" ||
+                              selectOrder == null &&
+                                  widget.type != "PO" &&
+                                  widget.type != "RO" &&
+                                  widget.type != "TO" &&
+                                  widget.type != "MJ") {
+                            showDialogGotData("Select ERP:Document No ");
+                            return;
+                          }
+                          if (selectLocation == "" ||
+                              selectLocation == null &&
+                                  widget.type != "PO" &&
+                                  widget.type != 'GRN' &&
+                                  widget.type != "RO" &&
+                                  widget.type != "RP" &&
+                                  widget.type != "TO" &&
+                                  widget.type != "TO-OUT" &&
+                                  widget.type != "TO-IN" &&
+                                  widget.type != "MJ") {
+                            showDialogGotData("Select Location");
+                            return;
+                          }
+                          if (widget.type == "TO") {
+                            if (selectStore == null) {
+                              showDialogGotData("Select Store Code ");
+                              return;
                             }
-                            //     widget.type=="TO-OUT" ? "5":
-                            // widget.type=="TO-IN" ? "6":
-                            ,
-                            child: Text(
-                              "SAVE",
-                              style: TextStyle(
-                                  color: !isActivateSave! == true
-                                      ? Colors.white
-                                      :  APPConstants().colorGreen),
-                            )),
-                      )),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: IgnorePointer(
-                        ignoring: !isCloseTransactions!,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                // backgroundColor:  Color(0xffed648e)
-                                backgroundColor:  Colors.red
-                            ),
-                            onPressed: () async {
+                            // showDialogGotData("Select ERP:Document No ");
+                            // return;
+                          }
 
-                              await _sqlHelper.updateStatusStockCount(
-                                  2, documentNoController?.text.trim() ?? "",
-                                  widget.type == 'ST'
-                                      ? "1"
-                                      : widget.type == 'PO'
+                          if (widget.type == "MJ") {
+                            if (selectJournal == null) {
+                              showDialogGotData("Select Movement Journal");
+                              return;
+                            }
+
+                            // return;
+                          }
+
+                          print("isActivateNew : save ");
+                          setState(() {
+                            isActivateSave = true;
+                            isActivateNew = false;
+                          });
+                          // 1- Counting                 2- Item master   ,
+                          //  3 - Open Purchase order lines
+                          // 4- Invoiced Purchase lines
+
+                          if (widget.type == 'ST') {
+                            await _sqlHelper.addTRANSHEADER(
+                                DOCNO: documentNoController?.text,
+                                AXDOCNO: selectOrder,
+                                STORECODE: activatedStore,
+                                TOSTORECODE:
+                                    widget.type == "TO" ? selectStore : "",
+                                TRANSTYPE: widget.type == "ST"
+                                    ? 1
+                                    : widget.type == "PO"
+                                        ? 3
+                                        : widget.type == 'GRN'
+                                            ? 4
+                                            : "",
+                                STATUS: 1,
+                                USERNAME: username,
+                                DESCRIPTION: descriptionController?.text,
+                                CREATEDDATE: DateTime.now().toString(),
+                                DATAAREAID: companyCode,
+                                DEVICEID: activatedDevice,
+                                TYPEDESCR: widget.type,
+                                JournalName:
+                                    widget.type == "MJ" ? selectJournal : "",
+                                VRLOCATION: selectLocation);
+                            await _sqlHelper.updateAPPGENERALDATASTNEXTDOCNO(
+                                APPGENERALDATASave['STNEXTDOCNO'] + 1);
+                          }
+
+                          if (widget.type == 'PO') {
+                            await _sqlHelper.addTRANSHEADER(
+                                DOCNO: documentNoController?.text,
+                                AXDOCNO: "",
+                                STORECODE: activatedStore,
+                                TOSTORECODE:
+                                    widget.type == "TO" ? selectStore : "",
+                                TRANSTYPE: widget.type == "ST"
+                                    ? 1
+                                    : widget.type == "PO"
+                                        ? 3
+                                        : widget.type == 'GRN'
+                                            ? 4
+                                            : "",
+                                STATUS: 1,
+                                USERNAME: username,
+                                DESCRIPTION: descriptionController?.text,
+                                CREATEDDATE: DateTime.now().toString(),
+                                DATAAREAID: companyCode,
+                                DEVICEID: activatedDevice,
+                                TYPEDESCR: widget.type,
+                                JournalName:
+                                    widget.type == "MJ" ? selectJournal : "",
+                                VRLOCATION: "");
+                            await _sqlHelper.updateAPPGENERALDATAPONEXTDOCNO(
+                                APPGENERALDATASave['PONEXTDOCNO'] + 1);
+                          }
+
+                          if (widget.type == 'GRN') {
+                            await _sqlHelper.addTRANSHEADER(
+                                DOCNO: documentNoController?.text,
+                                AXDOCNO: selectOrder,
+                                STORECODE: activatedStore,
+                                TOSTORECODE:
+                                    widget.type == "TO" ? selectStore : "",
+                                TRANSTYPE: widget.type == "ST"
+                                    ? 1
+                                    : widget.type == "PO"
+                                        ? 3
+                                        : widget.type == 'GRN'
+                                            ? 4
+                                            : "",
+                                STATUS: 1,
+                                USERNAME: username,
+                                DESCRIPTION: descriptionController?.text,
+                                CREATEDDATE: DateTime.now().toString(),
+                                DATAAREAID: companyCode,
+                                DEVICEID: activatedDevice,
+                                TYPEDESCR: widget.type,
+                                JournalName:
+                                    widget.type == "MJ" ? selectJournal : "",
+                                VRLOCATION: "");
+                            await _sqlHelper.updateAPPGENERALDATAGRNNEXTDOCNO(
+                                APPGENERALDATASave['GRNNEXTDOCNO'] + 1);
+                          }
+
+                          if (widget.type == 'RO') {
+                            await _sqlHelper.addTRANSHEADER(
+                                DOCNO: documentNoController?.text,
+                                AXDOCNO: "",
+                                STORECODE: activatedStore,
+                                TOSTORECODE:
+                                    widget.type == "TO" ? selectStore : "",
+                                TRANSTYPE: widget.type == "ST"
+                                    ? 1
+                                    : widget.type == "PO"
+                                        ? 3
+                                        : widget.type == 'GRN'
+                                            ? 4
+                                            : widget.type == 'RO'
+                                                ? 9
+                                                : "",
+                                STATUS: 1,
+                                USERNAME: username,
+                                DESCRIPTION: descriptionController?.text,
+                                CREATEDDATE: DateTime.now().toString(),
+                                DATAAREAID: companyCode,
+                                DEVICEID: activatedDevice,
+                                TYPEDESCR: widget.type,
+                                JournalName:
+                                    widget.type == "MJ" ? selectJournal : "",
+                                VRLOCATION: "");
+                            await _sqlHelper.updateAPPGENERALDATARONEXTDOCNO(
+                                APPGENERALDATASave['RONEXTDOCNO'] + 1);
+                          }
+
+                          if (widget.type == 'RP') {
+                            await _sqlHelper.addTRANSHEADER(
+                                DOCNO: documentNoController?.text,
+                                AXDOCNO: selectOrder,
+                                STORECODE: activatedStore,
+                                TOSTORECODE:
+                                    widget.type == "TO" ? selectStore : "",
+                                TRANSTYPE: widget.type == "ST"
+                                    ? 1
+                                    : widget.type == "PO"
+                                        ? 3
+                                        : widget.type == 'GRN'
+                                            ? 4
+                                            : widget.type == 'RO'
+                                                ? 9
+                                                : widget.type == 'RP'
+                                                    ? 10
+                                                    : "",
+                                STATUS: 1,
+                                USERNAME: username,
+                                DESCRIPTION: descriptionController?.text,
+                                CREATEDDATE: DateTime.now().toString(),
+                                DATAAREAID: companyCode,
+                                DEVICEID: activatedDevice,
+                                TYPEDESCR: widget.type,
+                                JournalName:
+                                    widget.type == "MJ" ? selectJournal : "",
+                                VRLOCATION: "");
+                            await _sqlHelper.updateAPPGENERALDATARPNEXTDOCNO(
+                                APPGENERALDATASave['RPNEXTDOCNO'] + 1);
+                          }
+
+                          if (widget.type == 'MJ') {
+                            await _sqlHelper.addTRANSHEADER(
+                                DOCNO: documentNoController?.text,
+                                AXDOCNO: "",
+                                STORECODE: activatedStore,
+                                TOSTORECODE:
+                                    widget.type == "TO" ? selectStore : "",
+                                TRANSTYPE: 22,
+                                STATUS: 1,
+                                USERNAME: username,
+                                DESCRIPTION: descriptionController?.text,
+                                CREATEDDATE: DateTime.now().toString(),
+                                DATAAREAID: companyCode,
+                                DEVICEID: activatedDevice,
+                                TYPEDESCR: widget.type,
+                                JournalName:
+                                    widget.type == "MJ" ? selectJournal : "",
+                                VRLOCATION: "");
+                            await _sqlHelper.updateAPPGENERALDATAMJNEXTDOCNO(
+                                APPGENERALDATASave['MJNEXTDOCNO'] + 1);
+                          }
+
+                          if (widget.type == 'TO') {
+                            await _sqlHelper.addTRANSHEADER(
+                                DOCNO: documentNoController?.text,
+                                AXDOCNO: "",
+                                STORECODE: activatedStore,
+                                TOSTORECODE:
+                                    widget.type == "TO" ? selectStore : "",
+                                TRANSTYPE: widget.type == "ST"
+                                    ? 1
+                                    : widget.type == "PO"
+                                        ? 3
+                                        : widget.type == 'GRN'
+                                            ? 4
+                                            : widget.type == 'RO'
+                                                ? 9
+                                                : widget.type == 'RP'
+                                                    ? 10
+                                                    : widget.type == 'TO'
+                                                        ? 11
+                                                        : "",
+                                STATUS: 1,
+                                USERNAME: username,
+                                DESCRIPTION: descriptionController?.text,
+                                CREATEDDATE: DateTime.now().toString(),
+                                DATAAREAID: companyCode,
+                                DEVICEID: activatedDevice,
+                                TYPEDESCR: widget.type,
+                                JournalName:
+                                    widget.type == "MJ" ? selectJournal : "",
+                                VRLOCATION: "");
+                            await _sqlHelper.updateAPPGENERALDATATONEXTDOCNO(
+                                APPGENERALDATASave['TONEXTDOCNO'] + 1);
+                          }
+                          // documentNoController?.clear();
+                          // descriptionController?.clear();
+                          // selectLocation=null;
+                          // selectOrder=null;
+                          // selectStore=null;
+
+                          if (widget.type == 'TO-OUT' ||
+                              widget.type == "TO-IN") {
+                            await _sqlHelper.addTRANSHEADER(
+                                DOCNO: documentNoController?.text,
+                                AXDOCNO: selectOrder,
+                                STORECODE: activatedStore,
+                                TOSTORECODE:
+                                    widget.type == "TO" ? selectStore : "",
+                                TRANSTYPE: widget.type == "ST"
+                                    ? 1
+                                    : widget.type == "PO"
+                                        ? 3
+                                        : widget.type == 'GRN'
+                                            ? 4
+                                            : widget.type == 'RO'
+                                                ? 9
+                                                : widget.type == 'RP'
+                                                    ? 10
+                                                    : widget.type == 'TO'
+                                                        ? 11
+                                                        : widget.type ==
+                                                                "TO-OUT"
+                                                            ? 5
+                                                            : widget.type ==
+                                                                    "TO-IN"
+                                                                ? 6
+                                                                : "",
+                                STATUS: 1,
+                                USERNAME: username,
+                                DESCRIPTION: descriptionController?.text,
+                                CREATEDDATE: DateTime.now().toString(),
+                                DATAAREAID: companyCode,
+                                DEVICEID: activatedDevice,
+                                TYPEDESCR: widget.type,
+                                JournalName:
+                                    widget.type == "MJ" ? selectJournal : "",
+                                VRLOCATION: "");
+                            if (widget.type == "TO-OUT") {
+                              await _sqlHelper
+                                  .updateAPPGENERALDATATOOUTNEXTDOCNO(
+                                      APPGENERALDATASave['TOOUTNEXTDOCNO'] + 1);
+                            } else {
+                              await _sqlHelper
+                                  .updateAPPGENERALDATATOINNEXTDOCNO(
+                                      APPGENERALDATASave['TOINNEXTDOCNO'] + 1);
+                            }
+                          }
+                          transactionData = await _sqlHelper.getTRANSHEADER(
+                              widget.type == 'ST'
+                                  ? "1"
+                                  : widget.type == 'PO'
                                       ? "3"
                                       : widget.type == 'GRN'
-                                      ? "4"
-                                      : widget.type == 'RO'
-                                      ? "9"
-                                      : widget.type == 'RP'
-                                      ? "10"
-                                      : widget.type == 'TO'
-                                      ? "11"
-                                      : widget.type == "TO-OUT"
-                                      ? "5"
-                                      : widget.type == "TO-IN"
-                                      ? "6"
-                                      : "",
-                                  selectOrder);
-                              if (transactionDetails.length > 0) {
-                                isPostTransactions = true;
-                                isCloseTransactions = false;
-                                setState(() {});
-                              }
-                            },
-                            child: Text(
-                              "CLOSE TRANSACTION",
-                              style: TextStyle(
-                                  color: !isCloseTransactions!
-                                      ? APPConstants().disabledRed
-                                      : Colors.white),
-                            )),
-                      )),
+                                          ? "4"
+                                          : widget.type == 'RO'
+                                              ? "9"
+                                              : widget.type == 'RP'
+                                                  ? "10"
+                                                  : widget.type == 'TO'
+                                                      ? "11"
+                                                      : widget.type == "TO-OUT"
+                                                          ? "5"
+                                                          : widget.type ==
+                                                                  "TO-IN"
+                                                              ? "6"
+                                                              : widget.type ==
+                                                                      "MJ"
+                                                                  ? "22"
+                                                                  : "");
+
+                          setState(() {
+                            isActivated = true;
+                            isActivateSave = true;
+                            isActivateNew = true;
+                          });
+                        }
+                        //     widget.type=="TO-OUT" ? "5":
+                        // widget.type=="TO-IN" ? "6":
+                        ,
+                        child: Text(
+                          "SAVE",
+                          style: TextStyle(
+                              color: !isActivateSave! == true
+                                  ? Colors.white
+                                  : APPConstants().colorGreen),
+                        )),
+                  )),
                 ],
               ),
               Row(
                 children: [
                   Expanded(
                       child: IgnorePointer(
-                        ignoring: !isPostTransactions!,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                backgroundColor:  Colors.red
-                              // Color(0xffed648e)
+                    ignoring: !isCloseTransactions!,
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            // backgroundColor:  Color(0xffed648e)
+                            backgroundColor: Colors.red),
+                        onPressed: () async {
+                          await _sqlHelper.updateStatusStockCount(
+                              2,
+                              documentNoController?.text.trim() ?? "",
+                              widget.type == 'ST'
+                                  ? "1"
+                                  : widget.type == 'PO'
+                                      ? "3"
+                                      : widget.type == 'GRN'
+                                          ? "4"
+                                          : widget.type == 'RO'
+                                              ? "9"
+                                              : widget.type == 'RP'
+                                                  ? "10"
+                                                  : widget.type == 'TO'
+                                                      ? "11"
+                                                      : widget.type == "TO-OUT"
+                                                          ? "5"
+                                                          : widget.type ==
+                                                                  "TO-IN"
+                                                              ? "6"
+                                                              : "",
+                              selectOrder);
+                          if (transactionDetails.length > 0) {
+                            isPostTransactions = true;
+                            isCloseTransactions = false;
+                            setState(() {});
+                          }
+                        },
+                        child: Text(
+                          "CLOSE TRANSACTION",
+                          style: TextStyle(
+                              color: !isCloseTransactions!
+                                  ? APPConstants().disabledRed
+                                  : Colors.white),
+                        )),
+                  )),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: IgnorePointer(
+                    ignoring: !isPostTransactions!,
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0)),
+                            backgroundColor: Colors.red
+                            // Color(0xffed648e)
                             ),
-                            onPressed: () async {
+                        onPressed: () async {
+                          if (_connectionStatus == ConnectivityResult.none) {
+                            print("Internet connection false 431");
 
-                              if(_connectionStatus == ConnectivityResult.none){
-                                print("Internet connection false 431");
+                            showDialogGotData("No Internet Connection");
 
-                                showDialogGotData("No Internet Connection");
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //
+                            //   const SnackBar(
+                            //     duration:Duration(seconds: 2) ,
+                            //     backgroundColor: Colors.red,
+                            //       content: Text(
+                            //         'No Internet Connection',
+                            //         textAlign: TextAlign.center,
+                            //       )),
+                            // );
 
+                            // Navigator.pop(context);
 
-                                // ScaffoldMessenger.of(context).showSnackBar(
-                                //
-                                //   const SnackBar(
-                                //     duration:Duration(seconds: 2) ,
-                                //     backgroundColor: Colors.red,
-                                //       content: Text(
-                                //         'No Internet Connection',
-                                //         textAlign: TextAlign.center,
-                                //       )),
-                                // );
+                            return;
+                          }
 
-                                // Navigator.pop(context);
+                          showDialogGotDataPost(
+                              "Do You Want to Post This Transaction ? ");
 
-                                return;
-                              }
-
-                              showDialogGotDataPost(
-                                  "Do You Want to Post This Transaction ? ");
-
-                              print("post transactions");
-                            },
-                            child: Text(
-                              "POST TRANSACTION",
-                              style: TextStyle(
-                                  color: !isPostTransactions!
-                                      ? APPConstants().disabledRed
-                                      : Colors.white),
-                            )),
-                      )),
+                          print("post transactions");
+                        },
+                        child: Text(
+                          "POST TRANSACTION",
+                          style: TextStyle(
+                              color: !isPostTransactions!
+                                  ? APPConstants().disabledRed
+                                  : Colors.white),
+                        )),
+                  )),
                 ],
               ),
               Row(
@@ -2781,10 +2630,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     // set up the button
     Widget yesButton = TextButton(
       style: APPConstants().btnBackgroundYes,
-      child: Text("Yes",
-          style: APPConstants().YesText),
+      child: Text("Yes", style: APPConstants().YesText),
       onPressed: () {
-
         pushTransactionToPost();
 
         setState(() {});
@@ -2796,9 +2643,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     //
     Widget noButton = TextButton(
       style: APPConstants().btnBackgroundNo,
-      child: Text("No"
-          ,
-          style: APPConstants().bodyText),
+      child: Text("No", style: APPConstants().bodyText),
       onPressed: () {
         print("Scanning code");
         setState(() {});
@@ -2825,16 +2670,11 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     );
   }
 
-
-
-
-
   showDialogGotData(String text) {
     // set up the button
     Widget yesButton = TextButton(
       style: APPConstants().btnBackgroundYes,
-      child: Text("Ok",
-          style: APPConstants().YesText),
+      child: Text("Ok", style: APPConstants().YesText),
       onPressed: () {
         // saveSettings();
         setState(() {});
@@ -2868,7 +2708,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       ],
     );
 
-
     // show the dialog
     showDialog(
       barrierDismissible: true,
@@ -2877,7 +2716,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
         return alert;
       },
     );
-
   }
 
   showDialogMessage(context) {
@@ -2902,10 +2740,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
               ),
               TextButton(
                 style: APPConstants().btnBackgroundYes,
-                child: Text(
-                    "Yes",
-                    style: APPConstants().YesText
-                ),
+                child: Text("Yes", style: APPConstants().YesText),
                 onPressed: () async {
                   Navigator.pop(context);
 
@@ -2914,24 +2749,24 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                       widget.type == 'ST'
                           ? "1"
                           : widget.type == 'PO'
-                          ? "3"
-                          : widget.type == 'GRN'
-                          ? "4"
-                          : widget.type == 'RO'
-                          ? "9"
-                          : widget.type == 'RP'
-                          ? "10"
-                          : widget.type == 'TO'
-                          ? "11":
-                      widget.type == 'MJ'
-                          ? "22"
-                          : "");
+                              ? "3"
+                              : widget.type == 'GRN'
+                                  ? "4"
+                                  : widget.type == 'RO'
+                                      ? "9"
+                                      : widget.type == 'RP'
+                                          ? "10"
+                                          : widget.type == 'TO'
+                                              ? "11"
+                                              : widget.type == 'MJ'
+                                                  ? "22"
+                                                  : "");
 
                   setState(() {
                     isActivated = false;
                     // isActivateNew = true;
                     // isActivateSave = false;
-                    selectJournal =null;
+                    selectJournal = null;
                     selectStore = null;
                     selectLocation = null;
                     documentNoController?.clear();
@@ -2953,8 +2788,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
   }
 
   getMovementJournal() async {
-
-
     var tk = 'Bearer ${token.toString()}';
     Map<String, String> headers = {
       "Content-type": "application/json",
@@ -2965,7 +2798,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     };
     // var ur = APIConstants.baseUrl + "pushTransactionTatmeen";
     // var ur = "$getMovementJournals";
-    var ur = "https://hsins28ce7a8bf606d8744bdevaos.axcloud.dynamics.com/api/services/CustomServiceGroup/CustomService/getJournalName";
+    var ur =
+        "https://hsins28ce7a8bf606d8744bdevaos.axcloud.dynamics.com/api/services/CustomServiceGroup/CustomService/getJournalName";
     print(ur);
     var js = json.encode(body);
     var res = await http.post(headers: headers, Uri.parse(ur), body: js);
@@ -2980,8 +2814,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
       setState(() {
         movementJournals = responseJson[0]['InventJourName'];
-        final int item =
-        movementJournals.indexWhere((e) => e['journalNameId'] == selectJournal);
+        final int item = movementJournals
+            .indexWhere((e) => e['journalNameId'] == selectJournal);
         // stores.removeAt(item);
       });
 
@@ -2989,7 +2823,5 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
         print(element);
       });
     }
-
-
   }
 }

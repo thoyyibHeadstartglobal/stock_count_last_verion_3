@@ -2104,6 +2104,24 @@ class SQLHelper {
     }
   }
 
+  getTRANSHEADERRepost(String? transType) async {
+    final db = await SQLHelper.db();
+    try {
+      print("data...trans header");
+      final data = await db.rawQuery(
+          'SELECT * FROM TRANSHEADER where STATUS <4 AND TRANSTYPE="$transType";');
+
+      print(data);
+      if (data != [] || data != null) {
+        return data;
+      } else {
+        return "";
+      }
+    } catch (e) {
+      return "";
+    }
+  }
+
   getLastColumnIdSscc() async {
     final db = await SQLHelper.db();
 

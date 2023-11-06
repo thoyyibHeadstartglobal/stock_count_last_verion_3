@@ -836,12 +836,23 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     if (widget.type == "PO" || widget.type == "RO" || widget.type == "TO"
     || widget.type == "MJ") {
 
-      var enabledCheck= await _sqlHelper.
-      getITEMMASTERBySearchScanBarcode(barcodeController.text);
+      // var enabledCheck= await _sqlHelper.
+      // getITEMMASTERBySearchScanBarcode(barcodeController.text);
 
       barcodeScanData = await _sqlHelper
           .getITEMMASTERBySearchScanBarcode(barcodeController.text);
+
+      if(barcodeScanData.isEmpty){
+
+        showDialogGotData("Item Does Not Exist");
+
+        setState((){
+          barcodeController.text="";
+        });
+        return;
+      }
       setState(() {
+        print(barcodeScanData);
         barcodeController.text = barcodeScanData[0]['ITEMBARCODE'];
         itemIdController.text = barcodeScanData[0]['ItemId'] ?? "";
         descriptionController.text = barcodeScanData[0]['ItemName'] ?? "";
@@ -859,9 +870,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
             barcodeScanData[0]['QTY']?.toString() ?? "";
 
         isBatchEnabled =
-        enabledCheck[0]['BatchEnabled'].toString() == "1" ? true : false;
+        barcodeScanData[0]['BatchEnabled'].toString() == "1" ? true : false;
         BatchedItem =
-        enabledCheck[0]['BatchedItem'].toString() == "1" ? true : false;
+        barcodeScanData[0]['BatchedItem'].toString() == "1" ? true : false;
         // itemIdController.text = barcodeScanData[0]['ITEMiD']??"";
         // descriptionController.text = barcodeScanData[0]['ITEMNAME']??"";
         // uomController.text = barcodeScanData[0]['UOM']??"";
@@ -4110,7 +4121,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                           //
                           // return;
 
-                          if (isBatchEnabled! && !BatchedItem!) {
+                          if (isBatchEnabled! && !BatchedItem!
+                          && widget.type == "ST" ||
+                              widget.type == "GRN") {
                             if (selectedMGFDate == null) {
                               showDialogGotData("Manufacturer Date Required");
                               return;
