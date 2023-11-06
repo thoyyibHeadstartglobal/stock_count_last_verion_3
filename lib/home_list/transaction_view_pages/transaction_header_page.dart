@@ -1045,7 +1045,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                         children: [
                                           Expanded(
                                             child: Text(
-                                              'Journal',
+                                              'Select Journal',
                                               style: TextStyle(
                                                 // fontSize: 14,
                                                 // fontWeight: FontWeight.bold,
@@ -2798,6 +2798,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     };
     // var ur = APIConstants.baseUrl + "pushTransactionTatmeen";
     // var ur = "$getMovementJournals";
+
     var ur =
         "https://hsins28ce7a8bf606d8744bdevaos.axcloud.dynamics.com/api/services/CustomServiceGroup/CustomService/getJournalName";
     print(ur);

@@ -4372,7 +4372,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                       PRODDATE: selectedMGFDate.toString(),
                                       // selectedmgfDateFormatted.toString(),
                                       BatchEnabled: isBatchEnabled,
-                                      BatchedItem: BatchedItem);
+                                      BatchedItem: BatchedItem
+                                  );
 
                                   itemIdController.clear();
                                   barcodeController.clear();
@@ -4469,6 +4470,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                               batchNoController.text.trim() &&
                                           widget.type == "GRN" ||
                                       widget.type == "ST") {
+
                                     if (importedSearch != null &&
                                         importedSearch!) {
                                       print("Line 4627");
@@ -4765,10 +4767,13 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                           if (widget.type == "PO" ||
                               widget.type == "RO" ||
                               widget.type == "TO" ||
-                          widget.type== "MJ") {
+                          widget.type== "MJ")
+                          {
+
                             if (importedSearch != null && importedSearch!) {
                               print("Data from imported Search");
                               print(widget.transDetails);
+
                               var b = {
                                 "HRecId": transactionData[0]['RecId'],
                                 "STATUS": 1,
@@ -4796,7 +4801,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                 'LOCATION':
                                     transactionData[0]['VRLOCATION'].toString()
                               };
+
                               print(b);
+
                               // return;
                               var dt = await _sqlHelper
                                   .getFindItemExistOrnotTRANSDETAILS(

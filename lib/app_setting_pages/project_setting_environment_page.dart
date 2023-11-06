@@ -141,6 +141,8 @@ class _ProjectSettingsEnvironmentPageState
   TextEditingController getDeviceController = new TextEditingController();
   TextEditingController updateDeviceController = new TextEditingController();
 
+  TextEditingController getJournalController = new TextEditingController();
+
 
   @override
   void initState() {
@@ -168,6 +170,7 @@ String? companyCode;
   String? pullStockTakeApi;
   String? pushStockTakeApi;
 
+  String ? getJournal;
   String? getStore;
   String? getDevice;
   String? getDeactivate;
@@ -209,6 +212,7 @@ String? companyCode;
         "pushStockTakeApi");
 
 
+    getJournal =  await prefs!.getString("getJournal") ??"";
 
     getDevice= await prefs!
         .getString("getDevice");
@@ -233,7 +237,7 @@ String? companyCode;
     pullStockTakeApiController.text = pullStockTakeApi ?? " ";
     pushStockAPiController.text = pushStockTakeApi ?? " ";
 
-
+    getJournalController.text = getJournal ??"";
     getDeviceController.text = getDevice ?? "";
     getStoreController.text = getStore ?? " ";
     deactivateDeviceController.text = getDeactivate ?? " ";
@@ -301,6 +305,12 @@ String? companyCode;
       getStoreController.clear();
       setState(() {});
 
+    }
+    if(getJournal == "null" || getJournal == null){
+      getJournalController.clear();
+      setState((){
+
+      });
     }
     if(getDeactivate=="null" || getDeactivate ==null){
       deactivateDeviceController.clear();
@@ -748,6 +758,35 @@ String? companyCode;
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   child: Center(
                     child: TextFormField(
+                      controller: getJournalController,
+                      validator: (value) =>
+                      value!.isEmpty ? 'Required *' : null,
+                      decoration: InputDecoration(
+                          label: Text("Get Movement Journal"),
+                          floatingLabelBehavior:getStoreController.text !=""?
+                          FloatingLabelBehavior.always:
+                          FloatingLabelBehavior.never,
+                          isDense: true,
+                          contentPadding: EdgeInsets.only(
+                              left: 15, right: 15, top: 7, bottom: 7),
+                          hintText: "Get Journal",
+                          hintStyle: TextStyle(
+                              color: Colors.black26
+
+                          ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0))),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  // height: 50,
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  child: Center(
+                    child: TextFormField(
                       controller: deactivateDeviceController,
                       validator: (value) =>
                       value!.isEmpty ? 'Required *' : null,
@@ -849,6 +888,10 @@ String? companyCode;
                                       .setString("getDevice", getDeviceController.text);
                                   await prefs!
                                       .setString("getStore", getStoreController.text);
+
+                                  await prefs!
+                                      .setString("getJournal", getJournalController.text);
+
                                   await prefs!.setString(
                                       "deactivate", deactivateDeviceController.text);
 
@@ -962,7 +1005,10 @@ String? companyCode;
     });
     controller.scannedDataStream.listen((scanData) {
 
-      setState(() {
+      setState(()
+
+      {
+
         result = scanData;
         print("scan result : 953");
 
@@ -988,6 +1034,7 @@ String? companyCode;
         print(lst[13].toString());
 
         print("scan result : 980");
+
         companyCodeController.text= "";
         accessUrlController.text = lst[0].trim().toString();
         tenantIdController.text = lst[1].trim().toString();
