@@ -2014,6 +2014,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               documentNoController?.text =
                                   "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
+                            await   getMovementJournal();
                               setState(() {
                                 isActivated = false;
                                 isActivateNew = true;
@@ -2766,6 +2767,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                     isActivated = false;
                     // isActivateNew = true;
                     // isActivateSave = false;
+                    movementJournals=[];
                     selectJournal = null;
                     selectStore = null;
                     selectLocation = null;
