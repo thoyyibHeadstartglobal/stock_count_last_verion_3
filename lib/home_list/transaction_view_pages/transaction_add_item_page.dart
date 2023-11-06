@@ -1177,8 +1177,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
           colorController.text = widget.transDetails['COLORID'] ?? "";
           styleController.text = widget.transDetails['STYLEID'] ?? "";
           configController.text = widget.transDetails['CONFIGID'] ?? "";
+          print( "Line 1180 ..${barcodeScanData}");
+
           remainedQuantityController.text =
-              barcodeScanData[0]['QTY']?.toString() ?? "";
+              widget.transDetails['QTY']?.toString() ?? "";
           // isBatchEnabled = barcodeScanData[0]['BatchEnabled'] ??false;
         });
         // {id: 8, ITEMBARCODE: 3330430011213, ItemId: 33304300,
