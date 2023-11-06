@@ -208,6 +208,11 @@ class _ImportDataPageState extends State<ImportDataPage> {
   getStoreCode() async {
     transactionTypes.add("Item Master");
     transactionTypes.addAll(widget.transactionTypes);
+
+    print("Transcation Types ");
+    transactionTypes.forEach((element) {
+      print(element);
+    });
     setState(() {});
     APPGENERALDATASave = await _sqlHelper.getLastColumnAPPGENERALDATA();
     // print(APPGENERALDATASave);
@@ -220,7 +225,9 @@ class _ImportDataPageState extends State<ImportDataPage> {
 
   showLoaderDialog(BuildContext context)
   {
-    AlertDialog alert = AlertDialog(
+    AlertDialog alert;
+
+    alert= AlertDialog(
       elevation: 0.0,
       backgroundColor: Colors.white,
       content: Container(
@@ -377,7 +384,9 @@ class _ImportDataPageState extends State<ImportDataPage> {
                     importedList.clear();
                     showDialogStockCount("Pull items from D365");
                     setState(() {});
-                  } else {
+                  }
+                  else
+                  {
 
                     await _sqlHelper
                         .deleteStockCount(transactionNumberController.text.trim());
@@ -454,6 +463,7 @@ class _ImportDataPageState extends State<ImportDataPage> {
 
   var items;
   List<dynamic> importedList = [];
+
   pullData({transType,itemsCount}) async {
 
 

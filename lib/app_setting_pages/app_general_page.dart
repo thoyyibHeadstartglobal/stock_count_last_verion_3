@@ -574,6 +574,7 @@ print(dt['access_token']);
   }
 
   setValues() async {
+
     await _sqlHelper.getLastColumnAPPGENERALDATA();
 
     if (await _sqlHelper.getLastColumnAPPGENERALDATA() == "" ||
@@ -1684,6 +1685,13 @@ print(dt['access_token']);
               ? homeList.add(
                   {"type": "RETURN PICK", "value": getApiResponse[0]['RP']})
               : null;
+
+
+          devices[index]['storeDevice'] == 0 && getApiResponse[0]['MJ'] == true
+              ? homeList.add(
+              {"type": "MOVEMENT JOURNAL", "value": getApiResponse[0]['MJ']})
+              : null;
+
           devices[index]['storeDevice'] == 0 && getApiResponse[0]['TO'] == true
               ? homeList.add(
                   {"type": "TRANSFER ORDER", "value": getApiResponse[0]['TO']})

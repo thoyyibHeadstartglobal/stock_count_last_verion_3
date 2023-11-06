@@ -12,20 +12,18 @@ import '../../helper/local_db.dart';
 import 'package:http/http.dart' as http;
 
 class TranscationLinesPage extends StatefulWidget {
-   TranscationLinesPage({this.type});
+  TranscationLinesPage({this.type});
   final dynamic type;
   @override
   State<TranscationLinesPage> createState() => _TranscationLinesPageState();
 }
 
 class _TranscationLinesPageState extends State<TranscationLinesPage> {
-
   TextEditingController barcodeController = TextEditingController();
-  final SQLHelper _sqlHelper =  SQLHelper();
+  final SQLHelper _sqlHelper = SQLHelper();
 
-  bool isLoading=true;
+  bool isLoading = true;
   ScrollController _scrollController = ScrollController();
-
 
   SharedPreferences? prefs;
 
@@ -48,93 +46,79 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
   String? disabledContinuosScan;
   var token;
 
-
-
-
   @override
   void dispose() {
-
     super.dispose();
   }
 
+  var transType = "";
 
-  var transType="";
-
-  getTransTypes(){
+  getTransTypes() {
     print(widget.type);
-    if(widget.type == "ST"){
-
-      setState((){
-        transType=  "STOCK COUNT";
+    if (widget.type == "ST") {
+      setState(() {
+        transType = "STOCK COUNT";
       });
     }
-    if(widget.type == "PO" ){
-      transType= "PURCHASE ORDER";
-      setState((){
-
-      });
+    if (widget.type == "PO") {
+      transType = "PURCHASE ORDER";
+      setState(() {});
     }
-    if(widget.type == "GRN" ){
-      transType= "GOODS RECEIVE";
-      setState((){
-
-      });
+    if (widget.type == "GRN") {
+      transType = "GOODS RECEIVE";
+      setState(() {});
     }
 
-    if(widget.type ==  "RP" ){
-      transType= "RETURN PICK";
-      setState((){
-
-      });
+    if (widget.type == "RP") {
+      transType = "RETURN PICK";
+      setState(() {});
     }
 
-    if(widget.type == "RO" ){
-      transType= "RETURN ORDER";
-      setState((){
-
-      });
+    if (widget.type == "RO") {
+      transType = "RETURN ORDER";
+      setState(() {});
+    }
+    if (widget.type == "MJ") {
+      transType = "MOVEMENT JOURNAL";
+      setState(() {});
     }
 
-
-
-    if(widget.type   == "TO" ){
-      transType= "TRANSFER ORDER";
-      setState((){
-
-      });
+    if (widget.type == "TO") {
+      transType = "TRANSFER ORDER";
+      setState(() {});
     }
 
-
-    if(widget.type   == "TO-OUT"){
-      transType= "TRANSFER OUT";
-      setState((){
-
-      });
+    if (widget.type == "TO-OUT") {
+      transType = "TRANSFER OUT";
+      setState(() {});
     }
 
-
-    if(widget.type   == "TO-IN"){
-      transType= "TRANSFER IN";
-      setState((){
-
-      });
+    if (widget.type == "TO-IN") {
+      transType = "TRANSFER IN";
+      setState(() {});
     }
   }
 
-
- dynamic transactionData;
-
+  dynamic transactionData;
 
   getTransactionHeaderDetails() async {
-      transactionData= await  _sqlHelper.getTRANSHEADER(widget.type == 'ST' ? "1" : widget.type == 'PO' ? "3" :
-      widget.type == 'RO' ? "9" :
-      widget.type == 'RP' ? "10" :
-      widget.type == 'TO' ? "11" :
-      "");
-      setState((){
-      });
+    transactionData = await _sqlHelper.getTRANSHEADER(widget.type == 'ST'
+        ? "1"
+        : widget.type == 'PO'
+            ? "3"
+            : widget.type == 'RO'
+                ? "9"
+                : widget.type == 'RP'
+                    ? "10"
+                    : widget.type == 'TO'
+                        ? "11"
+                        : widget.type == 'MJ'
+                            ? "22"
+                            : "");
+    setState(() {});
   }
-  bool ? lineDeleted = false;
+
+  bool? lineDeleted = false;
 
   getToken() async {
     getTransTypes();
@@ -153,10 +137,10 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     // disabledCamera = prefs?.getString("disableCamera") == "true" ? true : false;
     await prefs?.getString("enableUOMSelection");
     disabledUOMSelection =
-    prefs?.getString("enableUOMSelection") == "true" ? "true" : "false";
+        prefs?.getString("enableUOMSelection") == "true" ? "true" : "false";
     await prefs?.getString("enableContinuousScan");
     disabledContinuosScan =
-    prefs?.getString("enableContinuousScan") == "true" ? "true" : "false";
+        prefs?.getString("enableContinuousScan") == "true" ? "true" : "false";
     print("disables");
     print(await prefs?.getString("disableCamera"));
     print(await prefs?.getString("enableUOMSelection"));
@@ -244,7 +228,6 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
 
   @override
   void initState() {
-
     getTransTypes();
     gettransactionDetails();
     getToken();
@@ -252,619 +235,681 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     super.initState();
   }
 
-
-
-
   gettransactionDetails() async {
-
-
-    transactionDetails = await _sqlHelper.getTRANSDETAILS(
-        widget.type == 'ST' ? "1" : widget.type == 'PO' ? "3" :
-    widget.type == 'GRN' ? "4" :
-    widget.type == 'RO' ? "9"  :
-    widget.type == 'RP' ? "10"
-        :
-    widget.type == 'TO' ? "11" :
-    widget.type == 'TO-OUT' ? "5":
-    widget.type == 'TO-IN' ? "6":
-    "");
+    transactionDetails = await _sqlHelper.getTRANSDETAILS(widget.type == 'ST'
+        ? "1"
+        : widget.type == 'PO'
+            ? "3"
+            : widget.type == 'GRN'
+                ? "4"
+                : widget.type == 'RO'
+                    ? "9"
+                    : widget.type == 'RP'
+                        ? "10"
+                        : widget.type == 'TO'
+                            ? "11"
+                            : widget.type == 'TO-OUT'
+                                ? "5"
+                                : widget.type == 'TO-IN'
+                                    ? "6"
+                                    : widget.type == 'MJ'
+                                        ? "22"
+                                        : "");
     print(transactionData);
     setState(() {});
 
-
-    if(transactionDetails.length <=15){
+    if (transactionDetails.length <= 15) {
       print("data is less 15");
       transactionDetailsLists.addAll(transactionDetails);
 
-      setState((){
-
-      });
-
-    }
-    else{
-      for(var i=0;i<15;i++){
+      setState(() {});
+    } else {
+      for (var i = 0; i < 15; i++) {
         transactionDetailsLists.add(transactionDetails[i]);
       }
-      setState((){
-
-      });
+      setState(() {});
     }
 
-
     print("data list is : ${transactionDetails.length}");
-    setState((){
-      isLoading=false;
+    setState(() {
+      isLoading = false;
     });
   }
 
-  List<dynamic> transactionDetails= [];
-  List<dynamic> transactionDetailsLists= [];
+  List<dynamic> transactionDetails = [];
+  List<dynamic> transactionDetailsLists = [];
 
-  setValueLoadtransactionDetails(String ? key) async {
+  setValueLoadtransactionDetails(String? key) async {
     print("key");
     print(key);
 
-    transactionDetails = await  _sqlHelper.getTRANSDETAILSDetailsBySearch(key,
-        widget.type == 'ST' ? "1" : widget.type == 'PO' ? "3" :
-        widget.type == 'GRN' ? "4" :
-        widget.type == 'RO' ? "9"  :
-        widget.type == 'RP' ? "10"
-            :
-        widget.type == 'TO' ? "11":
-        widget.type == 'TO-OUT' ? "5":
-        widget.type == 'TO-IN' ? "6":
-             "");
+    transactionDetails = await _sqlHelper.getTRANSDETAILSDetailsBySearch(
+        key,
+        widget.type == 'ST'
+            ? "1"
+            : widget.type == 'PO'
+                ? "3"
+                : widget.type == 'GRN'
+                    ? "4"
+                    : widget.type == 'RO'
+                        ? "9"
+                        : widget.type == 'RP'
+                            ? "10"
+                            : widget.type == 'TO'
+                                ? "11"
+                                : widget.type == 'TO-OUT'
+                                    ? "5"
+                                    : widget.type == 'TO-IN'
+                                        ? "6"
+                                        : widget.type == 'MJ'
+                                            ? "22"
+                                            : "");
 
     print(transactionDetails.length);
-    if(transactionDetails.length <=15){
+    if (transactionDetails.length <= 15) {
       print("data is less 15");
       transactionDetailsLists.addAll(transactionDetails);
 
-      setState((){
-
-      });
-
-    }
-    else{
-      for(var i=0;i<15;i++){
+      setState(() {});
+    } else {
+      for (var i = 0; i < 15; i++) {
         transactionDetailsLists.add(transactionDetails[i]);
       }
     }
     // return;
 
-    setState((){
-      isLoading=false;
+    setState(() {
+      isLoading = false;
     });
-
-
-
-
-
   }
 
-  set(){
-    for(var i=0;i<5;i++){
+  set() {
+    for (var i = 0; i < 5; i++) {
       transactionDetailsLists.add(transactionDetails[i]);
     }
 
-
-
-
-
-    setState((){
-
-    });
-
+    setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: null,
+        // appBar: null,
         body:
-        // MediaQuery.of(context).orientation == Orientation.landscape
-        //     ?
+            // MediaQuery.of(context).orientation == Orientation.landscape
+            //     ?
 
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-
-
-            children: [
-              SizedBox(height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child:
-
-                    transactionData == null || transactionData.length ==0 ?
-                    Container():
-                    Container(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.0),
-                            border: Border.all(color: Colors.red[100]!, width: 3)),
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        child: Center(
-                          child:
-                          Text(
-                            "DOCUMENT NO :${transactionData[0]['DOCNO'] ??""}",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blueGrey),
-                          ),
-                        )),
-                  )
-                ],
-              ),
-              SizedBox(height: 10,),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      height: 35,
-                      child: TextFormField(
-                        onChanged: (value) async {
-                          print(transType);
-                          if(barcodeController.text.trim() == ""){
-                            setState((){
-                              isLoading= true;
-                              transactionDetailsLists =[];
-                              transactionDetails =[];
-                            });
-                            await  gettransactionDetails();
-
-                            setState((){
-                              isLoading= false;
-                            });
-                            return;
-                          }
-                          var result = await _sqlHelper.getTRANSDETAILSDetailsBySearch(barcodeController.text,
-                              widget.type == 'ST' ? "1" : widget.type == 'PO' ? "3" :
-                              widget.type == 'GRN' ? "4" :
-                              widget.type == 'RO' ? "9":
-                              widget.type == 'RP' ? "10":
-
-                              widget.type == 'TO' ? "11" :
-                              widget.type == 'TO-OUT' ? "5":
-                              widget.type == 'TO-IN' ? "6":
-
-                              "");
-
-                          print(result);
-                          if(result.length >0){
-
-                            setState((){
-                              isLoading= true;
-                              transactionDetailsLists =[];
-                              transactionDetails =[];
-                            });
-                            await setValueLoadtransactionDetails(barcodeController.text);
-                            setState((){
-                              isLoading=false;
-                            });
-                            return;
-                            print("search is found");
-                          }
-                          else{
-                            setState((){
-                              isLoading= true;
-                              transactionDetailsLists =[];
-                              transactionDetails =[];
-                            });
-
-                            Future.delayed(const Duration(seconds: 3), () {
-
-
-
-                              setState((){
-                                isLoading= false;
-                              });
-
-                            });
-                            print("search is not found");
-                          }
-                        },
-                        validator: (value) => value!.isEmpty ? 'Required *' : null,
-                        controller: barcodeController,
-                        decoration: InputDecoration(
-                            focusedBorder:APPConstants().focusInputBorder ,
-                            enabledBorder: APPConstants().enableInputBorder,
-                            suffixIcon: IconButton(
-                              onPressed: () async {
-                                print(transType);
-                                print(widget.type);
-                                if(barcodeController.text.trim() == ""){
-
-                                  setState((){
-                                    isLoading= true;
-                                    transactionDetailsLists =[];
-                                    transactionDetails =[];
-                                  });
-                                  await  gettransactionDetails();
-
-                                  setState((){
-                                    isLoading= false;
-                                  });
-                                  return;
-                                }
-                                print( transType  =="PURCHASE ORDER" );
-
-
-                                // return;
-
-                                if(transType  =="PURCHASE ORDER"
-                                    || transType  =="RETURN ORDER"){
-
-                                }
-
-
-                                var result = await _sqlHelper.getTRANSDETAILSDetailsBySearch(
-                                    barcodeController.text,
-                                    widget.type == 'ST' ? "1" : widget.type == 'PO' ? "3" :
-                                    widget.type == 'GRN' ? "4"
-                                        :
-                                    transType  =="RETURN ORDER" ? "9" :
-                                    widget.type == 'RP' ? "10" :
-
-                                    widget.type == 'TO' ? "11":
-                                    widget.type == 'TO-OUT' ? "5":
-                                    widget.type == 'TO-IN' ? "6":
-                                    "");
-
-                                print(result.length);
-                                if(result.length >0){
-
-                                  setState((){
-                                    isLoading= true;
-                                    transactionDetailsLists =[];
-                                    transactionDetails =[];
-                                  });
-                                  await setValueLoadtransactionDetails(barcodeController.text);
-                                  setState((){
-                                    isLoading=false;
-                                  });
-                                  return;
-                                  print("search is found");
-                                }
-                                else{
-                                  setState((){
-                                    isLoading= true;
-                                    transactionDetailsLists =[];
-                                    transactionDetails =[];
-                                  });
-
-                                  Future.delayed(const Duration(seconds: 3), () {
-
-
-
-                                    setState((){
-                                      isLoading= false;
-                                    });
-
-                                  });
-                                  print("search is not found");
-                                }
-                              },
-                              icon: Icon(
-                                Icons.manage_search,
-                                size: 20,
-                              ),
-                            ),
-                            isDense: true,
-                            contentPadding: EdgeInsets.only(
-                                left: 15, right: 15, top: 2, bottom: 2),
-                            hintText: "Bar Code",
-                            helperStyle: TextStyle(
-                              color: Colors.black26
-
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(7.0),
-                              // borderSide: Border()
-                            )),
-                      ),
-                    ),
+            Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Column(children: [
+                  SizedBox(
+                    height: 10,
                   ),
-                ],
-              ),
-              SizedBox(height: 10,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: transactionData == null ||
+                                transactionData.length == 0
+                            ? Container()
+                            : Container(
+                                height: 40,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    border: Border.all(
+                                        color: Colors.red[100]!, width: 3)),
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                child: Center(
+                                  child: Text(
+                                    "DOCUMENT NO :${transactionData[0]['DOCNO'] ?? ""}",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blueGrey),
+                                  ),
+                                )),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          height: 35,
+                          child: TextFormField(
+                            onChanged: (value) async {
+                              print(transType);
+                              if (barcodeController.text.trim() == "") {
+                                setState(() {
+                                  isLoading = true;
+                                  transactionDetailsLists = [];
+                                  transactionDetails = [];
+                                });
+                                await gettransactionDetails();
 
-                  isLoading? Expanded(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height,
-                      child: Center(
-                        child:  Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CupertinoActivityIndicator(
-                              // color: Colors.green,
-                              radius: 50,
-                            )
-                          ],
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                return;
+                              }
+                              var result = await _sqlHelper
+                                  .getTRANSDETAILSDetailsBySearch(
+                                      barcodeController.text,
+                                      widget.type == 'ST'
+                                          ? "1"
+                                          : widget.type == 'PO'
+                                              ? "3"
+                                              : widget.type == 'GRN'
+                                                  ? "4"
+                                                  : widget.type == 'RO'
+                                                      ? "9"
+                                                      : widget.type == 'RP'
+                                                          ? "10"
+                                                          : widget.type == 'TO'
+                                                              ? "11"
+                                                              : widget.type ==
+                                                                      'TO-OUT'
+                                                                  ? "5"
+                                                                  : widget.type ==
+                                                                          'TO-IN'
+                                                                      ? "6"
+                                                                      : widget.type ==
+                                                                              'MJ'
+                                                                          ? "22"
+                                                                          : "");
+
+                              print(result);
+                              if (result.length > 0) {
+                                setState(() {
+                                  isLoading = true;
+                                  transactionDetailsLists = [];
+                                  transactionDetails = [];
+                                });
+                                await setValueLoadtransactionDetails(
+                                    barcodeController.text);
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                return;
+                                print("search is found");
+                              } else {
+                                setState(() {
+                                  isLoading = true;
+                                  transactionDetailsLists = [];
+                                  transactionDetails = [];
+                                });
+
+                                Future.delayed(const Duration(seconds: 3), () {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                });
+                                print("search is not found");
+                              }
+                            },
+                            validator: (value) =>
+                                value!.isEmpty ? 'Required *' : null,
+                            controller: barcodeController,
+                            decoration: InputDecoration(
+                                focusedBorder: APPConstants().focusInputBorder,
+                                enabledBorder: APPConstants().enableInputBorder,
+                                suffixIcon: IconButton(
+                                  onPressed: () async {
+                                    print(transType);
+                                    print(widget.type);
+                                    if (barcodeController.text.trim() == "") {
+                                      setState(() {
+                                        isLoading = true;
+                                        transactionDetailsLists = [];
+                                        transactionDetails = [];
+                                      });
+                                      await gettransactionDetails();
+
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      return;
+                                    }
+                                    print(transType == "PURCHASE ORDER");
+
+                                    // return;
+
+                                    if (transType == "PURCHASE ORDER" ||
+                                        transType == "RETURN ORDER") {}
+
+                                    var result = await _sqlHelper
+                                        .getTRANSDETAILSDetailsBySearch(
+                                            barcodeController.text,
+                                            widget.type == 'ST'
+                                                ? "1"
+                                                : widget.type == 'PO'
+                                                    ? "3"
+                                                    : widget.type == 'GRN'
+                                                        ? "4"
+                                                        : transType ==
+                                                                "RETURN ORDER"
+                                                            ? "9"
+                                                            : widget.type ==
+                                                                    'RP'
+                                                                ? "10"
+                                                                : widget.type ==
+                                                                        'TO'
+                                                                    ? "11"
+                                                                    : widget.type ==
+                                                                            'TO-OUT'
+                                                                        ? "5"
+                                                                        : widget.type ==
+                                                                                'TO-IN'
+                                                                            ? "6"
+                                                                            : widget.type == 'MJ'
+                                                                                ? "22"
+                                                                                : "");
+
+                                    print(result.length);
+                                    if (result.length > 0) {
+                                      setState(() {
+                                        isLoading = true;
+                                        transactionDetailsLists = [];
+                                        transactionDetails = [];
+                                      });
+                                      await setValueLoadtransactionDetails(
+                                          barcodeController.text);
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      return;
+                                      print("search is found");
+                                    } else {
+                                      setState(() {
+                                        isLoading = true;
+                                        transactionDetailsLists = [];
+                                        transactionDetails = [];
+                                      });
+
+                                      Future.delayed(const Duration(seconds: 3),
+                                          () {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                      });
+                                      print("search is not found");
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.manage_search,
+                                    size: 20,
+                                  ),
+                                ),
+                                isDense: true,
+                                contentPadding: EdgeInsets.only(
+                                    left: 15, right: 15, top: 2, bottom: 2),
+                                hintText: "Bar Code",
+                                helperStyle: TextStyle(color: Colors.black26),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(7.0),
+                                  // borderSide: Border()
+                                )),
+                          ),
                         ),
                       ),
-                    ),
-                  ):
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  isLoading
+                      ? Expanded(
+                          child: Container(
+                            height: MediaQuery.of(context).size.height,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  CupertinoActivityIndicator(
+                                    // color: Colors.green,
+                                    radius: 50,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          child: Container(
+                          height: MediaQuery.of(context).size.height,
+                          child: SmartRefresher(
+                            // scrollController: _scrollController,
+                            enablePullDown: transactionDetails.length !=
+                                    transactionDetailsLists.length
+                                ? true
+                                : false,
+                            enablePullUp: true,
+                            header: WaterDropHeader(),
+                            footer: CustomFooter(
+                              builder:
+                                  (BuildContext? context, LoadStatus? mode) {
+                                Widget body;
+                                print("last index 272");
+                                print(mode);
+                                // print(mode?.index == items.length-1);
+                                print(mode == LoadStatus.noMore);
+                                if (transactionDetails.length ==
+                                    transactionDetailsLists.length) {
+                                  print("full loaded");
+                                  body = Container();
+                                } else {}
+                                if (mode == LoadStatus.idle) {
+                                  print(LoadStatus.idle);
+                                  print("ideal condition");
+                                  print(transactionDetails.length ==
+                                      transactionDetailsLists.length);
+                                  print("ideal condition");
+                                  if (transactionDetailsLists.length <=
+                                      transactionDetails.length) {
+                                    body = Container()
+                                        // Text("pull up load")
+                                        ;
+                                  } else {
+                                    body = Container();
+                                  }
+                                } else if (mode == LoadStatus.loading &&
+                                    transactionDetailsLists.length !=
+                                        transactionDetails.length) {
+                                  body = CupertinoActivityIndicator(
+                                    radius: 20,
+                                  );
+                                } else if (mode == LoadStatus.failed) {
+                                  body = Text("Load Failed!Click retry!");
+                                } else if (mode == LoadStatus.canLoading) {
+                                  body = Text("release to load more");
+                                } else {
+                                  body = Container();
+                                  // Text("No more Data");
+                                }
 
-                  Expanded(child: Container(
-                    height: MediaQuery.of(context).size.height ,
-                    child: SmartRefresher(
-                      // scrollController: _scrollController,
-                      enablePullDown:  transactionDetails.length != transactionDetailsLists .length ? true:false,
-                      enablePullUp:  true,
-                      header: WaterDropHeader(),
-                      footer: CustomFooter(
-                        builder: (BuildContext ? context,LoadStatus ? mode){
-                          Widget body ;
-                          print("last index 272");
-                          print(mode);
-                          // print(mode?.index == items.length-1);
-                          print(mode == LoadStatus.noMore);
-                          if( transactionDetails.length == transactionDetailsLists .length){
-                            print("full loaded");
-                            body = Container();
-                          }
-                          else{
-
-                          }
-                          if(mode==LoadStatus.idle){
-                            print(LoadStatus.idle);
-                            print("ideal condition");
-                            print(transactionDetails.length == transactionDetailsLists .length);
-                            print("ideal condition");
-                            if(transactionDetailsLists.length <=transactionDetails.length){
-
-                              body = Container()
-                              // Text("pull up load")
-                                  ;
-                            }
-                            else{
-                              body =
-                                  Container()
-                              ;
-                            }
-
-                          }
-                          else if(mode==LoadStatus.loading && transactionDetailsLists.length !=transactionDetails.length){
-                            body =
-                                CupertinoActivityIndicator(
-                                  radius: 20,
+                                return Container(
+                                  height: 55.0,
+                                  child: Center(child: body),
                                 );
-                          }
-                          else if(mode == LoadStatus.failed){
-                            body = Text("Load Failed!Click retry!");
-                          }
-                          else if(mode == LoadStatus.canLoading){
-                            body = Text("release to load more");
-                          }
-                          else{
-                            body = Container();
-                            // Text("No more Data");
-                          }
+                              },
+                            ),
+                            controller: _refreshController,
+                            onRefresh: _onRefresh,
+                            onLoading: _onLoading,
+                            child: ListView.builder(
+                              itemBuilder: (context, int index) {
+                                return InkWell(
+                                  hoverColor: Colors.red,
+                                  onTap: () {},
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.yellow[50],
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                          border: Border.all(
+                                              color: Colors.black12, width: 1.2)
+                                          // color: Colors.red,
+                                          ),
+                                      margin: EdgeInsets.only(
+                                          right: 10.0,
+                                          bottom: 10.0,
+                                          top: 10.0,
+                                          left: 10.0),
+                                      padding: EdgeInsets.only(
+                                          left: 10.0, bottom: 15, top: 15),
+                                      //   height: 300,
 
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(child: Text("Sl No  :")),
+                                              Expanded(
+                                                  child: Text("${index + 1}"))
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              // {id: 2, ITEMBARCODE: 3330000307227, ItemId: 33300003,
+                                              //   ItemName: 21ST CENT FOLICACID TAB 100S,
+                                              //   DATAAREAID: 1000, WAREHOUSE: ,
+                                              //   CONFIGID: , COLORID: , SIZEID: , STYLEID: ,
+                                              //   INVENTSTATUS: , QTY: 0.0, UNIT: PACK, ItemAmount: 0.0}
+                                              Expanded(
+                                                  child: Text("Item ID :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                                  index]
+                                                              ['ITEMID'] ??
+                                                          "")),
+                                              Expanded(
+                                                  child: IconButton(
+                                                hoverColor: Colors.red,
+                                                onPressed: () async {
+                                                  print(transactionDetailsLists[
+                                                      index]);
+                                                  // print(widget.transactionType);
+                                                  print(transType);
+                                                  // return;
 
-                          return Container(
-                            height: 55.0,
-                            child: Center(child:body),
-                          );
-                        },
-                      ),
-                      controller: _refreshController,
-                      onRefresh: _onRefresh,
-                      onLoading: _onLoading,
-                      child: ListView.builder(
-                        itemBuilder: (context,int index){
-                          return  InkWell(
-                            hoverColor: Colors.red,
-                            onTap: (){
+                                                  showDialogMessage(
+                                                      context,
+                                                      transactionDetailsLists[
+                                                          index]['id'],
+                                                      index);
+                                                  // return;
 
-                            },
-                            child: Container(
-                                decoration: BoxDecoration(
+                                                  // await _sqlHelper.addTRANSDETAILS(
+                                                  //     HRecId :  transactionData[0]['RecId']  ,
+                                                  //     DOCNO :  transactionData[0]['DOCNO'] ,
+                                                  //     ITEMID :transactionDetailsLists[index]['ITEMID'] ,
+                                                  //     ITEMNAME : transactionDetailsLists[index]['ITEMNAME'],
+                                                  //     TRANSTYPE : widget.transactionType == "STOCK COUNT" ? 1 :"" ,
+                                                  //     DEVICEID :activatedDevice ,
+                                                  //     QTY : transactionDetailsLists[index]['QTY'],
+                                                  //     UOM  : transactionDetailsLists[index]['UOM'],
+                                                  //     BARCODE :transactionDetailsLists[index]['BARCODE'],
+                                                  //     CREATEDDATE : DateTime.now().toString() ,
+                                                  //     INVENTSTATUS : transactionDetailsLists[index]['INVENTSTATUS'],
+                                                  //     SIZEID : transactionDetailsLists[index]['SIZEID'],
+                                                  //     COLORID :  transactionDetailsLists[index]['COLORID'],
+                                                  //     CONFIGID :  transactionDetailsLists[index]['CONFIGID'],
+                                                  //     STYLESID :  transactionDetailsLists[index]['STYLESID'],
+                                                  //     STORECODE :  activatedStore,
+                                                  //     LOCATION :  transactionData[0]['VRLOCATION'].toString()
+                                                  // );
+                                                  //
+                                                  // Navigator.push(context, MaterialPageRoute(
+                                                  //     builder: (context)=>TransactionViewPage(
+                                                  //       currentIndex: 1,
+                                                  //       pageType: widget.transactionType,
+                                                  //     )));
+                                                },
+                                                icon: Icon(
+                                                  Icons.delete_forever_outlined,
+                                                  color: Colors.red,
+                                                  size: 45,
+                                                ),
+                                              ))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text("BARCODE  :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                                  index]
+                                                              ['BARCODE'] ??
+                                                          ""))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text("Item Name :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                                  index]
+                                                              ['ITEMNAME'] ??
+                                                          ""))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(child: Text("QTY : ")),
+                                              Expanded(
+                                                  child: Text(
+                                                      "${transactionDetailsLists[index]['QTY'] ?? ""}   ${transactionDetailsLists[index]['UOM'] ?? ""}"))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text("BATCH NO  :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                                  index]
+                                                              ['BATCHNO'] ??
+                                                          ""))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text(
+                                                      "Manufacturer Date :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      // DateTime.parse(
+                                                      transactionDetailsLists[
+                                                                          index]
+                                                                      [
+                                                                      'PRODDATE']
+                                                                  .toString()
+                                                              // )
+                                                              ==
+                                                              "null"
+                                                          ? ""
+                                                          : transactionDetailsLists[
+                                                                      index]
+                                                                  ['PRODDATE']
+                                                              .toString()
+                                                      // .substring(0,10)
+                                                      ))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text("Expiry Date :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                                          index]
+                                                                      [
+                                                                      'EXPDATE']
+                                                                  .toString() ==
+                                                              "null"
+                                                          ? ""
+                                                          : transactionDetailsLists[
+                                                                      index]
+                                                                  ['EXPDATE']
+                                                              .toString()
+                                                      // .substring(0,10)
 
-                                    color: Colors.yellow[50],
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    border: Border.all(
-                                        color: Colors.black12,
-                                        width: 1.2
-                                    )
-                                  // color: Colors.red,
-                                ),
-                                margin: EdgeInsets.only(right:10.0 ,bottom: 10.0,top:10.0 ,left: 10.0),
-                                padding: EdgeInsets.only(left: 10.0,bottom: 15,top: 15),
-                                //   height: 300,
+                                                      ))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child:
+                                                      Text("Batch Enabled :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                                          index]
+                                                                      [
+                                                                      'BatchEnabled']
+                                                                  .toString() ==
+                                                              "1"
+                                                          ? "true"
+                                                          : "false"))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child:
+                                                      Text("Batched Item :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      "${transactionDetailsLists[index]['BatchedItem'].toString() == "1" ? "true" : "false"}"))
+                                            ],
+                                          ),
+                                        ],
+                                      )),
+                                );
+                              },
 
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Expanded(child: Text("Sl No  :")),
-                                        Expanded(child: Text("${index+1}"))
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        // {id: 2, ITEMBARCODE: 3330000307227, ItemId: 33300003,
-                                        //   ItemName: 21ST CENT FOLICACID TAB 100S,
-                                        //   DATAAREAID: 1000, WAREHOUSE: ,
-                                        //   CONFIGID: , COLORID: , SIZEID: , STYLEID: ,
-                                        //   INVENTSTATUS: , QTY: 0.0, UNIT: PACK, ItemAmount: 0.0}
-                                        Expanded(child: Text("Item ID :")),
-                                        Expanded(child: Text(transactionDetailsLists[index]['ITEMID']??"")),
-                                        Expanded(child: IconButton(
-                                          hoverColor: Colors.red,
-                                          onPressed:  () async {
-                                            print(transactionDetailsLists[index]);
-                                            // print(widget.transactionType);
-                                            print(transType);
-                                            // return;
-
-
-                                            showDialogMessage(context, transactionDetailsLists[index]['id'],
-                                            index);
-                                            // return;
-
-                                            // await _sqlHelper.addTRANSDETAILS(
-                                            //     HRecId :  transactionData[0]['RecId']  ,
-                                            //     DOCNO :  transactionData[0]['DOCNO'] ,
-                                            //     ITEMID :transactionDetailsLists[index]['ITEMID'] ,
-                                            //     ITEMNAME : transactionDetailsLists[index]['ITEMNAME'],
-                                            //     TRANSTYPE : widget.transactionType == "STOCK COUNT" ? 1 :"" ,
-                                            //     DEVICEID :activatedDevice ,
-                                            //     QTY : transactionDetailsLists[index]['QTY'],
-                                            //     UOM  : transactionDetailsLists[index]['UOM'],
-                                            //     BARCODE :transactionDetailsLists[index]['BARCODE'],
-                                            //     CREATEDDATE : DateTime.now().toString() ,
-                                            //     INVENTSTATUS : transactionDetailsLists[index]['INVENTSTATUS'],
-                                            //     SIZEID : transactionDetailsLists[index]['SIZEID'],
-                                            //     COLORID :  transactionDetailsLists[index]['COLORID'],
-                                            //     CONFIGID :  transactionDetailsLists[index]['CONFIGID'],
-                                            //     STYLESID :  transactionDetailsLists[index]['STYLESID'],
-                                            //     STORECODE :  activatedStore,
-                                            //     LOCATION :  transactionData[0]['VRLOCATION'].toString()
-                                            // );
-                                            //
-                                            // Navigator.push(context, MaterialPageRoute(
-                                            //     builder: (context)=>TransactionViewPage(
-                                            //       currentIndex: 1,
-                                            //       pageType: widget.transactionType,
-                                            //     )));
-                                          },
-                                          icon: Icon(
-                                            Icons.delete_forever_outlined,color: Colors.red,size: 45,),
-                                        ))
-                                      ],
-                                    ),
-                                    SizedBox(height: 20,),
-                                    Row(
-                                      children: [
-                                        Expanded(child: Text("BARCODE  :")),
-                                        Expanded(child: Text(transactionDetailsLists[index]['BARCODE']??""))
-                                      ],
-                                    ),
-                                    SizedBox(height: 10,),
-                                    Row(
-                                      children: [
-                                        Expanded(child: Text("Item Name :")),
-                                        Expanded(child: Text(
-                                            transactionDetailsLists[index]['ITEMNAME']??""))
-                                      ],
-                                    ),
-                                    SizedBox(height: 10,),
-                                    Row(
-                                      children: [
-                                        Expanded(child: Text("QTY : ")),
-                                        Expanded(child: Text("${transactionDetailsLists[index]['QTY']??""}   ${transactionDetailsLists[index]['UOM']??""}"))
-                                      ],
-                                    ),
-
-                                    SizedBox(height: 20,),
-                                    Row(
-                                      children: [
-                                        Expanded(child: Text("BATCH NO  :")),
-                                        Expanded(child: Text(
-                                            transactionDetailsLists[index]['BATCHNO']??""))
-                                      ],
-                                    ),
-                                    SizedBox(height: 10,),
-                                    Row(
-                                      children: [
-                                        Expanded(child: Text("Manufacturer Date :")),
-                                        Expanded(child: Text(
-                                           // DateTime.parse(
-                                               transactionDetailsLists[index]
-                                           ['PRODDATE'].toString()
-                          // )
-                          =="null" ?"":
-                                            transactionDetailsLists[index]
-                                            ['PRODDATE'].toString()
-                                                // .substring(0,10)
-                                        ))
-
-                                      ],
-                                    ),
-                                    SizedBox(height: 10,),
-                                    Row(
-
-                                      children: [
-                                        Expanded(child: Text("Expiry Date :")),
-                                        Expanded(child: Text(
-                                            transactionDetailsLists[index]
-                                            ['EXPDATE'].toString()=="null" ?"":
-                                            transactionDetailsLists[index]
-                                            ['EXPDATE'].toString()
-                                                // .substring(0,10)
-
-                                           ))
-                                      ],
-                                    ),
-                                    SizedBox(height: 10,),
-                                    Row(
-                                      children: [
-                                        Expanded(child: Text("Batch Enabled :")),
-                                        Expanded(child: Text(
-                                            transactionDetailsLists[index]['BatchEnabled'].toString()
-
-                                            == "1"? "true" :"false"
-                                            ))
-                                      ],
-                                    ),
-
-                                    SizedBox(height: 10,),
-                                    Row(
-
-                                      children: [
-                                        Expanded(child: Text("Batched Item :")),
-                                        Expanded(child: Text("${transactionDetailsLists[index]
-                                        ['BatchedItem'].toString()
-
-                                            == "1"? "true" :"false"
-                                           }"))
-                                      ],
-                                    ),
-
-                                  ],
-                                )),
-                          );
-                        },
-
-
-                        // itemBuilder: (c, i) => Card(child: Center(child: Text(items[i]))),
-                        // itemExtent: 300.0,
-                        itemCount: transactionDetailsLists.length,
-                      ),
-                    ),
-                  ))
-
-         ]
-        )
-
-        )
-    );
-
-
+                              // itemBuilder: (c, i) => Card(child: Center(child: Text(items[i]))),
+                              // itemExtent: 300.0,
+                              itemCount: transactionDetailsLists.length,
+                            ),
+                          ),
+                        ))
+                ])));
   }
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
-  void _onRefresh() async{
+      RefreshController(initialRefresh: false);
+  void _onRefresh() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
 
-
-  showDialogMessage(context,int id,int index) {
+  showDialogMessage(context, int id, int index) {
     // print(onpress);
     // return;
     showDialog<bool>(
@@ -876,22 +921,14 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
             actions: <Widget>[
               TextButton(
                 style: APPConstants().btnBackgroundNo,
-                child: Text(
-
-                  "No",
-                    style: APPConstants().noText
-
-                ),
+                child: Text("No", style: APPConstants().noText),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
               TextButton(
                 style: APPConstants().btnBackgroundYes,
-                child: Text(
-                  "Yes",
-                    style: APPConstants().YesText
-                ),
+                child: Text("Yes", style: APPConstants().YesText),
                 onPressed: () async {
                   Navigator.pop(context);
                   // print(transactionDetailsLists[index]);
@@ -899,25 +936,24 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
                   print(transType);
                   // return;
                   var ind;
-                  setState((){
+                  setState(() {
+                    ind = transactionDetails.indexWhere((element) =>
+                        transactionDetailsLists[index][id.toString()] ==
+                        element[id.toString()]);
+                    print(transactionDetails[ind]);
+                    print(ind);
 
-                  ind= transactionDetails.indexWhere((element) =>
-                  transactionDetailsLists[index][id.toString()] == element[id.toString()]
-                  );
-                  print(transactionDetails[ind]);
-                  print(ind);
-
-                  print(transactionDetails[ind]);
-                  // return;
-                  // transactionDetails.removeWhere((element) =>  transactionDetailsLists[index][id.toString()] == element[id.toString()]);
-                  // transactionDetailsLists.removeAt(index);
-                  // transactionDetails.removeAt(ind);
+                    print(transactionDetails[ind]);
+                    // return;
+                    // transactionDetails.removeWhere((element) =>  transactionDetailsLists[index][id.toString()] == element[id.toString()]);
+                    // transactionDetailsLists.removeAt(index);
+                    // transactionDetails.removeAt(ind);
                   });
 
-                 //
-                 //  transactionDetails.removeWhere((element) => transactionDetailsLists[index] == element);
+                  //
+                  //  transactionDetails.removeWhere((element) => transactionDetailsLists[index] == element);
                   transactionDetails.remove(transactionDetails[ind]);
-                  await  transactionDetailsLists.removeAt(index);
+                  await transactionDetailsLists.removeAt(index);
                   await _sqlHelper.deleteTRANSDETAILS(id);
 
                   await prefs!.setBool("lineDeleted", true);
@@ -935,14 +971,11 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
         });
   }
 
-
-
   showDialogGotData(String text) {
     // set up the button
     Widget yesButton = TextButton(
       style: APPConstants().btnBackgroundYes,
-      child: Text("Ok",
-        style: APPConstants().YesText),
+      child: Text("Ok", style: APPConstants().YesText),
       onPressed: () {
         // saveSettings();
         setState(() {});
@@ -985,10 +1018,8 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     );
   }
 
-
-  List<dynamic> transList=[];
+  List<dynamic> transList = [];
   setvalue() async {
-
     // return;
     List<Map<String, dynamic>> users = [
       {"id": 123, "name": "Bob", "age": 25},
@@ -996,54 +1027,56 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
       {"id": 35, "name": "Joxe", "age": 40},
     ];
 
-    setState((){
-      transList=[];
+    setState(() {
+      transList = [];
 
       transList.addAll(transactionDetailsLists);
     });
-    if (
-    transList.isNotEmpty) {
-      transList.sort((a, b) =>
-          a['LISTID'].compareTo(b['LISTID']));
+    if (transList.isNotEmpty) {
+      transList.sort((a, b) => a['LISTID'].compareTo(b['LISTID']));
       print("line 922 last List Id is");
       print(transList.first['LISTID']);
       print("line 922");
 
-  print("Data is 914");
-  // return;
+      print("Data is 914");
+      // return;
 
-  print(transactionDetailsLists[transactionDetailsLists.length -1]['LISTID'].runtimeType);
+      print(transactionDetailsLists[transactionDetailsLists.length - 1]
+              ['LISTID']
+          .runtimeType);
 
-  print(transactionDetailsLists[transactionDetailsLists.length -1]['LISTID']);
+      print(transactionDetailsLists[transactionDetailsLists.length - 1]
+          ['LISTID']);
 
-  var maxListId;
-  transactionDetailsLists.forEach((element) {
+      var maxListId;
+      transactionDetailsLists.forEach((element) {
+        print(element['LISTID']);
+        print("List elements 942");
+      });
 
-      print(element['LISTID']);
-      print("List elements 942");
-
-
-  });
-
-
-  transactionDetailsLists.addAll(
-        await _sqlHelper
-            .getTRANSDETAILSDetailsBySearchLoad(
-            transList.first['LISTID'].toString(),
-            widget.type == 'ST' ? "1" : widget.type == 'PO' ? "3" :
-            widget.type == 'GRN' ? "4" :
-            widget.type == 'RO' ? "9"  :
-            widget.type == 'RP' ? "10"
-                :
-            widget.type == 'TO' ? "11" :
-            widget.type == 'TO-OUT' ? "5":
-            widget.type == 'TO-IN' ? "6":
-            "",
-            transList.first['AXDOCNO']
-        ));
-
-
-
+      transactionDetailsLists
+          .addAll(await _sqlHelper.getTRANSDETAILSDetailsBySearchLoad(
+              transList.first['LISTID'].toString(),
+              widget.type == 'ST'
+                  ? "1"
+                  : widget.type == 'PO'
+                      ? "3"
+                      : widget.type == 'GRN'
+                          ? "4"
+                          : widget.type == 'RO'
+                              ? "9"
+                              : widget.type == 'RP'
+                                  ? "10"
+                                  : widget.type == 'TO'
+                                      ? "11"
+                                      : widget.type == 'TO-OUT'
+                                          ? "5"
+                                          : widget.type == 'TO-IN'
+                                              ? "6"
+                                              : widget.type == 'MJ'
+                                                  ? "22"
+                                                  : "",
+              transList.first['AXDOCNO']));
     }
     // transactionDetailsLists.addAll(await _sqlHelper.getIMPORTDETAILS(
     // transactionDetailsLists[transactionDetailsLists.length -1]['id'],
@@ -1053,13 +1086,12 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     print(transactionDetailsLists.last['id']);
     print("data list is : ");
     Future.delayed(const Duration(seconds: 2), () {
-    setState(() {
-    isLoading = false;
-    });
+      setState(() {
+        isLoading = false;
+      });
     });
 
     return;
-
 
     // for(var i= transactionDetailsLists.length-1; i < transactionDetails.length -1;i++ ){
     //   var u =0;
@@ -1129,10 +1161,9 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     //
     //   //     }
     // }
-
   }
 
-  void _onLoading() async{
+  void _onLoading() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
@@ -1144,13 +1175,9 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     setvalue();
     // print(_refreshController.position);
 
-
-    if(mounted)
-      setState(() {
-
-      });
+    if (mounted) setState(() {});
     // }
     _refreshController.loadComplete();
   }
-
 }
+

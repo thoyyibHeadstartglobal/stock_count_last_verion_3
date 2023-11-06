@@ -166,6 +166,7 @@ class SQLHelper {
     DEVICEID TEXT,
     TYPEDESCR TEXT,
     VRLOCATION TEXT,
+    JournalName TEXT,
      unique (DOCNO,AXDOCNO,STORECODE,TRANSTYPE,DATAAREAID,DEVICEID)
 
       )
@@ -1619,7 +1620,8 @@ class SQLHelper {
 
   //add transaction headers
   Future<int> addTRANSHEADER(
-      {DOCNO,
+      {
+        DOCNO,
       AXDOCNO,
       STORECODE,
       TOSTORECODE,
@@ -1631,8 +1633,12 @@ class SQLHelper {
       DATAAREAID,
       DEVICEID,
       TYPEDESCR,
-      VRLOCATION}) async {
+        JournalName,
+      VRLOCATION}) async
+  {
+
     final db = await SQLHelper.db();
+
     final data = {
       "DOCNO": DOCNO,
       "AXDOCNO": AXDOCNO,
@@ -1646,13 +1652,16 @@ class SQLHelper {
       "DATAAREAID": DATAAREAID,
       "DEVICEID": DEVICEID,
       "TYPEDESCR": TYPEDESCR,
-      "VRLOCATION": VRLOCATION
+      "VRLOCATION": VRLOCATION,
+      "JournalName":JournalName
+
     };
 
     final id = await db.insert('TRANSHEADER', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
   }
+
 
 
   Future<int> updateAPPGENERALDATAMJNEXTDOCNO(MJNEXTDOCNO) async {

@@ -1106,6 +1106,25 @@ class _LandingHomePageState extends State<LandingHomePage> {
 
                                   }
 
+
+                                  if (homeList[index]['type'] ==
+                                      "MOVEMENT JOURNAL" &&
+                                      homeList[index]['value'] == "1")
+                                  {
+                                    print(homeList[index]['type']);
+                                    print(homeList[index]['value'].runtimeType);
+                                    // return;
+
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                TransactionViewPage(
+                                                  pageType: homeList[index]
+                                                  ['type'],
+                                                )));
+                                  }
+
                                   if (homeList[index]['type'] ==
                                           "TRANSFER ORDER" &&
                                       homeList[index]['value'] == "1") {

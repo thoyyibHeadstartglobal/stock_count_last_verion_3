@@ -40,6 +40,12 @@ class _ViewItemsOldPageState extends State<ViewItemsOldPage> {
  List<dynamic> itemMasters= [];
  List<dynamic> itemMastersLists= [];
 
+
+ @override
+ void didChangeDependencies() {
+   super.didChangeDependencies();
+ }
+
  @override
   void initState() {
    print("loaded 30 datas");
@@ -538,6 +544,12 @@ class _ViewItemsOldPageState extends State<ViewItemsOldPage> {
    }
 
 
+   if(widget.transactionType   == "MJ" ){
+     transType= "MOVEMENT JOURNAL";
+     setState((){
+
+     });
+   }
 
    if(widget.transactionType   == "TO" ){
      transType= "TRANSFER ORDER";
@@ -1078,6 +1090,7 @@ class _ViewItemsOldPageState extends State<ViewItemsOldPage> {
                                       hoverColor: Colors.green,
                                       onPressed:  () async {
                                         // print(itemImportedLists[index].toString());
+                                        print("Line 1093");
                                         print(widget.transactionType);
                                         // print(transType);
                                         // print(widget.isContinousScan);
@@ -1161,6 +1174,11 @@ class _ViewItemsOldPageState extends State<ViewItemsOldPage> {
                                           //     )));
                                         }
                                         else{
+
+
+                                          print("Line mj 1177 : ${widget.transactionType.toString()}");
+
+                                          // return;
                                           Navigator.push(context, MaterialPageRoute(
                                               builder: (context)=>TransactionViewPage(
                                                 isImportedSearch: true,

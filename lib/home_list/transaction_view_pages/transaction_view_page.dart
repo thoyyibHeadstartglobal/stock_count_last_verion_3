@@ -102,6 +102,13 @@ class _TransactionViewPageState extends State<TransactionViewPage>  with SingleT
       });
     }
 
+    if(widget.pageType   == "MOVEMENT JOURNAL"){
+
+      transType= "MJ";
+      setState((){
+
+      });
+    }
 
 
     if(widget.pageType   == "TRANSFER ORDER"){
@@ -110,6 +117,8 @@ class _TransactionViewPageState extends State<TransactionViewPage>  with SingleT
 
     });
     }
+
+
 
 
     if(widget.pageType   == "TRANSFER OUT"){

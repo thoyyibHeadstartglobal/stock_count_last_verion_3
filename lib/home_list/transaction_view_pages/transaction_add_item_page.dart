@@ -33,7 +33,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
   bool? isBatchEnabled = false;
   bool? BatchedItem = false;
 
-  bool? showQuantityExceed ;
+  bool? showQuantityExceed;
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -81,7 +81,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
   TextEditingController styleController = TextEditingController();
   TextEditingController remainedQuantityController = TextEditingController();
 
-   String? selectOUM ;
+  String? selectOUM;
   final _focusNodeBarcode = FocusNode();
 
   final _focusNodeQty = FocusNode();
@@ -368,22 +368,18 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
 
   getBarcodeWithscan() async {
-
-
     print("scanned 374");
     print(transactionData.length);
-    if(transactionData.length <=0 ){
-
-      await  showDialogGotData("No Header ,You should add Transcation Header  "
+    if (transactionData.length <= 0) {
+      await showDialogGotData("No Header ,You should add Transcation Header  "
           "");
 
       setState(() {
         importedSearch = false;
       });
-      await controller ?.resumeCamera();
-      setState((){
-
-         barcodeController.text= "";
+      await controller?.resumeCamera();
+      setState(() {
+        barcodeController.text = "";
       });
       return;
     }
@@ -412,82 +408,75 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
       // var enabledCheck= await _sqlHelper.
       // getITEMMASTERBySearchScanBarcode(barcodeScanData[0]['BARCODE']??"");
- var dts = {
-   "DOCNO": transactionData[0]['DOCNO'],
-   "ITEMID": barcodeScanData[0]['ITEMID'],
-   "ITEMNAME": barcodeScanData[0]['ITEMNAME'],
-   "BARCODE": barcodeScanData[0]['ITEMBARCODE'],
-   'TRANSTYPE': transType == "STOCK COUNT"
-       ? 1
-       : widget.type == "GRN"
-       ? 4
-       : widget.type == "RP"
-       ? 10
-       : widget.type == "TO-OUT"
-       ? 5
-       : widget.type == "TO-IN"
-       ? 6
-       : "",
-   "UOM": barcodeScanData[0]['UOM'] ?? ""
- };
+      var dts = {
+        "DOCNO": transactionData[0]['DOCNO'],
+        "ITEMID": barcodeScanData[0]['ITEMID'],
+        "ITEMNAME": barcodeScanData[0]['ITEMNAME'],
+        "BARCODE": barcodeScanData[0]['ITEMBARCODE'],
+        'TRANSTYPE': transType == "STOCK COUNT"
+            ? 1
+            : widget.type == "GRN"
+                ? 4
+                : widget.type == "RP"
+                    ? 10
+                    : widget.type == "TO-OUT"
+                        ? 5
+                        : widget.type == "TO-IN"
+                            ? 6
+                            : "",
+        "UOM": barcodeScanData[0]['UOM'] ?? ""
+      };
 
- print(dts);
+      print(dts);
 
-
-
-    var  dtTotal =await _sqlHelper.calculateTotal(
-
-
-    DOCNO: transactionData[0]['DOCNO'],
-    ITEMID: barcodeScanData[0]['ITEMID'],
-    ITEMNAME: barcodeScanData[0]['ITEMNAME'],
-    BARCODE: barcodeScanData[0]['BARCODE'],
-    TRANSTYPE:transType == "STOCK COUNT"
-    ? 1
-        : widget.type == "GRN"
-    ? 4
-        : widget.type == "RP"
-    ? 10
-        : widget.type == "TO-OUT"
-    ? 5
-        : widget.type == "TO-IN"
-    ? 6
-        : "",
-    UOM: barcodeScanData[0]['UOM'] ?? ""
-
-    );
-
-   print("Calculated total : ${dtTotal}");
-
-      var dt ;
-     dt = await _sqlHelper.getFindItemExistOrnotTRANSDETAILS(
+      var dtTotal = await _sqlHelper.calculateTotal(
           DOCNO: transactionData[0]['DOCNO'],
           ITEMID: barcodeScanData[0]['ITEMID'],
           ITEMNAME: barcodeScanData[0]['ITEMNAME'],
           BARCODE: barcodeScanData[0]['BARCODE'],
-          TRANSTYPE:transType == "STOCK COUNT"
+          TRANSTYPE: transType == "STOCK COUNT"
               ? 1
               : widget.type == "GRN"
-              ? 4
-              : widget.type == "RP"
-              ? 10
-              : widget.type == "TO-OUT"
-              ? 5
-              : widget.type == "TO-IN"
-              ? 6
-              : "",
-          UOM: barcodeScanData[0]['UOM'] ?? "" );
+                  ? 4
+                  : widget.type == "RP"
+                      ? 10
+                      : widget.type == "TO-OUT"
+                          ? 5
+                          : widget.type == "TO-IN"
+                              ? 6
+                              : "",
+          UOM: barcodeScanData[0]['UOM'] ?? "");
+
+      print("Calculated total : ${dtTotal}");
+
+      var dt;
+      dt = await _sqlHelper.getFindItemExistOrnotTRANSDETAILS(
+          DOCNO: transactionData[0]['DOCNO'],
+          ITEMID: barcodeScanData[0]['ITEMID'],
+          ITEMNAME: barcodeScanData[0]['ITEMNAME'],
+          BARCODE: barcodeScanData[0]['BARCODE'],
+          TRANSTYPE: transType == "STOCK COUNT"
+              ? 1
+              : widget.type == "GRN"
+                  ? 4
+                  : widget.type == "RP"
+                      ? 10
+                      : widget.type == "TO-OUT"
+                          ? 5
+                          : widget.type == "TO-IN"
+                              ? 6
+                              : "",
+          UOM: barcodeScanData[0]['UOM'] ?? "");
       print(enabledCheck);
       print("widget type : 207");
       print(dts);
       print("widget type : 207");
 
-        setState(() {
+      setState(() {
         itemIdController.text = barcodeScanData[0]['ITEMID'] ?? "";
         descriptionController.text = barcodeScanData[0]['ITEMNAME'] ?? "";
         disabledUOMSelection == "true"
             ? selectOUM = barcodeScanData[0]['UOM'] ?? ""
-
             : uomController.text = barcodeScanData[0]['UOM'] ?? "";
         sizeController.text = barcodeScanData[0]['SIZE'] == null
             ? ""
@@ -497,11 +486,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         configController.text =
             barcodeScanData[0]['CONFIGID']?.toString() ?? "";
 
-
-
-
-
-
         // print(barcodeScanData[0]['QTY'] ??"" );
         // print(barcodeScanData[0]['QTY'].runtimeType ??"");
         // print(dt[0]['QTY'].runtimeType ??"");
@@ -510,134 +494,73 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         // print(barcodeScanData[0]['QTY'].runtimeType??"");
         // print(dt[0]['QTY'].runtimeType??"");
 
-      double receivedqty=  double.parse(barcodeScanData[0]['QTY'].toString());
-     double pulledqty = dt.length >0 ?
-     double.parse( dtTotal[0]['Total'].toString()):
-     0.0;
-     double totalqty=
-         receivedqty - pulledqty;
+        double receivedqty = double.parse(barcodeScanData[0]['QTY'].toString());
+        double pulledqty =
+            dt.length > 0 ? double.parse(dtTotal[0]['Total'].toString()) : 0.0;
+        double totalqty = receivedqty - pulledqty;
+
+        print("Old qty : ${dtTotal[0]['Total'].toString()}");
+        print("Total qty : 506 ${totalqty}");
 
 
-
-
-
-
-
-     print("Old qty : ${dtTotal[0]['Total'].toString()}");
-     print("Total qty : 506 ${totalqty}");
-
-        remainedQuantityController.text =
-        (dt.length < 0 ?
-
-        barcodeScanData[0]['QTY']?.toString()
-         :
-
-        totalqty .toString())!;
+        remainedQuantityController.text = (dt.length < 0
+            ? barcodeScanData[0]['QTY']?.toString()
+            : totalqty.toString())!;
         isBatchEnabled =
             enabledCheck[0]['BatchEnabled'].toString() == "1" ? true : false;
         BatchedItem =
             enabledCheck[0]['BatchedItem'].toString() == "1" ? true : false;
       });
 
+      var continousScan = disabledContinuosScan == "true" ? true : false;
 
+      print("Continous scan line 549.. ${continousScan} ...${transType}");
 
+      print("Batch Values : ${isBatchEnabled}"
+          "${BatchedItem}");
 
-
-    var continousScan = disabledContinuosScan == "true"
-          ? true
-          : false;
-
-     print("Continous scan line 549.. ${continousScan} ...${transType}");
-
-     print("Batch Values : ${isBatchEnabled}"
-         "${BatchedItem}");
-
-      if (continousScan &&
-          transType == "STOCK COUNT")
-      {
-
-        var dt = await _sqlHelper
-            .getFindItemExistOrnotTRANSDETAILS(
-           DOCNO: transactionData[0]['DOCNO'],
-            ITEMID:  barcodeScanData[0]['ITEMID'],
-            ITEMNAME:
-            barcodeScanData[0]
-            ['ITEMNAME'],
-            BARCODE:
-            barcodeScanData[0]
-            ['BARCODE'],
-            TRANSTYPE: transType ==
-                "STOCK COUNT"
+      if (continousScan && transType == "STOCK COUNT") {
+        var dt = await _sqlHelper.getFindItemExistOrnotTRANSDETAILS(
+            DOCNO: transactionData[0]['DOCNO'],
+            ITEMID: barcodeScanData[0]['ITEMID'],
+            ITEMNAME: barcodeScanData[0]['ITEMNAME'],
+            BARCODE: barcodeScanData[0]['BARCODE'],
+            TRANSTYPE: transType == "STOCK COUNT"
                 ? 1
-                : widget.type ==
-                "PO"
-                ? 2
-                : "",
-            UOM:
-            barcodeScanData[0]['UOM']);
+                : widget.type == "PO"
+                    ? 2
+                    : "",
+            UOM: barcodeScanData[0]['UOM']);
 
         print("exist check line .. ${dt.length}");
 
-
         if (dt.length > 0) {
+          if (continousScan &&
+              (barcodeScanData[0]['BatchEnabled'].toString() == "1" &&
+                  barcodeScanData[0]['BatchedItem'].toString() == "0") &&
+              (transType == "STOCK COUNT" || widget.type == "ST")) {
+          } else {
+            await _sqlHelper.updateTRANSDETAILSWithQty(
+                dt[0]['id'], int.parse(dt[0]['QTY']) + 1);
 
-          if(continousScan &&
-              (barcodeScanData[0][
-              'BatchEnabled']
-                  .toString() ==
-                  "1" &&
-                  barcodeScanData[0][
-                  'BatchedItem']
-                      .toString() ==
-                      "0")&&
-              (transType ==
-                  "STOCK COUNT" ||
-                  widget.type ==
-                      "ST")
-          )
-          {
-
-
-          }
-          else{
-
-
-
-            await _sqlHelper
-                .updateTRANSDETAILSWithQty(
-                dt[0]['id'],
-                int.parse(
-                    dt[0]['QTY']) +
-                    1);
-
-
-        await    ScaffoldMessenger.of(context)
-                .showSnackBar(
+            await ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                  backgroundColor:
-                  Colors.red,
+                  backgroundColor: Colors.red,
                   content: Text(
                     'Item Adding Successfully',
-                    textAlign:
-                    TextAlign.center,
+                    textAlign: TextAlign.center,
                   )),
             );
 
+            setState(() {
+              barcodeController.text = "";
+              itemIdController.text = "";
+              descriptionController.text = "";
 
-            setState(()
-
-
-            {
-
-              barcodeController.text="";
-              itemIdController.text =  "";
-              descriptionController.text =  "";
-
-              sizeController.text ="";
-              colorController.text =  "";
-              styleController.text =  "";
-              configController.text =
-                   "";
+              sizeController.text = "";
+              colorController.text = "";
+              styleController.text = "";
+              configController.text = "";
 
               // isBatchEnabled = false;
               // BatchedItem = false;
@@ -648,177 +571,102 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
               productionDateController.text = "";
 
               selectedEXPDate = null;
-              uomController.text="";
-              selectedMGFDate= null;
-              selectOUM=null;
+              uomController.text = "";
+              selectedMGFDate = null;
+              selectOUM = null;
 
               remainedQuantityController.text = "";
 
-              qtyController.text =  "";
-
-
-
-
-
+              qtyController.text = "";
             });
 
-            FocusScope.of(context)
-                .requestFocus(_focusNodeBarcode);
+            FocusScope.of(context).requestFocus(_focusNodeBarcode);
           }
-          FocusScope.of(context)
-              .requestFocus(_focusNodeBarcode);
+          FocusScope.of(context).requestFocus(_focusNodeBarcode);
+        } else {
+          print("line 662");
+          print(continousScan &&
+              (barcodeScanData[0]['BatchEnabled'].toString() == "1" &&
+                  barcodeScanData[0]['BatchedItem'].toString() == "0") &&
+              (transType == "STOCK COUNT" || widget.type == "ST"));
 
-        }
-        else {
-              print("line 662");
-              print(continousScan &&
-                  (barcodeScanData[0][
-                  'BatchEnabled']
-                      .toString() ==
-                      "1" &&
-                      barcodeScanData[0][
-                      'BatchedItem']
-                          .toString() ==
-                          "0")&&
-                  (transType ==
-                      "STOCK COUNT" ||
-                      widget.type ==
-                          "ST")
-              );
+          if (continousScan &&
+              (barcodeScanData[0]['BatchEnabled'].toString() == "1" &&
+                  barcodeScanData[0]['BatchedItem'].toString() == "0") &&
+              (transType == "STOCK COUNT" || widget.type == "ST")) {
+            print(continousScan &&
+                    barcodeScanData[0]['BatchEnabled'].toString() == "1" &&
+                    barcodeScanData[0]['BatchedItem'].toString() == "0" &&
+                    transType == "STOCK COUNT" ||
+                widget.type == "ST");
 
-          if(
-          continousScan &&
-              (barcodeScanData[0][
-              'BatchEnabled']
-                  .toString() ==
-                  "1" &&
-              barcodeScanData[0][
-              'BatchedItem']
-                  .toString() ==
-                  "0") &&
-              (transType ==
-                  "STOCK COUNT" ||
-              widget.type ==
-                  "ST")
-          )
-          {
-
-
-            print(
-                continousScan &&
-                    barcodeScanData[0][
-                    'BatchEnabled']
-                        .toString() ==
-                        "1" &&
-                    barcodeScanData[0][
-                    'BatchedItem']
-                        .toString() ==
-                        "0" &&
-                    transType ==
-                        "STOCK COUNT" ||
-                    widget.type ==
-                        "ST"
-            );
-
-            print( barcodeScanData[0][
-            'BatchedItem']
-                .toString() ==
-                "0");
+            print(barcodeScanData[0]['BatchedItem'].toString() == "0");
             print("line 679 : ${!_focusNodeBarcode.hasFocus}"
                 "${!_focusNodeQty.hasFocus}");
 
-            if(!_focusNodeBarcode.hasFocus){
-
-
+            if (!_focusNodeBarcode.hasFocus) {
               // Focus.of(context).unfocus();
 
               // Focus.of(context).notifyListeners();
               Focus.of(context).requestFocus(_focusNodeQty);
             }
-
-
-          }
-          else{
-
-
-
+          } else {
             print("Line 744 ");
 // return;
 
-            await _sqlHelper
-                .addTRANSDETAILS(
-                HRecId: transactionData[0]
-                ['RecId'],
+            await _sqlHelper.addTRANSDETAILS(
+                HRecId: transactionData[0]['RecId'],
                 STATUS: 0,
-                AXDOCNO: transactionData[0]
-                ['AXDOCNO'],
-                DOCNO: transactionData[0]
-                ['DOCNO'],
-                ITEMID:  itemIdController.text,
+                AXDOCNO: transactionData[0]['AXDOCNO'],
+                DOCNO: transactionData[0]['DOCNO'],
+                ITEMID: itemIdController.text,
                 ITEMNAME: descriptionController.text,
-                TRANSTYPE: transType ==
-                    "STOCK COUNT"
+                TRANSTYPE: transType == "STOCK COUNT"
                     ? 1
-                    : widget.type ==
-                    "PO"
-                    ? 2
-                    : "",
-                DEVICEID:
-                activatedDevice,
+                    : widget.type == "PO"
+                        ? 2
+                        : widget.type == "MJ"
+                            ? 22
+                            : "",
+                DEVICEID: activatedDevice,
                 QTY: 1,
                 UOM: disabledUOMSelection == "true"
-                    ?  selectOUM
+                    ? selectOUM
                     : uomController.text,
                 BARCODE: barcodeController.text,
-                CREATEDDATE: DateTime.now()
-                    .toString(),
-                INVENTSTATUS:  barcodeScanData[0]
-                ['INVENTSTATUS'],
-                SIZEID: sizeController.text ,
-                COLORID: colorController.text ,
-                CONFIGID:configController.text ,
+                CREATEDDATE: DateTime.now().toString(),
+                INVENTSTATUS: barcodeScanData[0]['INVENTSTATUS'],
+                SIZEID: sizeController.text,
+                COLORID: colorController.text,
+                CONFIGID: configController.text,
                 STYLESID: styleController.text,
                 STORECODE: activatedStore,
                 LOCATION: transactionData[0]['VRLOCATION'].toString(),
-
-              BatchEnabled: isBatchEnabled,
-              BatchedItem: BatchedItem
-
-            );
+                BatchEnabled: isBatchEnabled,
+                BatchedItem: BatchedItem);
 
             // print("Batch Values : ${isBatchEnabled}"
             //     "${BatchedItem}");
 
-            ScaffoldMessenger.of(context)
-                .showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                  backgroundColor:
-                  Colors.red,
+                  backgroundColor: Colors.red,
                   content: Text(
                     'Item Adding Successfully',
-                    textAlign:
-                    TextAlign.center,
+                    textAlign: TextAlign.center,
                   )),
             );
 
+            setState(() {
+              selectOUM = null;
+              barcodeController.text = "";
+              itemIdController.text = "";
+              descriptionController.text = "";
 
-
-            setState(()
-
-            {
-
-              selectOUM=null;
-              barcodeController.text ="";
-              itemIdController.text =  "";
-              descriptionController.text =  "";
-
-              sizeController.text ="";
-              colorController.text =  "";
-              styleController.text =  "";
-              configController.text =
-              "";
-
-
+              sizeController.text = "";
+              colorController.text = "";
+              styleController.text = "";
+              configController.text = "";
 
               // isBatchEnabled = false;
               // BatchedItem = false;
@@ -828,24 +676,19 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
               expDateController.text = "";
               productionDateController.text = "";
 
-              selectOUM=null;
+              selectOUM = null;
               selectedEXPDate = null;
-              uomController.text="";
-              selectedMGFDate= null;
+              uomController.text = "";
+              selectedMGFDate = null;
 
               remainedQuantityController.text = "";
 
-              qtyController.text =  "";
-
-
-
+              qtyController.text = "";
             });
-            FocusScope.of(context)
-                .requestFocus(_focusNodeBarcode);
+            FocusScope.of(context).requestFocus(_focusNodeBarcode);
           }
 
-              Focus.of(context).requestFocus(_focusNodeBarcode);
-
+          Focus.of(context).requestFocus(_focusNodeBarcode);
 
           return;
         }
@@ -860,37 +703,20 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         //                   .transactionType,
         //             )));
 
-        if (continousScan &&
-            transType ==
-                "STOCK COUNT" ||
-            widget.type ==
-                "ST") {
+        if (continousScan && transType == "STOCK COUNT" ||
+            widget.type == "ST") {
           print("BATCH Check line 718");
 
-          print( barcodeScanData[0]
-          ['BatchEnabled']
-              .runtimeType);
+          print(barcodeScanData[0]['BatchEnabled'].runtimeType);
 
-          print( barcodeScanData[0]
-          ['BatchedItem']);
+          print(barcodeScanData[0]['BatchedItem']);
         }
 
-
         if (continousScan &&
-            barcodeScanData[0][
-            'BatchEnabled']
-                .toString() ==
-                "1" &&
-            barcodeScanData[0][
-            'BatchedItem']
-                .toString() ==
-                "0" &&
-           transType ==
-                "STOCK COUNT" ||
-            widget.type ==
-                "ST") {
-
-
+                barcodeScanData[0]['BatchEnabled'].toString() == "1" &&
+                barcodeScanData[0]['BatchedItem'].toString() == "0" &&
+                transType == "STOCK COUNT" ||
+            widget.type == "ST") {
           // Navigator.push(
           //     context,
           //     MaterialPageRoute(
@@ -905,130 +731,90 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
           //               itemImportedLists[
           //               index],
           //             )));
-        }
-        else
-        {
-
-          if (continousScan &&
-             transType ==
-                  "STOCK COUNT" ||
-              widget.type ==
-                  "ST") {
+        } else {
+          if (continousScan && transType == "STOCK COUNT" ||
+              widget.type == "ST") {
             print("Line 921");
 
-
-
-
-            await _sqlHelper
-                .addTRANSDETAILS(
-                HRecId: transactionData[0]
-                ['RecId'],
+            await _sqlHelper.addTRANSDETAILS(
+                HRecId: transactionData[0]['RecId'],
                 STATUS: 0,
-                AXDOCNO: transactionData[0]
-                ['AXDOCNO'],
-                DOCNO: transactionData[0]
-                ['DOCNO'],
-                ITEMID:  itemIdController.text,
-                ITEMNAME:descriptionController.text,
-                TRANSTYPE: transType ==
-                    "STOCK COUNT"
+                AXDOCNO: transactionData[0]['AXDOCNO'],
+                DOCNO: transactionData[0]['DOCNO'],
+                ITEMID: itemIdController.text,
+                ITEMNAME: descriptionController.text,
+                TRANSTYPE: transType == "STOCK COUNT"
                     ? 1
-                    : widget.type ==
-                    "PO"
-                    ? 2
-                    : "",
-                DEVICEID:
-                activatedDevice,
+                    : widget.type == "PO"
+                        ? 2
+                        : widget.type == "MJ"
+                            ? 22
+                            : "",
+                DEVICEID: activatedDevice,
                 QTY: 1,
-                UOM:disabledUOMSelection == "true"
-            ?  selectOUM
-                : uomController.text,
-                BARCODE:  barcodeController.text.trim(),
-                CREATEDDATE: DateTime.now()
-                    .toString(),
-                INVENTSTATUS:  barcodeScanData[0]
-                ['INVENTSTATUS'],
-                SIZEID: sizeController.text ,
-                COLORID: colorController.text ,
-                CONFIGID:configController.text ,
-                STYLESID: styleController.text ,
+                UOM: disabledUOMSelection == "true"
+                    ? selectOUM
+                    : uomController.text,
+                BARCODE: barcodeController.text.trim(),
+                CREATEDDATE: DateTime.now().toString(),
+                INVENTSTATUS: barcodeScanData[0]['INVENTSTATUS'],
+                SIZEID: sizeController.text,
+                COLORID: colorController.text,
+                CONFIGID: configController.text,
+                STYLESID: styleController.text,
                 STORECODE: activatedStore,
                 LOCATION: transactionData[0]['VRLOCATION'].toString(),
-            BatchEnabled: isBatchEnabled,
-            BatchedItem: BatchedItem);
+                BatchEnabled: isBatchEnabled,
+                BatchedItem: BatchedItem);
 
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Text(
+                    'Item Adding Successfully',
+                    textAlign: TextAlign.center,
+                  )),
+            );
 
+            setState(() {
+              barcodeController.text = "";
+              itemIdController.text = "";
+              descriptionController.text = "";
 
-          ScaffoldMessenger.of(context)
-              .showSnackBar(
-            const SnackBar(
-                backgroundColor:
-                Colors.red,
-                content: Text(
-                  'Item Adding Successfully',
-                  textAlign:
-                  TextAlign.center,
-                )),
-          );
+              sizeController.text = "";
+              colorController.text = "";
+              styleController.text = "";
+              configController.text = "";
 
+              // isBatchEnabled = false;
+              // BatchedItem = false;
 
+              batchNoController.text = "";
 
+              expDateController.text = "";
+              productionDateController.text = "";
 
-          setState(()
+              selectedEXPDate = null;
+              selectedMGFDate = null;
 
-          {
+              remainedQuantityController.text = "";
 
-            barcodeController.text = "";
-            itemIdController.text =  "";
-            descriptionController.text =  "";
+              qtyController.text = "";
 
-            sizeController.text ="";
-            colorController.text =  "";
-            styleController.text =  "";
-            configController.text =
-            "";
-
-            // isBatchEnabled = false;
-            // BatchedItem = false;
-
-            batchNoController.text = "";
-
-            expDateController.text = "";
-            productionDateController.text = "";
-
-            selectedEXPDate = null;
-            selectedMGFDate= null;
-
-            remainedQuantityController.text = "";
-
-            qtyController.text =  "";
-
-            selectOUM=null;
-            uomController.text ="";
-
-
-
-
-          });
-            FocusScope.of(context)
-                .requestFocus(_focusNodeBarcode);
-
-          } else {
-
-          }
+              selectOUM = null;
+              uomController.text = "";
+            });
+            FocusScope.of(context).requestFocus(_focusNodeBarcode);
+          } else {}
         }
       }
-
-
 
       FocusScope.of(context).focusedChild?.unfocus();
       FocusScope.of(context).nextFocus();
       FocusManager.instance.primaryFocus!.requestFocus(_focusNodeBarcode);
       Focus.of(context).requestFocus(_focusNodeBarcode);
 
-
-      if(barcodeController.text.trim() !=""){
-
+      if (barcodeController.text.trim() != "") {
         FocusScope.of(context).requestFocus(_focusNodeQty);
         print(barcodeScanData);
         // FocusManager.instance.primaryFocus?.unfocus();
@@ -1037,8 +823,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         // FocusScope.of(context).focusedChild?.unfocus();
         //
         // Focus.of(context).requestFocus(_focusNodeBarcode);
-      }
-      else{
+      } else {
         FocusScope.of(context).requestFocus(_focusNodeBarcode);
         print(barcodeScanData);
       }
@@ -1048,7 +833,12 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       print("print line 392...${enabledCheck[0]['BatchedItem'].toString()}");
     }
 
-    if (widget.type == "PO" || widget.type == "RO" || widget.type == "TO") {
+    if (widget.type == "PO" || widget.type == "RO" || widget.type == "TO"
+    || widget.type == "MJ") {
+
+      var enabledCheck= await _sqlHelper.
+      getITEMMASTERBySearchScanBarcode(barcodeController.text);
+
       barcodeScanData = await _sqlHelper
           .getITEMMASTERBySearchScanBarcode(barcodeController.text);
       setState(() {
@@ -1061,7 +851,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
             : uomController.text = barcodeScanData[0]['UNIT'] ?? "";
         sizeController.text = barcodeScanData[0]['SIZEID'] == null
             ? ""
-
             : barcodeScanData[0]['SIZEID']?.toString() ?? "";
         colorController.text = barcodeScanData[0]['COLORID'] ?? "";
         styleController.text = barcodeScanData[0]['STYLEID'] ?? "";
@@ -1069,6 +858,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         remainedQuantityController.text =
             barcodeScanData[0]['QTY']?.toString() ?? "";
 
+        isBatchEnabled =
+        enabledCheck[0]['BatchEnabled'].toString() == "1" ? true : false;
+        BatchedItem =
+        enabledCheck[0]['BatchedItem'].toString() == "1" ? true : false;
         // itemIdController.text = barcodeScanData[0]['ITEMiD']??"";
         // descriptionController.text = barcodeScanData[0]['ITEMNAME']??"";
         // uomController.text = barcodeScanData[0]['UOM']??"";
@@ -1079,9 +872,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       });
     }
 
-
-    if(barcodeController.text.trim() !=""){
-
+    if (barcodeController.text.trim() != "") {
       FocusScope.of(context).requestFocus(_focusNodeQty);
       print(barcodeScanData);
       // FocusManager.instance.primaryFocus?.unfocus();
@@ -1090,27 +881,18 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       // FocusScope.of(context).focusedChild?.unfocus();
       //
       // Focus.of(context).requestFocus(_focusNodeBarcode);
-    }
-    else{
+    } else {
       FocusScope.of(context).requestFocus(_focusNodeBarcode);
       print(barcodeScanData);
     }
-
-
-
-
-
   }
 
   Future<void> _onQRViewCreated(QRViewController controller) async {
-
     // controller.scannedDataStream.
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData)  {
-
-
+    controller.scannedDataStream.listen((scanData) {
       itemIdController.clear();
       barcodeController.clear();
       descriptionController.clear();
@@ -1121,7 +903,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       configController.clear();
       qtyController.clear();
       remainedQuantityController.clear();
-
 
       setState(() {
         result = scanData;
@@ -1146,11 +927,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
       controller.pauseCamera();
 
-
       // controller.resumeCamera();
     });
-
-
 
     // await controller.resumeCamera();
     // await controller?.toggleFlash();
@@ -1226,6 +1004,11 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       setState(() {});
     }
 
+    if (widget.type == "MJ") {
+      transType = "MOVEMENT JOURNAL";
+      setState(() {});
+    }
+
     if (widget.type == "TO") {
       transType = "TRANSFER ORDER";
       setState(() {});
@@ -1257,23 +1040,16 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
   DateTime? selectedMGFDate = null;
 
   DateTime nowDate = DateTime.now();
- bool ? lineDeleted = false;
+  bool? lineDeleted = false;
 
   getTransactionDetails() async {
-
-
-
-  widget.isImportedSearch != null
-        && widget.isImportedSearch! ?
-
-      setState(() {
-      importedSearch = true;
-
-      }):
-      setState(() {
-        importedSearch =false;
-
-      });
+    widget.isImportedSearch != null && widget.isImportedSearch!
+        ? setState(() {
+            importedSearch = true;
+          })
+        : setState(() {
+            importedSearch = false;
+          });
 
     await controller?.resumeCamera();
     // await controller?.toggleFlash();
@@ -1296,7 +1072,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       });
     }
 
-
     print("route location ...274");
 
     transactionData = await _sqlHelper.getTRANSHEADER(widget.type == 'ST'
@@ -1315,7 +1090,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                 ? "5"
                                 : widget.type == 'TO-IN'
                                     ? "6"
-                                    : "");
+                                    : widget.type == 'MJ'
+                                        ? "22"
+                                        : "");
 
     APPGENERALDATASave = await _sqlHelper.getLastColumnAPPGENERALDATA();
     setState(() {});
@@ -1334,12 +1111,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     }
     print("data 257 at above");
     print(barcodeScanData.isNotEmpty);
-  print(widget.transDetails);
+    print(widget.transDetails);
     print(importedSearch);
 
-    if(lineDeleted !=null && lineDeleted!)
-    {
-
+    if (lineDeleted != null && lineDeleted!) {
       FocusScope.of(context).requestFocus(_focusNodeBarcode);
 
       itemIdController.clear();
@@ -1359,20 +1134,14 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
       remainedQuantityController.clear();
 
+      setState(() {});
 
-
-      setState((){
-
-      });
-
-   await prefs!.setBool("lineDeleted", false);
+      await prefs!.setBool("lineDeleted", false);
 
       return;
     }
 
-
-
-    if (importedSearch != null && importedSearch! ) {
+    if (importedSearch != null && importedSearch!) {
       print("data 257 at below");
       print(widget.transDetails);
 
@@ -1381,7 +1150,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       // Transfer order -TO
       // Return order - RO
 
-      if (widget.type == "PO" || widget.type == "RO" || widget.type == "TO") {
+      if (widget.type == "PO" ||
+          widget.type == "RO" ||
+          widget.type == "TO" ||
+          widget.type == "MJ") {
         setState(() {
           barcodeController.text = widget.transDetails['ITEMBARCODE'];
           itemIdController.text = widget.transDetails['ItemId'] ?? "";
@@ -1412,23 +1184,24 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         // var   enabledCheck= await _sqlHelper.
         //   getITEMMASTERBySearchScanBarcode(widget.transDetails['BARCODE']);
 
-
         var dts = {
           "DOCNO": transactionData[0]['DOCNO'],
           "ITEMID": widget.transDetails['ITEMID'],
           "ITEMNAME": widget.transDetails['ITEMNAME'],
           "BARCODE": widget.transDetails['BARCODE'],
-          "TRANSTYPE":transType == "STOCK COUNT"
+          "TRANSTYPE": transType == "STOCK COUNT"
               ? 1
               : widget.type == "GRN"
-              ? 4
-              : widget.type == "RP"
-              ? 10
-              : widget.type == "TO-OUT"
-              ? 5
-              : widget.type == "TO-IN"
-              ? 6
-              : "",
+                  ? 4
+                  : widget.type == "RP"
+                      ? 10
+                      : widget.type == "TO-OUT"
+                          ? 5
+                          : widget.type == "TO-IN"
+                              ? 6
+                              : widget.type == "MJ"
+                                  ? 22
+                                  : "",
           "UOM": widget.transDetails['UOM'] ?? ""
         };
 
@@ -1437,91 +1210,78 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         print(widget.transDetails['QTY']);
         print(transactionData[0]['DOCNO']);
 
-
-        var  dtTotal =await _sqlHelper.calculateTotal(
-
-
+        var dtTotal = await _sqlHelper.calculateTotal(
             DOCNO: transactionData[0]['DOCNO'],
             ITEMID: widget.transDetails['ITEMID'],
             ITEMNAME: widget.transDetails['ITEMNAME'],
             BARCODE: widget.transDetails['BARCODE'],
-            TRANSTYPE:transType == "STOCK COUNT"
+            TRANSTYPE: transType == "STOCK COUNT"
                 ? 1
                 : widget.type == "GRN"
-                ? 4
-                : widget.type == "RP"
-                ? 10
-                : widget.type == "TO-OUT"
-                ? 5
-                : widget.type == "TO-IN"
-                ? 6
-                : "",
-            UOM: widget.transDetails['UOM'] ?? ""
-
-
-        );
+                    ? 4
+                    : widget.type == "RP"
+                        ? 10
+                        : widget.type == "TO-OUT"
+                            ? 5
+                            : widget.type == "TO-IN"
+                                ? 6
+                                : widget.type == "MJ"
+                                    ? 22
+                                    : "",
+            UOM: widget.transDetails['UOM'] ?? "");
 
         print("Calculated total : ${dtTotal}");
 
-        var dtq ;
+        var dtq;
         dtq = await _sqlHelper.getFindItemExistOrnotTRANSDETAILS(
-
             DOCNO: transactionData[0]['DOCNO'],
             ITEMID: widget.transDetails['ITEMID'],
             ITEMNAME: widget.transDetails['ITEMNAME'],
             BARCODE: widget.transDetails['BARCODE'],
-            TRANSTYPE:transType == "STOCK COUNT"
+            TRANSTYPE: transType == "STOCK COUNT"
                 ? 1
                 : widget.type == "GRN"
-                ? 4
-                : widget.type == "RP"
-                ? 10
-                : widget.type == "TO-OUT"
-                ? 5
-                : widget.type == "TO-IN"
-                ? 6
-                : "",
-            UOM: widget.transDetails['UOM'] ?? "" );
-
+                    ? 4
+                    : widget.type == "RP"
+                        ? 10
+                        : widget.type == "TO-OUT"
+                            ? 5
+                            : widget.type == "TO-IN"
+                                ? 6
+                                : widget.type == "MJ"
+                                    ? 22
+                                    : "",
+            UOM: widget.transDetails['UOM'] ?? "");
 
         var enabledCheck =
             await _sqlHelper.getImportedDetailsBySearchScanBarcode(
                 widget.transDetails['BARCODE'],
                 widget.transDetails['AXDOCNO'].toString());
 
-
         // print();
         print("widget type : 840");
         print(dtq);
         print(widget.type);
         setState(() {
-
-
-          double receivedqty=  double.parse(
-              widget.transDetails['QTY'].toString());
-          double pulledqty = dtq.length >0 ?
-          double.parse( dtTotal[0]['Total'].toString()):
-          0.0;
-          double totalqty=
-              receivedqty - pulledqty;
-
+          double receivedqty =
+              double.parse(widget.transDetails['QTY'].toString());
+          double pulledqty = dtq.length > 0
+              ? double.parse(dtTotal[0]['Total'].toString())
+              : 0.0;
+          double totalqty = receivedqty - pulledqty;
 
           print(receivedqty);
           print(pulledqty);
           print("Total qty : ${totalqty.toString()}");
           print(dtq.length);
 
-
-          remainedQuantityController.text =
-          (dtq.length < 0 ?
-
-          widget.transDetails['QTY']?.toString()
-              :
-          totalqty.toString())!;
+          remainedQuantityController.text = (dtq.length < 0
+              ? widget.transDetails['QTY']?.toString()
+              : totalqty.toString())!;
 
           barcodeController.text = widget.transDetails['BARCODE'];
           itemIdController.text = widget.transDetails['ITEMID'] ?? "";
-          descriptionController.text = widget.transDetails['ITEMNAME']??"";
+          descriptionController.text = widget.transDetails['ITEMNAME'] ?? "";
           // uomController.text= widget.transDetails['UOM'];
           disabledUOMSelection == "true"
               ? selectOUM = widget.transDetails['UOM'] ?? ""
@@ -1530,7 +1290,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
           colorController.text = widget.transDetails['COLORID'] ?? "";
           styleController.text = widget.transDetails['STYLESID'] ?? "";
           configController.text = widget.transDetails['CONFIGID'] ?? "";
-
 
           isBatchEnabled =
               enabledCheck[0]['BatchEnabled'].toString() == "1" ? true : false;
@@ -1546,8 +1305,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
           // UOM: PCS, QTY: 0.0,
           // DEVICEID: Device2, CONFIGID: , SIZEID: ,
           // COLORID: , STYLESID: , INVENTSTATUS: Available}
-
-
         });
 
         print(enabledCheck[0]);
@@ -1555,19 +1312,14 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         print("print line 392...${enabledCheck[0]['BatchedItem'].toString()}");
       }
 
-
-
-
       FocusScope.of(context).requestFocus(_focusNodeQty);
     }
 
-
-  if(barcodeController.text.trim() ==""){
-    FocusScope.of(context).nextFocus();
-    FocusManager.instance.primaryFocus!.requestFocus(_focusNodeBarcode);
-    Focus.of(context).requestFocus(_focusNodeBarcode);
-  }
-
+    if (barcodeController.text.trim() == "") {
+      FocusScope.of(context).nextFocus();
+      FocusManager.instance.primaryFocus!.requestFocus(_focusNodeBarcode);
+      Focus.of(context).requestFocus(_focusNodeBarcode);
+    }
   }
 
   getToken() async {
@@ -1599,18 +1351,15 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         await prefs?.getString("enableContinuousScan") == "true"
             ? "true"
             : "false";
-    showDimension = await prefs?.getBool("showDimensions")
-        ==null
-        ||
-        await prefs?.getBool("showDimensions")
-            == false ?false:
-    true;
+    showDimension = await prefs?.getBool("showDimensions") == null ||
+            await prefs?.getBool("showDimensions") == false
+        ? false
+        : true;
 
-   showQuantityExceed =
-   await  prefs?.getBool("showQuantityExceed")==null
-       ||
-   await  prefs?.getBool("showQuantityExceed")== false ?false:
-   true;
+    showQuantityExceed = await prefs?.getBool("showQuantityExceed") == null ||
+            await prefs?.getBool("showQuantityExceed") == false
+        ? false
+        : true;
     setState(() {});
     print("uom data available 398");
     if (disabledUOMSelection == "true") {
@@ -1644,7 +1393,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     getDeactivate = await prefs!.getString("deactivate");
     updateDevice = await prefs!.getString("updateDevice");
 
-    lineDeleted = await prefs!.getBool("lineDeleted")?? false;
+    lineDeleted = await prefs!.getBool("lineDeleted") ?? false;
     print("...169");
     print(updateDevice);
 
@@ -1664,7 +1413,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     //         "client_secret=Qxr7Q~TjBjm0fTKjZzniZyO_llYWrVOrdIYAA"
     //         "&resource=https://hsins28ce7a8bf606d8744bdevaos.axcloud.dynamics.com&"
     //         "grant_type=client_credentials";
-
 
     var url = "${accessUrl.toString()}/oauth2/token" +
         "?"
@@ -1711,7 +1459,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     print(await _sqlHelper.getUOMMessures());
     uomList.addAll(await _sqlHelper.getUOMMessures());
 
-
     setState(() {});
   }
 
@@ -1723,7 +1470,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     getToken();
 
     _focusNodeBarcode.addListener(() async {
-
       // if(barcodeController.text.trim() != ""){
       //   // Focus.of(context).unfocus();
       //   Focus.of(context).requestFocus(_focusNodeBarcode);
@@ -1748,7 +1494,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         print("Has focus situation : ${_focusNodeBarcode.hasFocus}");
         print("has boolean : ${isFocus.toString()}");
       } else {
-
         print("Has focus: ${_focusNodeQty.hasFocus}");
         print("Has focus situation : ${_focusNodeBarcode.hasFocus}");
         print("has boolean : ${isFocus.toString()}");
@@ -1775,8 +1520,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     _focusNodeQty.addListener(() {
       //
 
-
-
       // if(barcodeController.text.trim() != ""){
       //   // Focus.of(context).unfocus();
       //   Focus.of(context).requestFocus(_focusNodeBarcode);
@@ -1793,7 +1536,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       //
       //   });
       // }
-
 
       if (!_focusNodeQty.hasFocus) {
         // FocusScope.of(context).requestFocus(_focusNodeBarcode);
@@ -1817,7 +1559,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
   }
 
   showDialogGotData(String text) {
-
     // set up the button
     Widget yesButton = TextButton(
       style: APPConstants().btnBackgroundYes,
@@ -1875,7 +1616,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     print(double.parse(qtyController.text) >
         double.parse(remainedQuantityController.text));
 
-
     Widget okButton = TextButton(
       style: APPConstants().btnBackgroundYes,
       child: Text(
@@ -1890,14 +1630,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     );
 
     AlertDialog alert = AlertDialog(
-          title: Text("DynamicsConnect"),
-          content: Text(
-            "Quantity Exceed"
-
-          ),
-
-          actions: [okButton],
-        );
+      title: Text("DynamicsConnect"),
+      content: Text("Quantity Exceed"),
+      actions: [okButton],
+    );
 
     //
     //
@@ -2248,17 +1984,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     //   actions: [noButton, yesButton],
     // );
 
-
     // ----commented lines -----// old qunaity exceed
     //
     //
     //
-
-
-
-
-
-
 
     // show the dialog
     showDialog(
@@ -2274,9 +2003,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
   Widget build(BuildContext context) {
     print("995...");
 
-    print( isBatchEnabled);
+    print(isBatchEnabled);
     print(BatchedItem!);
-
 
     print("998...");
     return Scaffold(
@@ -2339,11 +2067,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                       child: Text(
                         "DOCUMENT NO :${transactionData[0]['DOCNO'] ?? ""}",
                         textAlign:
-                        transactionData[0]['DOCNO'].toString().length > 25 ?
-                        TextAlign.left :
-                        TextAlign.center,
+                            transactionData[0]['DOCNO'].toString().length > 25
+                                ? TextAlign.left
+                                : TextAlign.center,
                         overflow: TextOverflow.visible,
-
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -2359,12 +2086,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
           children: [
             Expanded(
               child: Container(
-                margin:  EdgeInsets.symmetric(horizontal: 10),
+                margin: EdgeInsets.symmetric(horizontal: 10),
                 height: 35,
                 child: TextFormField(
                   onTap: () async {
-
-
                     itemIdController.clear();
                     barcodeController.clear();
                     descriptionController.clear();
@@ -2379,15 +2104,13 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                     batchNoController.clear();
                     productionDateController.clear();
 
-                    selectOUM=null;
+                    selectOUM = null;
 
                     selectedEXPDate = null;
                     selectedMGFDate = null;
-                    setState((){
+                    setState(() {});
 
-                    });
-
-                    await  controller?.resumeCamera();
+                    await controller?.resumeCamera();
 
                     setState(() {});
 
@@ -2443,6 +2166,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                           print("SERCH BTN...896");
                           print(widget.type);
                           print(transactionData);
+
                           transactionData = await _sqlHelper.getTRANSHEADER(
                               widget.type == 'ST'
                                   ? "1"
@@ -2461,7 +2185,11 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                           : widget.type ==
                                                                   'TO-IN'
                                                               ? "6"
-                                                              : "");
+                                                              : widget.type ==
+                                                                      "MJ"
+                                                                  ? "22"
+                                                                  : "");
+
                           print(transactionData);
                           // return;
                           if (transactionData[0]['STATUS'] > 1) {
@@ -2512,7 +2240,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                           if (widget.type == "PO" ||
                               widget.type == "RO" ||
-                              widget.type == "TO") {
+                              widget.type == "TO" ||
+                              widget.type == "MJ") {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -2555,7 +2284,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                         )));
                           }
 
-                         await controller?.resumeCamera();
+                          await controller?.resumeCamera();
                         },
                         icon: Icon(
                           Icons.manage_search,
@@ -2597,39 +2326,28 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                 // child:
 
                 GestureDetector(
-
-                  onLongPress: ()async{
+                  onLongPress: () async {
                     // await controller?.pauseCamera();
                   },
+                  onDoubleTap: () async {
+                    // if(disabledContinuosScan != null
+                    //     && disabledContinuosScan ==false){
 
+                    // await controller?.pauseCamera();
 
-                 onDoubleTap:() async {
-
-                   // if(disabledContinuosScan != null
-                   //     && disabledContinuosScan ==false){
-
-                     // await controller?.pauseCamera();
-
-                   // }
-                   // else{
-                   //
-                   // await controller?.resumeCamera();
-                   // await controller?.toggleFlash();
-                   // }
-
-                 },
-
+                    // }
+                    // else{
+                    //
+                    // await controller?.resumeCamera();
+                    // await controller?.toggleFlash();
+                    // }
+                  },
                   onTap: () async {
+                    await controller?.resumeCamera();
+                    // await controller?.toggleFlash();
+                    await controller?.pauseCamera();
 
-
-                      await controller?.resumeCamera();
-                      // await controller?.toggleFlash();
-                      await controller?.pauseCamera();
-
-                      // await controller?.toggleFlash();
-
-
-
+                    // await controller?.toggleFlash();
                   },
                   child: Container(
                       height: 150,
@@ -3468,8 +3186,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                             widget.type == "RP" ||
                             widget.type == "TO-OUT" ||
                             widget.type == "TO-IN") {
-                          if (importedSearch != null &&
-                              importedSearch!) {
+                          if (importedSearch != null && importedSearch!) {
                             print("Data from imported Search");
                             print(widget.transDetails);
                             print(transType);
@@ -3490,7 +3207,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                     ? 5
                                                     : widget.type == "TO-IN"
                                                         ? 6
-                                                        : "",
+                                                        : widget.type == "MJ"
+                                                            ? 22
+                                                            : "",
                                     UOM: widget.transDetails['UOM']);
 
                             dt.forEach(print);
@@ -3498,7 +3217,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                             print(dt.length);
 
                             if (dt.length > 0) {
-
                               if (
                                   // double.parse(remainedQuantityController.text) != 0.0
                                   //     &&
@@ -3523,13 +3241,15 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                             batchNoController.text.trim() &&
                                         widget.type == "GRN" ||
                                     widget.type == "ST") {
+                                  var enabledCheck = await _sqlHelper
+                                      .getImportedDetailsBySearchScanBarcode(
+                                          barcodeController.text,
+                                          transactionData[0]['AXDOCNO']
+                                              .toString());
 
-                                  var enabledCheck = await _sqlHelper.getImportedDetailsBySearchScanBarcode(
-                                      barcodeController.text, transactionData[0]['AXDOCNO'].toString());
+                                  print("Line 3450");
 
-                                    print("Line 3450");
-
-                                    // return;
+                                  // return;
 
                                   await _sqlHelper.addTRANSDETAILS(
                                       HRecId: transactionData[0]['RecId'],
@@ -3544,20 +3264,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                               ? 4
                                               : widget.type == "RP"
                                                   ? 10
-                                                  : "",
+                                                  : widget.type == "MJ"
+                                                      ? 22
+                                                      : "",
                                       DEVICEID: activatedDevice,
                                       QTY: int.parse(qtyController.text),
-                                      UOM:disabledUOMSelection == "true"
-                                          ?  selectOUM
-                                          : uomController.text ,
-                                      BARCODE: barcodeController.text ,
+                                      UOM: disabledUOMSelection == "true"
+                                          ? selectOUM
+                                          : uomController.text,
+                                      BARCODE: barcodeController.text,
                                       CREATEDDATE: DateTime.now().toString(),
                                       INVENTSTATUS:
                                           widget.transDetails['INVENTSTATUS'],
-                                      SIZEID: sizeController.text ,
-                                      COLORID: colorController.text ,
-                                      CONFIGID:configController.text ,
-                                      STYLESID: styleController.text ,
+                                      SIZEID: sizeController.text,
+                                      COLORID: colorController.text,
+                                      CONFIGID: configController.text,
+                                      STYLESID: styleController.text,
                                       STORECODE: activatedStore,
                                       LOCATION: transactionData[0]['VRLOCATION']
                                           .toString(),
@@ -3567,8 +3289,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                       PRODDATE: selectedMGFDate.toString(),
                                       // selectedmgfDateFormatted.toString(),
                                       BatchEnabled: isBatchEnabled,
-                                      BatchedItem: BatchedItem
-                                  );
+                                      BatchedItem: BatchedItem);
                                 } else {
                                   await _sqlHelper.updateTRANSDETAILSWithQty(
                                       dt[0]['id'],
@@ -3613,7 +3334,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                 showDialogCheckQuantity(
                                     "QTY Exceeded the limit. DO you want to proceed ?");
                               } else {
-
                                 print("Line 3531");
 
                                 // return;
@@ -3635,20 +3355,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                     ? 5
                                                     : widget.type == "TO-IN"
                                                         ? 6
-                                                        : "",
+                                                        : widget.type == "MJ"
+                                                            ? 22
+                                                            : "",
                                     DEVICEID: activatedDevice,
                                     QTY: int.parse(qtyController.text),
                                     UOM: disabledUOMSelection == "true"
-                                        ?  selectOUM
-                                        : uomController.text  ,
-                                    BARCODE: barcodeController.text.trim() ,
+                                        ? selectOUM
+                                        : uomController.text,
+                                    BARCODE: barcodeController.text.trim(),
                                     CREATEDDATE: DateTime.now().toString(),
                                     INVENTSTATUS:
                                         widget.transDetails['INVENTSTATUS'],
-                                    SIZEID: sizeController.text ,
-                                    COLORID: colorController.text ,
-                                    CONFIGID: configController.text ,
-                                    STYLESID: styleController.text ,
+                                    SIZEID: sizeController.text,
+                                    COLORID: colorController.text,
+                                    CONFIGID: configController.text,
+                                    STYLESID: styleController.text,
                                     STORECODE: activatedStore,
                                     LOCATION: transactionData[0]['VRLOCATION']
                                         .toString(),
@@ -3711,7 +3433,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                     ? 5
                                                     : widget.type == "TO-IN"
                                                         ? 6
-                                                        : "",
+                                                        : widget.type == "MJ"
+                                                            ? 22
+                                                            : "",
                                     UOM: disabledUOMSelection == "true"
                                         ? selectOUM
                                         : uomController.text);
@@ -3719,13 +3443,13 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                             print("Line 2592");
                             dt.forEach(print);
                             print(dt.length);
-                            print((double.parse(qtyController.text) ) >
+                            print((double.parse(qtyController.text)) >
                                 double.parse(remainedQuantityController.text));
                             if (dt.length > 0) {
                               if (
                                   // double.parse(remainedQuantityController.text) != 0.0
                                   //     &&
-                                  double.parse(qtyController.text)>
+                                  double.parse(qtyController.text) >
                                               double.parse(
                                                   remainedQuantityController
                                                       .text) &&
@@ -3749,8 +3473,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                             batchNoController.text.trim() &&
                                         widget.type == "GRN" ||
                                     widget.type == "ST") {
-
-
                                   print("Line 3663");
 
                                   // return;
@@ -3768,20 +3490,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                               ? 4
                                               : widget.type == "RP"
                                                   ? 10
-                                                  : "",
+                                                  : widget.type == "MJ"
+                                                      ? 22
+                                                      : "",
                                       DEVICEID: activatedDevice,
                                       QTY: int.parse(qtyController.text),
                                       UOM: disabledUOMSelection == "true"
-                                          ?  selectOUM
-                                          : uomController.text ,
-                                      BARCODE: barcodeController.text ,
+                                          ? selectOUM
+                                          : uomController.text,
+                                      BARCODE: barcodeController.text,
                                       CREATEDDATE: DateTime.now().toString(),
                                       INVENTSTATUS:
                                           widget.transDetails['INVENTSTATUS'],
-                                      SIZEID: sizeController.text ,
-                                      COLORID:colorController.text ,
-                                      CONFIGID: configController.text ,
-                                      STYLESID:styleController.text ,
+                                      SIZEID: sizeController.text,
+                                      COLORID: colorController.text,
+                                      CONFIGID: configController.text,
+                                      STYLESID: styleController.text,
                                       STORECODE: activatedStore,
                                       LOCATION: transactionData[0]['VRLOCATION']
                                           .toString(),
@@ -3856,7 +3580,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                     ? 5
                                                     : widget.type == "TO-IN"
                                                         ? 6
-                                                        : "",
+                                                        : widget.type == "MJ"
+                                                            ? 22
+                                                            : "",
                                     DEVICEID: activatedDevice,
                                     QTY: int.parse(qtyController.text),
                                     UOM: disabledUOMSelection == "true"
@@ -3866,10 +3592,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                     CREATEDDATE: DateTime.now().toString(),
                                     INVENTSTATUS: barcodeScanData[0]
                                         ['INVENTSTATUS'],
-                                    SIZEID: sizeController.text ,
-                                    COLORID:colorController.text ,
-                                    CONFIGID: configController.text ,
-                                    STYLESID:styleController.text ,
+                                    SIZEID: sizeController.text,
+                                    COLORID: colorController.text,
+                                    CONFIGID: configController.text,
+                                    STYLESID: styleController.text,
                                     STORECODE: activatedStore,
                                     LOCATION: transactionData[0]['VRLOCATION']
                                         .toString(),
@@ -3904,7 +3630,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                         if (widget.type == "PO" ||
                             widget.type == "RO" ||
-                            widget.type == "TO") {
+                            widget.type == "TO" ||
+                            widget.type == "MJ") {
                           if (importedSearch != null && importedSearch!) {
                             print("Data from imported Search");
                             print(widget.transDetails);
@@ -3951,7 +3678,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                 ? 9
                                                 : transType == "TRANSFER ORDER"
                                                     ? 11
-                                                    : "",
+                                                    : widget.type == "MJ"
+                                                        ? 22
+                                                        : "",
                                     UOM: widget.transDetails['UNIT']);
 
                             print("Line 2762");
@@ -3965,7 +3694,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                           batchNoController.text.trim() &&
                                       widget.type == "GRN" ||
                                   widget.type == "ST") {
-
                                 print("Line 3870");
 
                                 // return;
@@ -3983,20 +3711,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                             ? 4
                                             : widget.type == "RP"
                                                 ? 10
-                                                : "",
+                                                : widget.type == "MJ"
+                                                    ? 22
+                                                    : "",
                                     DEVICEID: activatedDevice,
                                     QTY: int.parse(qtyController.text),
                                     UOM: disabledUOMSelection == "true"
-                                        ?  selectOUM
-                                        : uomController.text ,
-                                    BARCODE: barcodeController.text ,
+                                        ? selectOUM
+                                        : uomController.text,
+                                    BARCODE: barcodeController.text,
                                     CREATEDDATE: DateTime.now().toString(),
                                     INVENTSTATUS:
                                         widget.transDetails['INVENTSTATUS'],
-                                    SIZEID: sizeController.text ,
-                                    COLORID: colorController.text ,
+                                    SIZEID: sizeController.text,
+                                    COLORID: colorController.text,
                                     CONFIGID: configController.text,
-                                    STYLESID: styleController.text ,
+                                    STYLESID: styleController.text,
                                     STORECODE: activatedStore,
                                     LOCATION: transactionData[0]['VRLOCATION']
                                         .toString(),
@@ -4014,7 +3744,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                         int.parse(qtyController.text));
                               }
                             } else {
-
                               print("Line 3870");
 
                               // return;
@@ -4034,20 +3763,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                               ? 9
                                               : transType == "TRANSFER ORDER"
                                                   ? 11
-                                                  : "",
+                                                  : widget.type == "MJ"
+                                                      ? 22
+                                                      : "",
                                   DEVICEID: activatedDevice,
                                   QTY: int.parse(qtyController.text),
                                   UOM: disabledUOMSelection == "true"
-                                      ?  selectOUM
-                                      : uomController.text ,
-                                  BARCODE: barcodeController.text.trim() ,
+                                      ? selectOUM
+                                      : uomController.text,
+                                  BARCODE: barcodeController.text.trim(),
                                   CREATEDDATE: DateTime.now().toString(),
                                   INVENTSTATUS:
                                       widget.transDetails['INVENTSTATUS'],
-                                  SIZEID: sizeController.text ,
-                                  COLORID: colorController.text ,
-                                  CONFIGID: configController.text ,
-                                  STYLESID: styleController.text ,
+                                  SIZEID: sizeController.text,
+                                  COLORID: colorController.text,
+                                  CONFIGID: configController.text,
+                                  STYLESID: styleController.text,
                                   STORECODE: activatedStore,
                                   LOCATION: transactionData[0]['VRLOCATION']
                                       .toString(),
@@ -4100,8 +3831,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                               "DEVICEID": activatedDevice,
                               'QTY': int.parse(qtyController.text),
                               'UOM': disabledUOMSelection == "true"
-                                  ?  selectOUM
-                                  : uomController.text  ,
+                                  ? selectOUM
+                                  : uomController.text,
                               'BARCODE': barcodeController.text,
                               'CREATEDDATE': DateTime.now().toString(),
                               "INVENTSTATUS": barcodeScanData[0]
@@ -4130,7 +3861,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                 ? 9
                                                 : transType == "TRANSFER ORDER"
                                                     ? 11
-                                                    : "",
+                                                    : widget.type == "MJ"
+                                                        ? 22
+                                                        : "",
                                     UOM: disabledUOMSelection == "true"
                                         ? selectOUM
                                         : uomController.text);
@@ -4146,7 +3879,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                           batchNoController.text.trim() &&
                                       widget.type == "GRN" ||
                                   widget.type == "ST") {
-
                                 print("Line 4060");
 
                                 // return;
@@ -4164,20 +3896,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                             ? 4
                                             : widget.type == "RP"
                                                 ? 10
-                                                : "",
+                                                : widget.type == "MJ"
+                                                    ? 22
+                                                    : "",
                                     DEVICEID: activatedDevice,
                                     QTY: int.parse(qtyController.text),
                                     UOM: disabledUOMSelection == "true"
-                                        ?  selectOUM
-                                        : uomController.text ,
-                                    BARCODE: barcodeController.text.trim() ,
+                                        ? selectOUM
+                                        : uomController.text,
+                                    BARCODE: barcodeController.text.trim(),
                                     CREATEDDATE: DateTime.now().toString(),
                                     INVENTSTATUS:
                                         widget.transDetails['INVENTSTATUS'],
-                                    SIZEID: sizeController.text ,
-                                    COLORID: colorController.text ,
-                                    CONFIGID: configController.text ,
-                                    STYLESID: styleController.text ,
+                                    SIZEID: sizeController.text,
+                                    COLORID: colorController.text,
+                                    CONFIGID: configController.text,
+                                    STYLESID: styleController.text,
                                     STORECODE: activatedStore,
                                     LOCATION: transactionData[0]['VRLOCATION']
                                         .toString(),
@@ -4214,7 +3948,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                               ? 9
                                               : transType == "TRANSFER ORDER"
                                                   ? 11
-                                                  : "",
+                                                  : widget.type == "MJ"
+                                                      ? 22
+                                                      : "",
                                   DEVICEID: activatedDevice,
                                   QTY: int.parse(qtyController.text),
                                   UOM: disabledUOMSelection == "true"
@@ -4226,10 +3962,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                   CREATEDDATE: DateTime.now().toString(),
                                   INVENTSTATUS: barcodeScanData[0]
                                       ['INVENTSTATUS'],
-                                  SIZEID: sizeController.text ,
-                                  COLORID:colorController.text ,
-                                  CONFIGID: configController.text ,
-                                  STYLESID:styleController.text ,
+                                  SIZEID: sizeController.text,
+                                  COLORID: colorController.text,
+                                  CONFIGID: configController.text,
+                                  STYLESID: styleController.text,
                                   STORECODE: activatedStore,
                                   LOCATION: transactionData[0]['VRLOCATION']
                                       .toString(),
@@ -4460,7 +4196,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                 if (
                                     // double.parse(remainedQuantityController.text) != 0.0
                                     //     &&
-                                    double.parse(qtyController.text)  >
+                                    double.parse(qtyController.text) >
                                                 double.parse(
                                                     remainedQuantityController
                                                         .text) &&
@@ -4485,10 +4221,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                               batchNoController.text.trim() &&
                                           widget.type == "GRN" ||
                                       widget.type == "ST") {
-
                                     print("Line 4395");
 
-                                // return;
+                                    // return;
 
                                     await _sqlHelper.addTRANSDETAILS(
                                         HRecId: transactionData[0]['RecId'],
@@ -4503,22 +4238,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                 ? 4
                                                 : widget.type == "RP"
                                                     ? 10
-                                                    : "",
+                                                    : widget.type == "MJ"
+                                                        ? 22
+                                                        : "",
                                         DEVICEID: activatedDevice,
                                         QTY: int.parse(qtyController.text),
-                                        UOM:disabledUOMSelection == "true"
-                                            ?  selectOUM
-                                            : uomController.text  ,
-                                        BARCODE: barcodeController.text.trim() ,
+                                        UOM: disabledUOMSelection == "true"
+                                            ? selectOUM
+                                            : uomController.text,
+                                        BARCODE: barcodeController.text.trim(),
                                         CREATEDDATE: DateTime.now().toString(),
                                         INVENTSTATUS:
                                             widget.transDetails['INVENTSTATUS'],
-                                        SIZEID:sizeController.text ,
-                                        COLORID: colorController.text ,
-                                        CONFIGID:
-                                            configController.text ,
-                                        STYLESID:
-                                            styleController.text ,
+                                        SIZEID: sizeController.text,
+                                        COLORID: colorController.text,
+                                        CONFIGID: configController.text,
+                                        STYLESID: styleController.text,
                                         STORECODE: activatedStore,
                                         LOCATION: transactionData[0]
                                                 ['VRLOCATION']
@@ -4576,22 +4311,19 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                   });
                                   showDialogCheckQuantity(
                                       "QTY Exceeded the limit. DO you want to proceed ?");
-                                } else
+                                } else {
+                                  print(
+                                      "Line 4485 : ${isBatchEnabled}..${BatchedItem} ");
 
-                                  {
-                                    print("Line 4485 : ${isBatchEnabled}..${BatchedItem} ");
+                                  // return;
 
-
-
-                                    // return;
-
-                                    await _sqlHelper.addTRANSDETAILS(
+                                  await _sqlHelper.addTRANSDETAILS(
                                       HRecId: transactionData[0]['RecId'],
                                       STATUS: 1,
                                       AXDOCNO: transactionData[0]['AXDOCNO'],
                                       DOCNO: transactionData[0]['DOCNO'],
-                                        ITEMID: itemIdController.text,
-                                        ITEMNAME: descriptionController.text,
+                                      ITEMID: itemIdController.text,
+                                      ITEMNAME: descriptionController.text,
                                       TRANSTYPE: transType == "STOCK COUNT"
                                           ? 1
                                           : widget.type == "GRN"
@@ -4602,22 +4334,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                       ? 5
                                                       : widget.type == "TO-IN"
                                                           ? 6
-                                                          : "",
+                                                          : widget.type == "MJ"
+                                                              ? 22
+                                                              : "",
                                       DEVICEID: activatedDevice,
                                       QTY: int.parse(qtyController.text),
                                       UOM: disabledUOMSelection == "true"
-                                          ?  selectOUM
-                                          : uomController.text  ,
+                                          ? selectOUM
+                                          : uomController.text,
                                       BARCODE: barcodeController.text.trim(),
                                       CREATEDDATE: DateTime.now().toString(),
                                       INVENTSTATUS:
                                           widget.transDetails['INVENTSTATUS'],
-                                        SIZEID:sizeController.text ,
-                                        COLORID: colorController.text ,
-                                        CONFIGID:
-                                        configController.text ,
-                                        STYLESID:
-                                        styleController.text ,
+                                      SIZEID: sizeController.text,
+                                      COLORID: colorController.text,
+                                      CONFIGID: configController.text,
+                                      STYLESID: styleController.text,
                                       STORECODE: activatedStore,
                                       LOCATION: transactionData[0]['VRLOCATION']
                                           .toString(),
@@ -4712,7 +4444,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                     //         widget.type != "TO-OUT" &&
                                     // widget.type != "TO-IN"
                                     ) {
-
                                   setState(() {
                                     isFocus = false;
                                   });
@@ -4740,36 +4471,32 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                           AXDOCNO: transactionData[0]
                                               ['AXDOCNO'],
                                           DOCNO: transactionData[0]['DOCNO'],
-                                          ITEMID:
-
-                                                  itemIdController.text ,
-                                          ITEMNAME:
-
-                                                  descriptionController.text ,
+                                          ITEMID: itemIdController.text,
+                                          ITEMNAME: descriptionController.text,
                                           TRANSTYPE: transType == "STOCK COUNT"
                                               ? 1
                                               : widget.type == "GRN"
                                                   ? 4
                                                   : widget.type == "RP"
                                                       ? 10
-                                                      : "",
+                                                      : widget.type == "MJ"
+                                                          ? 22
+                                                          : "",
                                           DEVICEID: activatedDevice,
                                           QTY: int.parse(qtyController.text),
                                           UOM: disabledUOMSelection == "true"
-                                              ?  selectOUM
-                                              : uomController.text  ,
+                                              ? selectOUM
+                                              : uomController.text,
                                           BARCODE:
-                                              barcodeController.text.trim() ,
+                                              barcodeController.text.trim(),
                                           CREATEDDATE:
                                               DateTime.now().toString(),
                                           INVENTSTATUS: widget
                                               .transDetails['INVENTSTATUS'],
-                                          SIZEID:sizeController.text ,
-                                          COLORID: colorController.text ,
-                                          CONFIGID:
-                                          configController.text ,
-                                          STYLESID:
-                                          styleController.text ,
+                                          SIZEID: sizeController.text,
+                                          COLORID: colorController.text,
+                                          CONFIGID: configController.text,
+                                          STYLESID: styleController.text,
                                           STORECODE: activatedStore,
                                           LOCATION: transactionData[0]
                                                   ['VRLOCATION']
@@ -4794,10 +4521,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                       print("Line 4690");
 
-
-
                                       // return;
-
 
                                       await _sqlHelper.addTRANSDETAILS(
                                           HRecId: transactionData[0]['RecId'],
@@ -4805,31 +4529,31 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                           AXDOCNO: transactionData[0]
                                               ['AXDOCNO'],
                                           DOCNO: transactionData[0]['DOCNO'],
-                                          ITEMID:
-                                              itemIdController.text,
-                                          ITEMNAME:
-                                              descriptionController.text,
+                                          ITEMID: itemIdController.text,
+                                          ITEMNAME: descriptionController.text,
                                           TRANSTYPE: transType == "STOCK COUNT"
                                               ? 1
                                               : widget.type == "GRN"
                                                   ? 4
                                                   : widget.type == "RP"
                                                       ? 10
-                                                      : "",
+                                                      : widget.type == "MJ"
+                                                          ? 22
+                                                          : "",
                                           DEVICEID: activatedDevice,
                                           QTY: int.parse(qtyController.text),
-                                          UOM:  disabledUOMSelection == "true"
-                                              ?  selectOUM
-                                              : uomController.text ,
+                                          UOM: disabledUOMSelection == "true"
+                                              ? selectOUM
+                                              : uomController.text,
                                           BARCODE: barcodeController.text,
                                           CREATEDDATE:
                                               DateTime.now().toString(),
                                           INVENTSTATUS: barcodeScanData[0]
                                               ['INVENTSTATUS'],
-                                          SIZEID: sizeController.text ,
-                                          COLORID:colorController.text ,
-                                          CONFIGID: configController.text ,
-                                          STYLESID:styleController.text ,
+                                          SIZEID: sizeController.text,
+                                          COLORID: colorController.text,
+                                          CONFIGID: configController.text,
+                                          STYLESID: styleController.text,
                                           STORECODE: activatedStore,
                                           LOCATION: transactionData[0]
                                                   ['VRLOCATION']
@@ -4876,7 +4600,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                     // double.parse(remainedQuantityController.text) != 0.0
                                     //     &&
                                     double.parse(qtyController.text) >
-
                                                 double.parse(
                                                     remainedQuantityController
                                                         .text) &&
@@ -4895,7 +4618,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                 } else {
                                   print("line 3975");
 
-
                                   print(transactionData[0]);
                                   print(importedSearch);
                                   print(widget.isImportedSearch);
@@ -4903,7 +4625,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                   if (widget.isImportedSearch != null &&
                                       widget.isImportedSearch!) {
-
                                     print("Line 4803");
 
                                     // return;
@@ -4911,58 +4632,44 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                     await _sqlHelper.addTRANSDETAILS(
                                         HRecId: transactionData[0]['RecId'],
                                         STATUS: 1,
-                                        AXDOCNO: transactionData[0]
-                                        ['AXDOCNO'],
+                                        AXDOCNO: transactionData[0]['AXDOCNO'],
                                         DOCNO: transactionData[0]['DOCNO'],
-                                        ITEMID:
-
-                                            itemIdController.text ,
-                                        ITEMNAME:
-
-                                            descriptionController.text ,
+                                        ITEMID: itemIdController.text,
+                                        ITEMNAME: descriptionController.text,
                                         TRANSTYPE: transType == "STOCK COUNT"
                                             ? 1
                                             : widget.type == "GRN"
-                                            ? 4
-                                            : widget.type == "RP"
-                                            ? 10
-                                            : "",
+                                                ? 4
+                                                : widget.type == "RP"
+                                                    ? 10
+                                                    : widget.type == "MJ"
+                                                        ? 22
+                                                        : "",
                                         DEVICEID: activatedDevice,
                                         QTY: int.parse(qtyController.text),
                                         UOM: disabledUOMSelection == "true"
-                                            ?  selectOUM
-                                            : uomController.text  ,
-                                        BARCODE:
-                                        barcodeController.text.trim(),
-                                        CREATEDDATE:
-                                        DateTime.now().toString(),
-                                        INVENTSTATUS: widget
-                                            .transDetails['INVENTSTATUS'],
-                                        SIZEID:sizeController.text,
-                                        COLORID:
-                                        colorController.text ,
-                                        CONFIGID:
-                                       configController.text,
-                                        STYLESID:
-                                        styleController.text,
+                                            ? selectOUM
+                                            : uomController.text,
+                                        BARCODE: barcodeController.text.trim(),
+                                        CREATEDDATE: DateTime.now().toString(),
+                                        INVENTSTATUS:
+                                            widget.transDetails['INVENTSTATUS'],
+                                        SIZEID: sizeController.text,
+                                        COLORID: colorController.text,
+                                        CONFIGID: configController.text,
+                                        STYLESID: styleController.text,
                                         STORECODE: activatedStore,
                                         LOCATION: transactionData[0]
-                                        ['VRLOCATION']
+                                                ['VRLOCATION']
                                             .toString(),
-                                        BATCHNO:
-                                        batchNoController.text.trim(),
+                                        BATCHNO: batchNoController.text.trim(),
                                         EXPDATE: selectedEXPDate.toString(),
                                         // selectedExpDateFormatted.toString(),
                                         PRODDATE: selectedMGFDate.toString(),
                                         // selectedmgfDateFormatted.toString(),
                                         BatchEnabled: isBatchEnabled,
                                         BatchedItem: BatchedItem);
-
-
-
-                                  }
-                                  else
-                                  {
+                                  } else {
                                     print("Line 4859");
 
                                     // return;
@@ -4977,14 +4684,17 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                         TRANSTYPE: transType == "STOCK COUNT"
                                             ? 1
                                             : widget.type == "GRN"
-                                            ? 4
-                                            : widget.type == "RP"
-                                            ? 10
-                                            : widget.type == "TO-OUT"
-                                            ? 5
-                                            : widget.type == "TO-IN"
-                                            ? 6
-                                            : "",
+                                                ? 4
+                                                : widget.type == "RP"
+                                                    ? 10
+                                                    : widget.type == "TO-OUT"
+                                                        ? 5
+                                                        : widget.type == "TO-IN"
+                                                            ? 6
+                                                            : widget.type ==
+                                                                    "MJ"
+                                                                ? 22
+                                                                : "",
                                         DEVICEID: activatedDevice,
                                         QTY: int.parse(qtyController.text),
                                         UOM: disabledUOMSelection == "true"
@@ -4993,13 +4703,14 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                         BARCODE: barcodeController.text,
                                         CREATEDDATE: DateTime.now().toString(),
                                         INVENTSTATUS: barcodeScanData[0]
-                                        ['INVENTSTATUS'],
-                                        SIZEID: sizeController.text ,
-                                        COLORID:colorController.text ,
-                                        CONFIGID: configController.text ,
-                                        STYLESID:styleController.text ,
+                                            ['INVENTSTATUS'],
+                                        SIZEID: sizeController.text,
+                                        COLORID: colorController.text,
+                                        CONFIGID: configController.text,
+                                        STYLESID: styleController.text,
                                         STORECODE: activatedStore,
-                                        LOCATION: transactionData[0]['VRLOCATION']
+                                        LOCATION: transactionData[0]
+                                                ['VRLOCATION']
                                             .toString(),
                                         BATCHNO: batchNoController.text.trim(),
                                         EXPDATE: selectedEXPDate.toString(),
@@ -5008,13 +4719,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                         // selectedmgfDateFormatted.toString(),
                                         BatchEnabled: isBatchEnabled,
                                         BatchedItem: BatchedItem);
-
-
-
                                   }
                                   // print(barcodeScanData[0]);
-
-
 
                                   itemIdController.clear();
                                   barcodeController.clear();
@@ -5045,7 +4751,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                           if (widget.type == "PO" ||
                               widget.type == "RO" ||
-                              widget.type == "TO") {
+                              widget.type == "TO" ||
+                          widget.type== "MJ") {
                             if (importedSearch != null && importedSearch!) {
                               print("Data from imported Search");
                               print(widget.transDetails);
@@ -5094,7 +4801,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                   : transType ==
                                                           "TRANSFER ORDER"
                                                       ? 11
-                                                      : "",
+                                                      : widget.type == "MJ"
+                                                          ? 22
+                                                          : "",
                                       UOM: widget.transDetails['UNIT']);
 
                               print("Line 3469");
@@ -5108,11 +4817,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                             batchNoController.text.trim() &&
                                         widget.type == "GRN" ||
                                     widget.type == "ST") {
-
                                   print("Line 5004");
 
                                   // return;
-
 
                                   await _sqlHelper.addTRANSDETAILS(
                                       HRecId: transactionData[0]['RecId'],
@@ -5127,20 +4834,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                               ? 4
                                               : widget.type == "RP"
                                                   ? 10
-                                                  : "",
+                                                  : widget.type == "MJ"
+                                                      ? 22
+                                                      : "",
                                       DEVICEID: activatedDevice,
                                       QTY: int.parse(qtyController.text),
                                       UOM: disabledUOMSelection == "true"
-                                          ?  selectOUM
-                                          : uomController.text ,
-                                      BARCODE: barcodeController.text.trim() ,
+                                          ? selectOUM
+                                          : uomController.text,
+                                      BARCODE: barcodeController.text.trim(),
                                       CREATEDDATE: DateTime.now().toString(),
                                       INVENTSTATUS:
                                           widget.transDetails['INVENTSTATUS'],
-                                      SIZEID: sizeController.text ,
+                                      SIZEID: sizeController.text,
                                       COLORID: colorController.text,
-                                      CONFIGID: configController.text ,
-                                      STYLESID: styleController.text ,
+                                      CONFIGID: configController.text,
+                                      STYLESID: styleController.text,
                                       STORECODE: activatedStore,
                                       LOCATION: transactionData[0]['VRLOCATION']
                                           .toString(),
@@ -5158,9 +4867,19 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                           int.parse(qtyController.text));
                                 }
                               } else {
-
                                 print("Line 5050");
 
+
+                                var enabledCheck = await
+                                _sqlHelper.getITEMMASTERBySearchScanBarcode(barcodeController.text);
+
+                                setState((){
+
+                                  isBatchEnabled =
+                                  enabledCheck[0]['BatchEnabled'].toString() == "1" ? true : false;
+                                  BatchedItem =
+                                  enabledCheck[0]['BatchedItem'].toString() == "1" ? true : false;
+                                });
                                 // return;
 
                                 await _sqlHelper.addTRANSDETAILS(
@@ -5170,7 +4889,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                     DOCNO: transactionData[0]['DOCNO'],
                                     ITEMID: itemIdController.text,
                                     ITEMNAME: descriptionController.text,
-
                                     TRANSTYPE: transType == "STOCK COUNT"
                                         ? 1
                                         : transType == "PURCHASE ORDER"
@@ -5179,20 +4897,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                 ? 9
                                                 : transType == "TRANSFER ORDER"
                                                     ? 11
-                                                    : "",
+                                                    : widget.type == "MJ"
+                                                        ? 22
+                                                        : "",
                                     DEVICEID: activatedDevice,
                                     QTY: int.parse(qtyController.text),
                                     UOM: disabledUOMSelection == "true"
-                                        ?  selectOUM
+                                        ? selectOUM
                                         : uomController.text,
-                                    BARCODE: barcodeController.text ,
+                                    BARCODE: barcodeController.text,
                                     CREATEDDATE: DateTime.now().toString(),
                                     INVENTSTATUS:
                                         widget.transDetails['INVENTSTATUS'],
-                                    SIZEID: sizeController.text ,
-                                    COLORID: colorController.text ,
-                                    CONFIGID: configController.text ,
-                                    STYLESID: styleController.text ,
+                                    SIZEID: sizeController.text,
+                                    COLORID: colorController.text,
+                                    CONFIGID: configController.text,
+                                    STYLESID: styleController.text,
                                     STORECODE: activatedStore,
                                     LOCATION: transactionData[0]['VRLOCATION']
                                         .toString(),
@@ -5251,8 +4971,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                 "DEVICEID": activatedDevice,
                                 'QTY': int.parse(qtyController.text),
                                 'UOM': disabledUOMSelection == "true"
-                                    ?  selectOUM
-                                    : uomController.text ,
+                                    ? selectOUM
+                                    : uomController.text,
                                 'BARCODE': barcodeController.text,
                                 'CREATEDDATE': DateTime.now().toString(),
                                 "INVENTSTATUS": barcodeScanData[0]
@@ -5282,7 +5002,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                   : transType ==
                                                           "TRANSFER ORDER"
                                                       ? 11
-                                                      : "",
+                                                      : widget.type == "MJ"
+                                                          ? 22
+                                                          : "",
                                       UOM: disabledUOMSelection == "true"
                                           ? selectOUM
                                           : uomController.text);
@@ -5290,7 +5012,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                               print("Line 3585");
                               dt.forEach(print);
                               print(dt.length);
-
 
                               // return;
                               if (dt.length > 0) {
@@ -5300,10 +5021,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                             batchNoController.text.trim() &&
                                         widget.type == "GRN" ||
                                     widget.type == "ST") {
-
                                   print("Line 5184");
 
-                                        // return;
+                                  // return;
 
                                   await _sqlHelper.addTRANSDETAILS(
                                       HRecId: transactionData[0]['RecId'],
@@ -5318,20 +5038,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                               ? 4
                                               : widget.type == "RP"
                                                   ? 10
-                                                  : "",
+                                                  : widget.type == "MJ"
+                                                      ? 22
+                                                      : "",
                                       DEVICEID: activatedDevice,
                                       QTY: int.parse(qtyController.text),
                                       UOM: disabledUOMSelection == "true"
-                                          ?  selectOUM
-                                          : uomController.text ,
-                                      BARCODE: barcodeController.text ,
+                                          ? selectOUM
+                                          : uomController.text,
+                                      BARCODE: barcodeController.text,
                                       CREATEDDATE: DateTime.now().toString(),
                                       INVENTSTATUS:
                                           widget.transDetails['INVENTSTATUS'],
-                                      SIZEID: styleController.text ,
-                                      COLORID: colorController.text ,
-                                      CONFIGID: configController.text ,
-                                      STYLESID: styleController.text ,
+                                      SIZEID: styleController.text,
+                                      COLORID: colorController.text,
+                                      CONFIGID: configController.text,
+                                      STYLESID: styleController.text,
                                       STORECODE: activatedStore,
                                       LOCATION: transactionData[0]['VRLOCATION']
                                           .toString(),
@@ -5351,9 +5073,17 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                               } else {
                                 print("Line 5229");
 
+                                var enabledCheck = await
+                                _sqlHelper.getITEMMASTERBySearchScanBarcode(barcodeController.text);
+
+                                setState((){
+
+                                  isBatchEnabled =
+                                  enabledCheck[0]['BatchEnabled'].toString() == "1" ? true : false;
+                                  BatchedItem =
+                                  enabledCheck[0]['BatchedItem'].toString() == "1" ? true : false;
+                                });
                                 // return;
-
-
 
                                 await _sqlHelper.addTRANSDETAILS(
                                     HRecId: transactionData[0]['RecId'],
@@ -5370,20 +5100,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                                 ? 9
                                                 : transType == "TRANSFER ORDER"
                                                     ? 11
-                                                    : "",
+                                                    : widget.type == "MJ"
+                                                        ? 22
+                                                        : "",
                                     DEVICEID: activatedDevice,
                                     QTY: int.parse(qtyController.text),
                                     UOM: disabledUOMSelection == "true"
-                                            ? selectOUM
-                                            : uomController.text,
+                                        ? selectOUM
+                                        : uomController.text,
                                     BARCODE: barcodeController.text,
                                     CREATEDDATE: DateTime.now().toString(),
                                     INVENTSTATUS: barcodeScanData[0]
                                         ['INVENTSTATUS'],
-                                    SIZEID: sizeController.text ,
-                                    COLORID:colorController.text ,
-                                    CONFIGID: configController.text ,
-                                    STYLESID:styleController.text ,
+                                    SIZEID: sizeController.text,
+                                    COLORID: colorController.text,
+                                    CONFIGID: configController.text,
+                                    STYLESID: styleController.text,
                                     STORECODE: activatedStore,
                                     LOCATION: transactionData[0]['VRLOCATION']
                                         .toString(),
@@ -5421,20 +5153,15 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                 .requestFocus(_focusNodeBarcode);
                           }
 
-
-
-                    if(_focusNodeQty.hasFocus && qtyController.text
-                        =="" ) {
-                      // FocusScope.of(context)
-                      // .unfocus();
-                      FocusScope.of(context)
-                          .requestFocus(_focusNodeBarcode);
-                    }
-                    else{
-
-                    }
+                          if (_focusNodeQty.hasFocus &&
+                              qtyController.text == "") {
+                            // FocusScope.of(context)
+                            // .unfocus();
+                            FocusScope.of(context)
+                                .requestFocus(_focusNodeBarcode);
+                          } else {}
                           // FocusManager.instance.primaryFocus?.unfocus();
-                    // Focus.of(context).unfocus();
+                          // Focus.of(context).unfocus();
                           FocusScope.of(context)
                               .requestFocus(_focusNodeBarcode);
                           // FocusScope.of(context).requestFocus( FocusNode());
@@ -5444,7 +5171,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                           // await controller?.toggleFlash();
 
-                           print("Added the the data line 5240");
+                          print("Added the the data line 5240");
 
                           await controller?.resumeCamera();
                         },
