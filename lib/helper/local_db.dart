@@ -1893,6 +1893,7 @@ class SQLHelper {
     final db = await SQLHelper.db();
 
     try {
+
       final data = await db.rawQuery('SELECT * FROM APPGENERALDATA');
       print("data...401");
       print(data);
