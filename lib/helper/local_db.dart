@@ -207,10 +207,8 @@ class SQLHelper {
   }
 
   static Future<sql.Database> db() async {
-
-    String ? databasespath = await getDatabasesPath();
-      // print();
-
+    String? databasespath = await getDatabasesPath();
+    // print();
 
     print("The original path is : ${databasespath}/dynamicconnectdb.db");
     print(await sql.getDatabasesPath());
@@ -945,7 +943,6 @@ class SQLHelper {
     return id;
   }
 
-
   addMASTERTOFEATURES() async {
     final db = await SQLHelper.db();
 
@@ -973,13 +970,12 @@ class SQLHelper {
   addIMPORTEDDETAILSTOFEATURES() async {
     final db = await SQLHelper.db();
 
-
     print("DB file : Imported ");
-   print(  await db.rawQuery(''
-       'select  distinct UOM from  IMPORTDETAILS where  UOM!="";'
-       ''));
+    print(await db.rawQuery(''
+        'select  distinct UOM from  IMPORTDETAILS where  UOM!="";'
+        ''));
 
-   // return;
+    // return;
 
     // await db.rawQuery(''
     //     'delete from UNITMASTER (UNITNAME) select  distinct UOM from  IMPORTDETAILS where  UOM !="";'
@@ -989,7 +985,6 @@ class SQLHelper {
     // await db.rawQuery(''
     //     'Delete UOM from  UNITMASTER where  UOM !="" AND UOM="";'
     //     '');
-
 
     await db.rawQuery(''
         'INSERT OR REPLACE INTO UNITMASTER (UNITNAME) select  distinct UOM from  IMPORTDETAILS where  UOM !="";'
@@ -1349,7 +1344,7 @@ class SQLHelper {
       "TONEXTDOCNO": TONEXTDOCNO,
       "TOOUTNEXTDOCNO": TOOUTNEXTDOCNO,
       "TOINNEXTDOCNO": TOINNEXTDOCNO,
-      "MJNEXTDOCNO":MJNEXTDOCNO,
+      "MJNEXTDOCNO": MJNEXTDOCNO,
       "isDeactivate": isDeactivate
     };
     // return 1;
@@ -1479,8 +1474,6 @@ class SQLHelper {
     return id;
   }
 
-
-
   //add transaction headers
   addTRANSDETAILS(
       {HRecId,
@@ -1507,7 +1500,6 @@ class SQLHelper {
       PRODDATE,
       BatchEnabled,
       BatchedItem}) async {
-
     print("adding db");
     final db = await SQLHelper.db();
 
@@ -1545,10 +1537,8 @@ class SQLHelper {
     //     : widget.type == "GRN"
     // ? 4
 
-
     if (TRANSTYPE == 4 || TRANSTYPE == 1) {
-
-      List<dynamic> exist =[];
+      List<dynamic> exist = [];
 
       exist = await getFindItemExistOrnotTRANSDETAILS_GRN_STOCKCOUNT(
           DOCNO: DOCNO,
@@ -1561,16 +1551,12 @@ class SQLHelper {
 
       print("In db  exist  Line 1518 : ${TRANSTYPE}");
 
-      if( exist.isNotEmpty){
-        await updateTRANSDETAILSWithQty(
-            exist[0]['id'], int.parse(exist[0]['QTY']) + int.parse(QTY.toString()));
+      if (exist.isNotEmpty) {
+        await updateTRANSDETAILSWithQty(exist[0]['id'],
+            int.parse(exist[0]['QTY']) + int.parse(QTY.toString()));
         return;
       }
-
     }
-
-
-
 
     print("Exist");
 
@@ -1606,7 +1592,6 @@ class SQLHelper {
 
     print(data);
 
-
     // return;
     // try {
     //   final data = await db.rawQuery('SELECT * FROM TRANSHEADER');
@@ -1630,8 +1615,7 @@ class SQLHelper {
 
   //add transaction headers
   Future<int> addTRANSHEADER(
-      {
-        DOCNO,
+      {DOCNO,
       AXDOCNO,
       STORECODE,
       TOSTORECODE,
@@ -1643,10 +1627,8 @@ class SQLHelper {
       DATAAREAID,
       DEVICEID,
       TYPEDESCR,
-        JournalName,
-      VRLOCATION}) async
-  {
-
+      JournalName,
+      VRLOCATION}) async {
     final db = await SQLHelper.db();
 
     final data = {
@@ -1663,16 +1645,13 @@ class SQLHelper {
       "DEVICEID": DEVICEID,
       "TYPEDESCR": TYPEDESCR,
       "VRLOCATION": VRLOCATION,
-      "JournalName":JournalName
-
+      "JournalName": JournalName
     };
 
     final id = await db.insert('TRANSHEADER', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
   }
-
-
 
   Future<int> updateAPPGENERALDATAMJNEXTDOCNO(MJNEXTDOCNO) async {
     final db = await SQLHelper.db();
@@ -1912,7 +1891,6 @@ class SQLHelper {
     final db = await SQLHelper.db();
 
     try {
-
       final data = await db.rawQuery('SELECT * FROM APPGENERALDATA');
       print("data...401");
       print(data);
@@ -1984,7 +1962,11 @@ class SQLHelper {
     }
   }
 
-  getTRANSDETAILS(String? transType) async {
+
+  getTRANSDETAILS(String? transType)
+  async {
+
+
     final db = await SQLHelper.db();
 
     try {

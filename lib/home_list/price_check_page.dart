@@ -161,13 +161,19 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
     var ur = "$pullStockTakeApi";
     print(body);
 
+    await  showLoaderDialog(context);
     // return;
     var js = json.encode(body);
     var res;
     try {
       res = await http.post(headers: headers, Uri.parse(ur), body: js);
 
-      showDialogGotData("Wait For Connection");
+      setState((){
+
+      });
+      // showDialogGotData("Wait For Connection");
+
+
 
 
     }
@@ -177,13 +183,26 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
       print(e.toString());
 
       showDialogGotData("Connection Error : ${e.toString()}");
-      return;
+      // return;
     }
+
 
     print(res.statusCode);
 
+    print(res.body);
+
     if (res.statusCode == 200 || res.statusCode == 201) {
 
+
+        var responseJson = json.decode(res.body);
+        setState((){
+      });
+      if(responseJson[0]['Success'] == false){
+
+        Navigator.pop(context);
+        showDialogGotData("${responseJson[0]['Message']}");
+        return;
+      }
 
       // Importdata: [{$id: 2, AXDOCNO: , OrderAccount: , OrderAccountName: , FROMSTORECODE: ,
       //   TOSTORECODE: , ItemId: 33300003, ItemName: 21ST CENT FOLICACID TAB 100S,
@@ -192,8 +211,9 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
       //   GTINUnit: , GTINOrderQTY: 0.0, GTINReceiveQTY: 0.0, HeaderOnly: 0, Description: }]
 
       // var importedData = responseJson[0]['Importdata'][0];
+      Navigator.pop(context);
       setState(() {
-        var responseJson = json.decode(res.body);
+
       barcodeController.text =  responseJson[0]['Importdata'][0]['ITEMBARCODE'];
       itemIdController.text = responseJson[0]['Importdata'][0]['ItemId'];
       descriptionController.text =
@@ -212,6 +232,9 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
 
         // stores = responseJson[0]['Stores'];
       });
+
+
+
       print("got it device");
       // print(selectDevice);
       // print(selectStore);
@@ -221,6 +244,9 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
       // stores.forEach((element) {
       //   print(element);
       // });
+    }
+    else{
+      Navigator.pop(context);
     }
   }
 
@@ -546,6 +572,7 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
 
 
 
+
     _focusNodeBarcode.addListener(() {
       print("Has focus: ${_focusNodeBarcode.hasFocus}");
       if(!_focusNodeBarcode.hasFocus){
@@ -559,20 +586,20 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
           isFocus=true;
         });
       }
-      if(_focusNodeBarcode.hasFocus && isFocus!){
-
-        itemIdController.clear();
-        barcodeController.clear();
-        descriptionController.clear();
-        uomController.clear();
-        sizeController.clear();
-        colorController.clear();
-        styleController.clear();
-        configController.clear();
-        qtyController.clear();
-        activePriceController.clear();
-
-      }
+      // if(_focusNodeBarcode.hasFocus && isFocus!){
+      //
+      //   itemIdController.clear();
+      //   barcodeController.clear();
+      //   descriptionController.clear();
+      //   uomController.clear();
+      //   sizeController.clear();
+      //   colorController.clear();
+      //   styleController.clear();
+      //   configController.clear();
+      //   qtyController.clear();
+      //   activePriceController.clear();
+      //
+      // }
 
     });
 
@@ -596,6 +623,40 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
       }
     });
     super.initState();
+  }
+
+
+  showLoaderDialog(BuildContext context)
+  {
+    AlertDialog alert;
+
+    alert= AlertDialog(
+      elevation: 0.0,
+      backgroundColor: Colors.white,
+      content: Container(
+        alignment: Alignment.center,
+        height: 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Spacer(),
+            Container(child: Text("Fetching Data...")),
+            Spacer(),
+            CircularProgressIndicator(),
+            Spacer(),
+          ],
+        ),
+      ),
+    );
+    showDialog(
+      // barrierColor: Colors.transparent,
+      useSafeArea: true,
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(onWillPop: () async => false, child: alert);
+      },
+    );
   }
 
   showDialogGotData(String text) {
@@ -750,8 +811,22 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
                        barcode: value.trim()
                     );
                   },
-                  onTap: () {
+                  onTap: () async{
 
+                   await controller?.resumeCamera();
+                   itemIdController.clear();
+                   barcodeController.clear();
+                   descriptionController.clear();
+                   uomController.clear();
+                   sizeController.clear();
+                   colorController.clear();
+                   styleController.clear();
+                   configController.clear();
+                   qtyController.clear();
+                   activePriceController.clear();
+                   setState((){
+
+                   });
                   },
                   focusNode: _focusNodeBarcode,
                   validator: (value) => value!.isEmpty ? 'Required *' : null,
@@ -760,6 +835,7 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
                       focusedBorder:APPConstants().focusInputBorder ,
                       enabledBorder: APPConstants().enableInputBorder,
                       suffixIcon: IconButton(
+
                         onPressed: () async {
                           Navigator.push(
                               context,
@@ -851,7 +927,7 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
                       isDense: true,
                       contentPadding: EdgeInsets.only(
                           left: 15, right: 15, top: 2, bottom: 2),
-                      hintText: "Bar Code",
+                      hintText: "Barcode",
                       hintStyle: TextStyle(
                           color: Colors.black26
 
@@ -884,7 +960,7 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
                 GestureDetector(
                   onTap: () async {
                     await controller?.resumeCamera();
-                    await controller?.toggleFlash();
+                    await controller?.pauseCamera();
                   },
                   child: Container(
                       height: 150,

@@ -115,13 +115,8 @@ class _OnHandPageState extends State<OnHandPage> {
   var baseUrl;
   dynamic barcodeScanData;
 
-
-
-  getPrice({barcode}) async
-
-  {
-
-    if(_connectionStatus == ConnectivityResult.none){
+  getPrice({barcode}) async {
+    if (_connectionStatus == ConnectivityResult.none) {
       showDialogGotData("No Internet Connection ");
       return;
     }
@@ -149,30 +144,42 @@ class _OnHandPageState extends State<OnHandPage> {
 
     // var ur = APIConstants.baseUrl + "pushTransactionTatmeen";
     var ur = "$pullStockTakeApi";
+    await showLoaderDialog(context);
     print(ur);
     var js = json.encode(body);
-    var res ;
-    try{
-    res= await http.post(headers: headers, Uri.parse(ur), body: js);
-    setState((){
+    var res;
+    try {
+      res = await http.post(headers: headers, Uri.parse(ur), body: js);
+      setState(() {});
 
-    });
 
-    showDialogGotData("Wait for connection");
-    // return;
+      // showDialogGotData("Wait for connection");
+      // return;
 
-    }
-
-    catch(e){
+    } catch (e) {
+      Navigator.pop(context);
       showDialogGotData("Connection Error : ${e.toString()}");
 
-      return;
+      // return;
     }
 
     var responseJson = json.decode(res.body);
+    setState(() {});
+
     print(responseJson);
 
     if (res.statusCode == 200 || res.statusCode == 201) {
+      var responseJson = json.decode(res.body);
+      setState((){
+      });
+
+      if(responseJson[0]['Success'] == false){
+
+        Navigator.pop(context);
+        showDialogGotData("${responseJson[0]['Message']}");
+        return;
+      }
+
       // Importdata: [{$id: 2, AXDOCNO: , OrderAccount: , OrderAccountName: , FROMSTORECODE: ,
       //   TOSTORECODE: , ItemId: 33300003, ItemName: 21ST CENT FOLICACID TAB 100S,
       //   ITEMBARCODE: 33300003A0045257, DATAAREAID: 1000, WAREHOUSE: , CONFIGID: , COLORID: ,
@@ -191,7 +198,6 @@ class _OnHandPageState extends State<OnHandPage> {
       // "QTY": 0.0,
       // "UNIT": "PAC
 
-
       setState(() {
         onHandList = [];
         onHandList = responseJson[0]['Importdata'];
@@ -201,9 +207,9 @@ class _OnHandPageState extends State<OnHandPage> {
       // print(selectDevice);
       // print(selectStore);
       // print("got it device");
+      Navigator.pop(context);
       dynamic dt;
-      int index = onHandList
-          .indexWhere(
+      int index = onHandList.indexWhere(
           (element) => element['WAREHOUSE'].trim() == activatedStore);
       dt = onHandList[index];
       if (index != -1) {
@@ -211,9 +217,13 @@ class _OnHandPageState extends State<OnHandPage> {
         onHandList.insert(0, dt);
       }
       setState(() {});
+
       onHandList.forEach((element) {
         print(element);
       });
+    }
+    else{
+      Navigator.pop(context);
     }
   }
 
@@ -221,8 +231,7 @@ class _OnHandPageState extends State<OnHandPage> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream
-        .listen((scanData) {
+    controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
         print("scan result : 953");
@@ -280,10 +289,8 @@ class _OnHandPageState extends State<OnHandPage> {
   String? activatedDevice;
   String? remainedQty;
 
-  getDataUsers()
-  async {
-    APPGENERALDATASave =
-    await _sqlHelper.getLastColumnAPPGENERALDATA();
+  getDataUsers() async {
+    APPGENERALDATASave = await _sqlHelper.getLastColumnAPPGENERALDATA();
     setState(() {});
 
     print("69 ... line");
@@ -294,7 +301,7 @@ class _OnHandPageState extends State<OnHandPage> {
       print(activatedStore);
       print("store codes 74");
 
-      setState((){
+      setState(() {
         activatedStore = APPGENERALDATASave['STORECODE'] ?? "";
         activatedDevice = APPGENERALDATASave['DEVICEID'] ?? "";
       });
@@ -409,13 +416,9 @@ class _OnHandPageState extends State<OnHandPage> {
 
   bool? isFocus = false;
 
-
-   ConnectivityResult _connectionStatus = ConnectivityResult.none;
+  ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
-
-
-
 
 // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initConnectivity() async {
@@ -424,8 +427,6 @@ class _OnHandPageState extends State<OnHandPage> {
     try {
       result = await _connectivity.checkConnectivity();
     } on PlatformException catch (e) {
-
-
       print("'Couldn\'t check connectivity status', error: ${e.toString()}");
       // developer.log('Couldn\'t check connectivity status', error: e);
       return;
@@ -447,10 +448,6 @@ class _OnHandPageState extends State<OnHandPage> {
       _connectionStatus = result;
     });
   }
-
-
-
-
 
   @override
   void initState() {
@@ -478,21 +475,21 @@ class _OnHandPageState extends State<OnHandPage> {
           isFocus = true;
         });
       }
-      if (_focusNodeBarcode.hasFocus && isFocus!) {
-        itemIdController.clear();
-        barcodeController.clear();
-        descriptionController.clear();
-        uomController.clear();
-        sizeController.clear();
-        colorController.clear();
-        styleController.clear();
-        configController.clear();
-        qtyController.clear();
-        activePriceController.clear();
-        setState(() {
-          onHandList = [];
-        });
-      }
+      // if (_focusNodeBarcode.hasFocus && isFocus!) {
+      //   itemIdController.clear();
+      //   barcodeController.clear();
+      //   descriptionController.clear();
+      //   uomController.clear();
+      //   sizeController.clear();
+      //   colorController.clear();
+      //   styleController.clear();
+      //   configController.clear();
+      //   qtyController.clear();
+      //   activePriceController.clear();
+      //   setState(() {
+      //     onHandList = [];
+      //   });
+      // }
     });
 
     _focusNodeQty.addListener(() {
@@ -502,6 +499,40 @@ class _OnHandPageState extends State<OnHandPage> {
       }
     });
     super.initState();
+  }
+
+
+  showLoaderDialog(BuildContext context)
+  {
+    AlertDialog alert;
+
+    alert= AlertDialog(
+      elevation: 0.0,
+      backgroundColor: Colors.white,
+      content: Container(
+        alignment: Alignment.center,
+        height: 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Spacer(),
+            Container(child: Text("Fetching Data...")),
+            Spacer(),
+            CircularProgressIndicator(),
+            Spacer(),
+          ],
+        ),
+      ),
+    );
+    showDialog(
+      // barrierColor: Colors.transparent,
+      useSafeArea: true,
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(onWillPop: () async => false, child: alert);
+      },
+    );
   }
 
   showDialogGotData(String text) {
@@ -559,7 +590,7 @@ class _OnHandPageState extends State<OnHandPage> {
                 height: 20,
                 child: Center(
                   child: Text(
-                    "Store : ${activatedStore??""}",
+                    "Store : ${activatedStore ?? ""}",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         decorationColor: Colors.red,
@@ -589,7 +620,23 @@ class _OnHandPageState extends State<OnHandPage> {
                       print("Go button is clicked");
                       getPrice(barcode: value.trim());
                     },
-                    onTap: () {},
+                    onTap: ()async {
+
+                      await  controller?.resumeCamera();
+                      itemIdController.clear();
+                      barcodeController.clear();
+                      descriptionController.clear();
+                      uomController.clear();
+                      sizeController.clear();
+                      colorController.clear();
+                      styleController.clear();
+                      configController.clear();
+                      qtyController.clear();
+                      activePriceController.clear();
+                      setState(() {
+                        onHandList = [];
+                      });
+                    },
                     // onChanged: (value){
                     //      getPrice(
                     //        barcode: value.trim()
@@ -619,7 +666,7 @@ class _OnHandPageState extends State<OnHandPage> {
                       isDense: true,
                       contentPadding: EdgeInsets.only(
                           left: 15, right: 15, top: 2, bottom: 2),
-                      hintText: "Bar Code",
+                      hintText: "Barcode",
                       hintStyle: TextStyle(color: Colors.black26),
                     ),
                   ),
@@ -652,7 +699,7 @@ class _OnHandPageState extends State<OnHandPage> {
                     GestureDetector(
                       onTap: () async {
                         await controller?.resumeCamera();
-                        await controller?.toggleFlash();
+                        await controller?.pauseCamera();
                       },
                       child: Container(
                           height: 150,
@@ -672,7 +719,6 @@ class _OnHandPageState extends State<OnHandPage> {
                       // margin: EdgeInsets.symmetric(horizontal: 3),
                       height: 30,
                       child: Center(
-
                         child: Text(
                           "Place the blue line over the QR code",
                           textAlign: TextAlign.center,
