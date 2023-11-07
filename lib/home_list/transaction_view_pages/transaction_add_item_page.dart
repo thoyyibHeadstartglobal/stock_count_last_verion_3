@@ -982,9 +982,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     remainedQuantityController.clear();
     _focusNodeBarcode..dispose();
     _focusNodeQty.dispose();
-    Focus.of(context).dispose();
-    Focus.of(context).unfocus();
-    FocusScope.of(context).unfocus();
+    // Focus.of(context).dispose();
+    // Focus.of(context).unfocus();
+    // FocusScope.of(context).unfocus();
     // setState((){
     //
     // });

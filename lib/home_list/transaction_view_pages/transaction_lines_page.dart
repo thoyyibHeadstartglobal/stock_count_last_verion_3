@@ -49,7 +49,7 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
   @override
   void dispose() {
 
-    FocusScope.of(context).unfocus();
+    // FocusScope.of(context).unfocus();
     super.dispose();
   }
 

@@ -209,8 +209,11 @@ class SQLHelper {
   static Future<sql.Database> db() async {
 
     String ? databasespath = await getDatabasesPath();
+      // print();
 
-    // print("The original path is : ${databasespath}/dynamicconnectdb.db");
+
+    print("The original path is : ${databasespath}/dynamicconnectdb.db");
+    print(await sql.getDatabasesPath());
     // String path = join("dynamicconnectdb.db");
 
     return sql.openDatabase(
@@ -1592,8 +1595,8 @@ class SQLHelper {
       "STORECODE": STORECODE,
       "LOCATION": LOCATION,
       "BATCHNO": BATCHNO,
-      "EXPDATE": EXPDATE,
-      "PRODDATE": PRODDATE,
+      "EXPDATE": EXPDATE =="null" || EXPDATE ==null ? "" :EXPDATE,
+      "PRODDATE": PRODDATE =="null" || PRODDATE == null ? "" :PRODDATE,
       "BatchEnabled": BatchEnabled,
       "BatchedItem": BatchedItem,
     };
