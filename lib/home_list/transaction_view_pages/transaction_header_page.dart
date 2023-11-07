@@ -95,12 +95,21 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
   @override
   void dispose() {
+
+    FocusManager.instance.dispose();
     _connectivitySubscription.cancel();
+    Focus.of(context).dispose();
+    FocusScope.of(context).unfocus();
     super.dispose();
   }
 
   @override
   void initState() {
+
+    FocusManager.instance.primaryFocus!.unfocus();
+
+    // Focus.of(context).dispose();
+    // FocusScope.of(context).unfocus();
     initConnectivity();
 
     _connectivitySubscription =
@@ -376,7 +385,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     getDeactivate = await prefs!.getString("deactivate");
     updateDevice = await prefs!.getString("updateDevice");
 
-    await prefs!.setBool("lineDeleted", false);
+    await prefs!.setBool("lineDeleted", true);
     print("...169");
     print(updateDevice);
 

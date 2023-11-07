@@ -207,8 +207,14 @@ class SQLHelper {
   }
 
   static Future<sql.Database> db() async {
+
+    String ? databasespath = await getDatabasesPath();
+
+    // print("The original path is : ${databasespath}/dynamicconnectdb.db");
+    // String path = join("dynamicconnectdb.db");
+
     return sql.openDatabase(
-      'dynamicconnectdb.db',
+      '${databasespath}/dynamicconnectdb.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);

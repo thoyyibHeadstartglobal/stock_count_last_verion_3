@@ -962,6 +962,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
   @override
   void dispose() {
+
     _focusNodeBarcode.dispose();
     _focusNodeQty.dispose();
     controller?.dispose();
@@ -979,6 +980,11 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     productionDateController.clear();
     batchNoController.clear();
     remainedQuantityController.clear();
+    _focusNodeBarcode..dispose();
+    _focusNodeQty.dispose();
+    Focus.of(context).dispose();
+    Focus.of(context).unfocus();
+    FocusScope.of(context).unfocus();
     // setState((){
     //
     // });

@@ -48,6 +48,8 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
 
   @override
   void dispose() {
+
+    FocusScope.of(context).unfocus();
     super.dispose();
   }
 
@@ -167,7 +169,8 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     getDeactivate = await prefs!.getString("deactivate");
     updateDevice = await prefs!.getString("updateDevice");
 
-    lineDeleted = await prefs!.setBool("lineDeleted", false);
+
+    lineDeleted = await prefs!.setBool("lineDeleted", true);
     print("...169");
     print(updateDevice);
 
@@ -226,8 +229,13 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     } catch (e) {}
   }
 
+
   @override
   void initState() {
+    FocusManager.instance.primaryFocus!.unfocus();
+
+    // Focus.of(context).dispose();
+    // FocusScope.of(context).unfocus();
     getTransTypes();
     gettransactionDetails();
     getToken();
