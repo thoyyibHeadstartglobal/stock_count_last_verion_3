@@ -206,7 +206,7 @@ pushTransactionToClose(
 
 
   print("Line 208 .. ${ transType.toString()}");
-  transactionData = await _sqlHelper.getTRANSHEADERRepost(
+  transactionData = await _sqlHelper.getTRANSHEADERSendRepost(
       transType.toString() == "22"
       ? "22"
       : "");

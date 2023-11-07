@@ -2104,7 +2104,7 @@ class SQLHelper {
     }
   }
 
-  getTRANSHEADERRepost(String? transType) async {
+  getTRANSHEADERSendRepost(String? transType) async {
     final db = await SQLHelper.db();
     try {
       print("data...trans header");
