@@ -1046,6 +1046,7 @@ String? companyCode;
         baseUrlString =lst[6].trim().toString();
         pushStockAPiController.text = "${lst[6].trim().toString()}${lst[8].trim().toString()}";
 
+        getJournalController.text = "${lst[6].trim().toString()}/getJournalName";
         getStoreController.text = "${lst[6].trim().toString()}${lst[9].trim().toString()}";
         getDeviceController.text = "${lst[6].trim().toString()}${lst[10].trim().toString()}";
         updateDeviceController.text  = "${lst[6].trim().toString()}${lst[11].trim().toString()}";

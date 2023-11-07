@@ -282,7 +282,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
     print(transactionDetails.length);
     print("Line 224 ");
-    if (transactionDetails.length > 0 && transactionData[0]['STATUS'] < 2) {
+
+    if (transactionDetails.isNotEmpty && transactionData[0]['STATUS'] < 2) {
       isCloseTransactions = true;
       setState(() {});
     } else {
@@ -2799,10 +2800,10 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       "dataAreaId": "$companyCode" // 1 - to get only counting journal lines
     };
     // var ur = APIConstants.baseUrl + "pushTransactionTatmeen";
-    // var ur = "$getMovementJournals";
+    var ur = "$getMovementJournals";
 
-    var ur =
-        "https://hsins28ce7a8bf606d8744bdevaos.axcloud.dynamics.com/api/services/CustomServiceGroup/CustomService/getJournalName";
+    // var ur =
+        // "https://hsins28ce7a8bf606d8744bdevaos.axcloud.dynamics.com/api/services/CustomServiceGroup/CustomService/getJournalName";
     print(ur);
     var js = json.encode(body);
     var res = await http.post(headers: headers, Uri.parse(ur), body: js);
