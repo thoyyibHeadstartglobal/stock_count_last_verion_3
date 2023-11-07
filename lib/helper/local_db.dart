@@ -1480,6 +1480,7 @@ class SQLHelper {
   }
 
 
+
   //add transaction headers
   addTRANSDETAILS(
       {HRecId,
@@ -1595,8 +1596,8 @@ class SQLHelper {
       "STORECODE": STORECODE,
       "LOCATION": LOCATION,
       "BATCHNO": BATCHNO,
-      "EXPDATE": EXPDATE =="null" || EXPDATE ==null ? "" :EXPDATE,
-      "PRODDATE": PRODDATE =="null" || PRODDATE == null ? "" :PRODDATE,
+      "EXPDATE": EXPDATE,
+      "PRODDATE": PRODDATE,
       "BatchEnabled": BatchEnabled,
       "BatchedItem": BatchedItem,
     };
@@ -1719,10 +1720,6 @@ class SQLHelper {
     final data = {
       "RONEXTDOCNO": RONEXTDOCNO,
     };
-
-
-
-
 
     final id = await db.update('APPGENERALDATA', data,
         // where: "id = ?",
