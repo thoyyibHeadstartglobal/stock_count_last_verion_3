@@ -176,6 +176,7 @@ class _OnHandPageState extends State<OnHandPage> {
       if(responseJson[0]['Success'] == false){
 
         Navigator.pop(context);
+        barcodeController.clear();
         showDialogGotData("${responseJson[0]['Message']}");
         return;
       }

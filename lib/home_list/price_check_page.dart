@@ -200,6 +200,7 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
       if(responseJson[0]['Success'] == false){
 
         Navigator.pop(context);
+        barcodeController.clear();
         showDialogGotData("${responseJson[0]['Message']}");
         return;
       }
