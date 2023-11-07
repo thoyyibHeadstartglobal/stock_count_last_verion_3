@@ -377,6 +377,7 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
 
 
   getToken() async {
+
     // getTransTypes();
     setState(() {});
 
@@ -485,8 +486,13 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
       // getStoreCode();
       // getDevices();
       // getTatmeenDetails();
+
+
       print(token);
     } catch (e) {}
+
+    // Focus.of(context).requestFocus(_focusNodeBarcode);
+    FocusScope.of(context).requestFocus(_focusNodeBarcode);
   }
 
   getItemAmount() {
@@ -510,6 +516,8 @@ class _PriceCheckPageState extends State<PriceCheckPage> {
 
 
     setState(() {});
+
+
   }
 
   bool? isFocus = true;

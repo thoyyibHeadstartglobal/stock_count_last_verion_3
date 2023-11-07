@@ -311,6 +311,7 @@ class _OnHandPageState extends State<OnHandPage> {
 
   getToken() async {
     // getTransTypes();
+
     setState(() {});
 
     print("init Api");
@@ -394,6 +395,9 @@ class _OnHandPageState extends State<OnHandPage> {
       }
       print(token);
     } catch (e) {}
+    // Focus.of(context).requestFocus(_focusNodeBarcode);
+
+    FocusScope.of(context).requestFocus(_focusNodeBarcode);
   }
 
   getItemAmount() {
@@ -465,6 +469,8 @@ class _OnHandPageState extends State<OnHandPage> {
     }
 
     getToken();
+
+
     _focusNodeBarcode.addListener(() {
       print("Has focus: ${_focusNodeBarcode.hasFocus}");
       if (!_focusNodeBarcode.hasFocus) {
@@ -492,6 +498,7 @@ class _OnHandPageState extends State<OnHandPage> {
       //   });
       // }
     });
+
 
     _focusNodeQty.addListener(() {
       print("Has focus: ${_focusNodeQty.hasFocus}");
