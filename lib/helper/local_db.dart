@@ -208,31 +208,11 @@ class SQLHelper {
       """);
   }
 
-  static Future<File> get localfile async{
 
-
-    var databasespath = await getExternalStorageDirectory();
-    // await getDatabasesPath();
-    // print();
-
-    print("The file path is : ${databasespath!.path}/stockCountApp/dynamicconnectdb.db");
-    // final path=await localpath;
-
-   var files = File('${databasespath.path}/stockCountApp/dynamicconnectdb.db');
-
-    print("The file is : ${files.absolute.path}");
-
-    return File('${files.absolute.path}');
-  }
 
   static Future<sql.Database> db() async {
-    // localfile;
 
-    // return;
     var databasespath = await getExternalStorageDirectory();
-    // await getDatabasesPath();
-    // print();
-
 
 
     print("The original path is : ${databasespath!.path}/stockCountApp/dynamicconnectdb.db");

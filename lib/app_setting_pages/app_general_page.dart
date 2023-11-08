@@ -668,6 +668,7 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+
                     Text(
                       "App Version  :  ${APPConstants.appVersion}",
                       style: TextStyle(
