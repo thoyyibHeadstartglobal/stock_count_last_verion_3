@@ -750,20 +750,31 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
                           }
 
                           if (await File("${copyTo.path}/dynamicconnectdb.db")
-                              .exists()) {
+                              .exists())
+                          {
+                            await copyTo.create();
 
+
+                            String? newPath =
+                                "${copyTo.path}/dynamicconnectdb.db";
+
+                            await source1.copy(newPath);
                             showDialogCheck("File Already exist in the specific download folder");
                             print("file Exist");
                             return;
                           }
-                          showDialogCheck("BackUp Success");
 
-                          await copyTo.create();
+
+                          await copyTo.create(
+                            recursive: true
+                          );
 
                           String? newPath =
                               "${copyTo.path}/dynamicconnectdb.db";
 
                           await source1.copy(newPath);
+
+                          showDialogCheck("BackUp Success");
                         },
                         child: Text("BACKUP",
                         style: TextStyle(
