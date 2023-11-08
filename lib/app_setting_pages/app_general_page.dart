@@ -1,18 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dynamicconnectapp/helper/local_db.dart';
 import 'package:dynamicconnectapp/common_pages/login_page.dart';
+import 'package:file_picker/file_picker.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:sqflite/sqflite.dart';
 
 import '../constants/constant.dart';
 import '../common_pages/home_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AppGeneralPage extends StatefulWidget {
   AppGeneralPage({Key? key}) : super(key: key);
@@ -47,23 +52,16 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
   bool disabledUOMSelection = false;
   bool disabledContinuosScan = false;
 
-  bool  ? showDimension= false;
+  bool? showDimension = false;
 
-  bool ? showQuantityExceed= false;
-
+  bool? showQuantityExceed = false;
 
   final SQLHelper _sqlHelper = SQLHelper();
   bool? isLoad = true;
 
-
-
   ConnectivityResult _connectionStatus = ConnectivityResult.none;
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
-
-
-
-
 
 // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initConnectivity() async {
@@ -72,8 +70,6 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
     try {
       result = await _connectivity.checkConnectivity();
     } on PlatformException catch (e) {
-
-
       print("'Couldn\'t check connectivity status', error: ${e.toString()}");
       // developer.log('Couldn\'t check connectivity status', error: e);
       return;
@@ -96,11 +92,8 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
     });
   }
 
-
-
   @override
   void initState() {
-
     initConnectivity();
 
     _connectivitySubscription =
@@ -137,7 +130,6 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
   bool? isActivated;
   TextEditingController confirmPasswordController = TextEditingController();
 
-
   getDevices() async {
     var tk = 'Bearer ${token.toString()}';
     Map<String, String> headers = {
@@ -152,12 +144,11 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
     var res;
     var responseJson;
 
-    try{
-   js = json.encode(body);
-    res = await http.post(headers: headers, Uri.parse(ur), body: js);
-   responseJson = json.decode(res.body);
-    }
-    catch(e){
+    try {
+      js = json.encode(body);
+      res = await http.post(headers: headers, Uri.parse(ur), body: js);
+      responseJson = json.decode(res.body);
+    } catch (e) {
       showDialogCheck("Error : ${e.toString()}");
       return;
     }
@@ -169,8 +160,7 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
       print("got it device");
       // print(selectDevice);
       print(selectStore);
-      if(responseJson[0]['pullData'] == null){
-
+      if (responseJson[0]['pullData'] == null) {
         showDialogCheck("Error : ${responseJson[0]['Message']}");
         return;
       }
@@ -425,20 +415,15 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
 
     var res;
     var responseJson;
-    try{
+    try {
       js = json.encode(body);
-   res = await http.post(headers: headers,
-    Uri.parse(ur), body: js);
-  responseJson  = json.decode(res.body);
-    }
-    catch(e){
+      res = await http.post(headers: headers, Uri.parse(ur), body: js);
+      responseJson = json.decode(res.body);
+    } catch (e) {
       showDialogCheck("Error :${e.toString()}");
       return;
     }
     print("Status : ${res.statusCode}");
-
-
-
 
     print(responseJson);
 
@@ -506,11 +491,11 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
     print("...169");
     print(updateDevice);
 
-    showDimension =    await prefs?.getBool("showDimensions") == null? false:
-    await prefs?.getBool("showDimensions");
+    showDimension = await prefs?.getBool("showDimensions") == null
+        ? false
+        : await prefs?.getBool("showDimensions");
 
-    showDimension =
-    prefs?.getBool("showDimensions") == true ? true : false;
+    showDimension = prefs?.getBool("showDimensions") == true ? true : false;
 
     // showQuantityExceed =
     // prefs?.getBool("showQuantityExceed") == true ? true : false;
@@ -530,7 +515,6 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
     //         "client_secret=Qxr7Q~TjBjm0fTKjZzniZyO_llYWrVOrdIYAA"
     //         "&resource=https://hsins28ce7a8bf606d8744bdevaos.axcloud.dynamics.com&"
     //         "grant_type=client_credentials";
-
 
     var url = "${accessUrl.toString()}/oauth2/token" +
         "?"
@@ -558,11 +542,10 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
       print(res.body);
       print("res.body 466");
       var dt = json.decode(res.body);
-print(dt['access_token']);
+      print(dt['access_token']);
       setState(() {
         token = dt['access_token'].toString();
       });
-
 
       print("The token is : "
           "$token");
@@ -574,7 +557,6 @@ print(dt['access_token']);
   }
 
   setValues() async {
-
     await _sqlHelper.getLastColumnAPPGENERALDATA();
 
     if (await _sqlHelper.getLastColumnAPPGENERALDATA() == "" ||
@@ -635,7 +617,6 @@ print(dt['access_token']);
       print("Data : ${APPGENERALDATASave['STORECODE'].toString()}");
     }
   }
-  
 
   var APPGENERALDATASave;
 
@@ -687,14 +668,215 @@ print(dt['access_token']);
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("App Version  :  ${APPConstants.appVersion}",
-                    style: TextStyle(color: Colors.red.withOpacity(0.7),
-                    fontWeight: FontWeight.w300,
-                    fontSize: 10),
+                    Text(
+                      "App Version  :  ${APPConstants.appVersion}",
+                      style: TextStyle(
+                          color: Colors.red.withOpacity(0.7),
+                          fontWeight: FontWeight.w300,
+                          fontSize: 10),
                     )
                   ],
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: TextButton(
+                        style:
+                            TextButton.styleFrom(backgroundColor: Colors.red
+                            ),
+                        onPressed: () async {
+
+
+                          File source1 = File(
+                              '/storage/emulated/0/Android/data/com.example.dynamicconnectapps/files/stockCountApp/dynamicconnectdb.db');
+
+                          Directory copyTo = Directory(
+                              "/storage/emulated/0/Download/stockCountApp");
+
+                          var status = await Permission.storage.status;
+
+                          if (!status.isGranted) {
+                            await Permission.storage.request();
+                          }
+
+                          bool storagePermission =
+                              await Permission.storage.isGranted;
+                          bool mediaPermission =
+                              await Permission.accessMediaLocation.isGranted;
+                          bool manageExternal =
+                              await Permission.manageExternalStorage.isGranted;
+
+                          if (!storagePermission) {
+                            storagePermission =
+                                await Permission.storage.request().isGranted;
+                          }
+
+                          if (!mediaPermission) {
+                            mediaPermission = await Permission
+                                .accessMediaLocation
+                                .request()
+                                .isGranted;
+                          }
+
+                          if (!manageExternal) {
+                            manageExternal = await Permission
+                                .manageExternalStorage
+                                .request()
+                                .isGranted;
+                          }
+
+                          bool isPermissionGranted = storagePermission &&
+                              mediaPermission &&
+                              manageExternal;
+
+                          if (isPermissionGranted) {
+                            print("Permission  Granted :"
+                                "storage : ${storagePermission}\t"
+                                "Media :${mediaPermission}\t"
+                                "Manage External : ${manageExternal}");
+                          } else {
+                            print("Permission Not Granted :"
+                                "storage : ${storagePermission}\t"
+                                "Media :${mediaPermission}\t"
+                                "Manage External : ${manageExternal}");
+                          }
+
+                          if (await File("${copyTo.path}/dynamicconnectdb.db")
+                              .exists()) {
+
+                            showDialogCheck("File Already exist in the specific download folder");
+                            print("file Exist");
+                            return;
+                          }
+                          showDialogCheck("BackUp Success");
+
+                          await copyTo.create();
+
+                          String? newPath =
+                              "${copyTo.path}/dynamicconnectdb.db";
+
+                          await source1.copy(newPath);
+                        },
+                        child: Text("BACKUP",
+                        style: TextStyle(
+                          color: Colors.white
+                        ),),
+                      ),
+                    ),
+
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                        child: TextButton(
+                      style: TextButton.styleFrom(backgroundColor: Colors.red),
+                      onPressed: () async {
+
+                        File source1 = File(
+                            '/storage/emulated/0/Download/stockCountApp/dynamicconnectdb.db');
+
+                        Directory copyTo = Directory(
+                          '/storage/emulated/0/Android/data/com.example.dynamicconnectapps/files/stockCountApp');
+                            // "/storage/emulated/0/Download/stockCountApp");
+
+                        var status = await Permission.storage.status;
+
+                        if (!status.isGranted) {
+                          await Permission.storage.request();
+                        }
+
+                        bool storagePermission =
+                        await Permission.storage.isGranted;
+                        bool mediaPermission =
+                        await Permission.accessMediaLocation.isGranted;
+                        bool manageExternal =
+                        await Permission.manageExternalStorage.isGranted;
+
+                        if (!storagePermission) {
+                          storagePermission =
+                          await Permission.storage.request().isGranted;
+                        }
+
+                        if (!mediaPermission) {
+                          mediaPermission = await Permission
+                              .accessMediaLocation
+                              .request()
+                              .isGranted;
+                        }
+
+                        if (!manageExternal) {
+                          manageExternal = await Permission
+                              .manageExternalStorage
+                              .request()
+                              .isGranted;
+                        }
+
+                        bool isPermissionGranted = storagePermission &&
+                            mediaPermission &&
+                            manageExternal;
+
+                        if (isPermissionGranted) {
+                          print("Permission  Granted :"
+                              "storage : ${storagePermission}\t"
+                              "Media :${mediaPermission}\t"
+                              "Manage External : ${manageExternal}");
+                        } else {
+                          print("Permission Not Granted :"
+                              "storage : ${storagePermission}\t"
+                              "Media :${mediaPermission}\t"
+                              "Manage External : ${manageExternal}");
+                        }
+
+                        // if (await File("${copyTo.path}/dynamicconnectapp.db")
+                        //     .exists()) {
+                        //
+                        //   showDialogCheck("File Already exist in the specific download folder");
+                        //   print("file Exist");
+                        //   return;
+                        // }
+
+                        try{
+
+                          // await source1.create();
+                          print("Restore Success : ${copyTo.path}/dynamicconnectdb.db");
+                          print("Directory : ${source1}");
+
+                          String? newPath =
+                              "${copyTo.path}/dynamicconnectdb.db";
+
+                          await source1.copy(newPath);
+
+
+                          showDialogCheck("Restore Success");
+                        }
+                        catch(e){
+
+                          showDialogCheck("Error : ${e.toString()}");
+                        }
+
+
+
+                      },
+                      child: Text("Restore",
+                      style: TextStyle(
+                        color: Colors.white
+                      ),),
+                    )),
+                    SizedBox(
+                      width: 5,
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -721,13 +903,17 @@ print(dt['access_token']);
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    Expanded(child:
-                                    Text("$selectDevice",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 13),
-                                    ),),
-                                    SizedBox(width: 5,),
+                                    Expanded(
+                                      child: Text(
+                                        "$selectDevice",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 13),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
                                     Icon(
                                       Icons.arrow_forward_ios_rounded,
                                       size: 14,
@@ -752,7 +938,7 @@ print(dt['access_token']);
                               ignoring: isActivated ?? false,
                               child: Container(
                                 height: 40,
-                                margin: EdgeInsets.only(left: 13,right: 0.0),
+                                margin: EdgeInsets.only(left: 13, right: 0.0),
                                 child: Theme(
                                   data: Theme.of(context).copyWith(
                                     canvasColor: Colors.white,
@@ -766,7 +952,6 @@ print(dt['access_token']);
                                       isExpanded: true,
                                       hint: Row(
                                         children: [
-
                                           Expanded(
                                             child: Text(
                                               'Select Device',
@@ -799,38 +984,51 @@ print(dt['access_token']);
                                           .toList(),
                                       value: selectDevice,
                                       onChanged: (value) {
-
                                         setState(() {
                                           selectDevice = value as String;
                                         });
 
-                                        int index =
-                                        devices.indexWhere((element) => element['deviceid'] == selectDevice);
+                                        int index = devices.indexWhere(
+                                            (element) =>
+                                                element['deviceid'] ==
+                                                selectDevice);
 
-                                          print(devices[index]);
+                                        print(devices[index]);
 
+                                        PONextDocNoController.text =
+                                            (devices[index]['NumSeqPO'] + 1)
+                                                .toString();
+                                        TONextDocNoController.text =
+                                            (devices[index]['NumSeqTO'] + 1)
+                                                .toString();
 
+                                        TOINNextDocNoController.text =
+                                            (devices[index]['NumSeqTOIN'] + 1)
+                                                .toString();
 
-                                       PONextDocNoController.text = (devices[index]['NumSeqPO']+1).toString();
-                                        TONextDocNoController.text = (devices[index]['NumSeqTO']+1).toString();
+                                        TOOutNextDocNoController.text =
+                                            (devices[index]['NumSeqTOOUT'] + 1)
+                                                .toString();
 
-                                        TOINNextDocNoController.text = (devices[index]['NumSeqTOIN']+1).toString();
+                                        GRNNextDocNoController.text =
+                                            (devices[index]['NumSeqGRN'] + 1)
+                                                .toString();
 
-                                        TOOutNextDocNoController.text = (devices[index]['NumSeqTOOUT']+1).toString();
+                                        STNextDocNoController.text =
+                                            (devices[index]['NumSeqST'] + 1)
+                                                .toString();
 
-                                        GRNNextDocNoController.text = (devices[index]['NumSeqGRN']+1).toString();
+                                        RONextDocNoController.text =
+                                            (devices[index]['NumSeqRO'] + 1)
+                                                .toString();
 
-                                        STNextDocNoController.text = (devices[index]['NumSeqST']+1).toString();
+                                        RPNextDocNoController.text =
+                                            (devices[index]['NumSeqRP'] + 1)
+                                                .toString();
 
-
-
-                                        RONextDocNoController.text = (devices[index]['NumSeqRO']+1).toString();
-
-                                        RPNextDocNoController.text = (devices[index]['NumSeqRP']+1).toString();
-
-                                        MJNextDocNoController.text = (devices[index]['NumSeqMJ']+1).toString();
-
-
+                                        MJNextDocNoController.text =
+                                            (devices[index]['NumSeqMJ'] + 1)
+                                                .toString();
 
                                         // "NumSeqPO": 0,
                                         // "NumSeqGRN": 0,
@@ -842,12 +1040,10 @@ print(dt['access_token']);
                                         // "NumSeqTOIN": 0,
                                         // "NumSeqMJ": 0
 
-                                        setState(() {
-                                        });
+                                        setState(() {});
                                       },
                                       icon: Padding(
-                                        padding: EdgeInsets.only(
-                                            right: 5.0),
+                                        padding: EdgeInsets.only(right: 5.0),
                                         child: Icon(
                                           Icons.arrow_forward_ios_outlined,
                                         ),
@@ -895,8 +1091,7 @@ print(dt['access_token']);
                           style: TextButton.styleFrom(
                               backgroundColor: Colors.green),
                           onPressed: () {
-                            if(_connectionStatus == ConnectivityResult.none){
-
+                            if (_connectionStatus == ConnectivityResult.none) {
                               showDialogCheck("No Internet Connection");
                               return;
                             }
@@ -923,7 +1118,6 @@ print(dt['access_token']);
                                 color: isActivated != null && isActivated!
                                     ? Colors.black
                                     : Colors.white,
-
                                 fontSize: 8.6),
                           ),
                         ),
@@ -935,31 +1129,32 @@ print(dt['access_token']);
                     Expanded(
                         flex: 1,
                         child: IgnorePointer(
-                      ignoring:
-                          isActivated != null && isActivated! ? false : true,
-                      // isActivated != null &&  isActivated! ? true :false ,
-                      child: TextButton(
-                        style:
-                            TextButton.styleFrom(backgroundColor: Colors.red),
-                        onPressed: () {
-                          if(_connectionStatus == ConnectivityResult.none){
+                          ignoring: isActivated != null && isActivated!
+                              ? false
+                              : true,
+                          // isActivated != null &&  isActivated! ? true :false ,
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                                backgroundColor: Colors.red),
+                            onPressed: () {
+                              if (_connectionStatus ==
+                                  ConnectivityResult.none) {
+                                showDialogCheck("No Internet Connection");
+                                return;
+                              }
 
-                            showDialogCheck("No Internet Connection");
-                            return;
-                          }
-
-                          deactivateDevice();
-                        },
-                        child: Text(
-                          "DEACTIVATE",
-                          style: TextStyle(
-                              color: isActivated != null && isActivated!
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontSize: 8.6),
-                        ),
-                      ),
-                    )),
+                              deactivateDevice();
+                            },
+                            child: Text(
+                              "DEACTIVATE",
+                              style: TextStyle(
+                                  color: isActivated != null && isActivated!
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: 8.6),
+                            ),
+                          ),
+                        )),
                     SizedBox(
                       width: 5,
                     )
@@ -1211,9 +1406,12 @@ print(dt['access_token']);
                           validator: (value) =>
                               value!.isEmpty ? 'Required *' : null,
                           controller: PONextDocNoController,
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
                           ],
-                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
@@ -1230,13 +1428,16 @@ print(dt['access_token']);
                           height: 10,
                         ),
                         TextFormField(
-                          readOnly:true,
+                          readOnly: true,
                           validator: (value) =>
                               value!.isEmpty ? 'Required *' : null,
                           controller: GRNNextDocNoController,
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
                           ],
-                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
@@ -1257,9 +1458,12 @@ print(dt['access_token']);
                           validator: (value) =>
                               value!.isEmpty ? 'Required *' : null,
                           controller: RONextDocNoController,
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
                           ],
-                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
@@ -1276,14 +1480,16 @@ print(dt['access_token']);
                           height: 10,
                         ),
                         TextFormField(
-
                           readOnly: true,
                           validator: (value) =>
                               value!.isEmpty ? 'Required *' : null,
                           controller: RPNextDocNoController,
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
                           ],
-                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
@@ -1300,13 +1506,16 @@ print(dt['access_token']);
                           height: 10,
                         ),
                         TextFormField(
-                          readOnly:true,
+                          readOnly: true,
                           validator: (value) =>
                               value!.isEmpty ? 'Required *' : null,
                           controller: STNextDocNoController,
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
                           ],
-                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
@@ -1323,14 +1532,16 @@ print(dt['access_token']);
                           height: 10,
                         ),
                         TextFormField(
-
-                          readOnly:true,
+                          readOnly: true,
                           validator: (value) =>
                               value!.isEmpty ? 'Required *' : null,
                           controller: TONextDocNoController,
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
                           ],
-                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
@@ -1347,13 +1558,16 @@ print(dt['access_token']);
                           height: 10,
                         ),
                         TextFormField(
-                          readOnly:true,
+                          readOnly: true,
                           validator: (value) =>
                               value!.isEmpty ? 'Required *' : null,
                           controller: TOOutNextDocNoController,
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
                           ],
-                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
@@ -1369,13 +1583,16 @@ print(dt['access_token']);
                           height: 10,
                         ),
                         TextFormField(
-                          readOnly:true,
+                          readOnly: true,
                           validator: (value) =>
                               value!.isEmpty ? 'Required *' : null,
                           controller: TOINNextDocNoController,
-                            inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
-                            ],
-                            keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
+                          ],
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
@@ -1392,13 +1609,16 @@ print(dt['access_token']);
                           height: 10,
                         ),
                         TextFormField(
-                          readOnly:true,
+                          readOnly: true,
                           validator: (value) =>
-                          value!.isEmpty ? 'Required *' : null,
+                              value!.isEmpty ? 'Required *' : null,
                           controller: MJNextDocNoController,
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
                           ],
-                          keyboardType: TextInputType.numberWithOptions(decimal: true),
+                          keyboardType:
+                              TextInputType.numberWithOptions(decimal: true),
                           decoration: InputDecoration(
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
@@ -1411,52 +1631,51 @@ print(dt['access_token']);
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey))),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         Row(
                           children: [
-
                             Expanded(
                                 child: Row(
-                                  children: [
-                                    Container(
-                                      width: 30,
-                                      child: Checkbox(
-                                        activeColor: APPConstants().colorRed,
-                                        value: disabledCamera,
-                                        onChanged: (v) {
-                                          disabledCamera = v!;
-                                          setState(() {});
-                                        },
-                                      ),
-                                    ),
-                                    Text(
-                              "Disable Camera",
-                              style: TextStyle(fontSize: 11),
-                            ),
-
-                                  ],
-                                )),
-
+                              children: [
+                                Container(
+                                  width: 30,
+                                  child: Checkbox(
+                                    activeColor: APPConstants().colorRed,
+                                    value: disabledCamera,
+                                    onChanged: (v) {
+                                      disabledCamera = v!;
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                                Text(
+                                  "Disable Camera",
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                              ],
+                            )),
                             Expanded(
                                 child: Row(
-                                  children: [
-                                    Container(
-                                      width: 30,
-                                      child: Checkbox(
-                                        activeColor: APPConstants().colorRed,
-                                        value: disabledUOMSelection,
-                                        onChanged: (v) {
-                                          disabledUOMSelection = v!;
-                                          setState(() {});
-                                        },
-                                      ),
-                                    ),
-                                    Text(
-                              "Enable UOM Selection",
-                              style: TextStyle(fontSize: 11),
-                            ),
-                                  ],
-                                ))
+                              children: [
+                                Container(
+                                  width: 30,
+                                  child: Checkbox(
+                                    activeColor: APPConstants().colorRed,
+                                    value: disabledUOMSelection,
+                                    onChanged: (v) {
+                                      disabledUOMSelection = v!;
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                                Text(
+                                  "Enable UOM Selection",
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                              ],
+                            ))
                           ],
                         ),
                         Row(
@@ -1467,7 +1686,6 @@ print(dt['access_token']);
                                   Container(
                                     width: 30,
                                     child: Checkbox(
-
                                       activeColor: APPConstants().colorRed,
                                       value: disabledContinuosScan,
                                       onChanged: (v) {
@@ -1484,31 +1702,27 @@ print(dt['access_token']);
                               ),
                             ),
                             // SizedBox(width: 5,),
-                           Expanded(
-
-
-                             child: Row(
-
-                               children: [
-                                 Container(
-                                   width: 30,
-                                   child: Checkbox(
-
-                                     activeColor: APPConstants().colorRed,
-                                     value: showDimension,
-                                     onChanged: (v) {
-                                       showDimension = v!;
-                                       setState(() {});
-                                     },
-                                   ),
-                                 ),
-                                 Text(
-                                   "Show Dimensions",
-                                   style: TextStyle(fontSize: 11),
-                                 ),
-                               ],
-                             ),
-                           )
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 30,
+                                    child: Checkbox(
+                                      activeColor: APPConstants().colorRed,
+                                      value: showDimension,
+                                      onChanged: (v) {
+                                        showDimension = v!;
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    "Show Dimensions",
+                                    style: TextStyle(fontSize: 11),
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                         // Row(
@@ -1618,7 +1832,6 @@ print(dt['access_token']);
     print(st!.validate());
     // final FormState? form = _formKey.currentState!;
 
-
     if (st.validate() && selectStore != null && selectDevice != null) {
       print('Form is valid');
       print(disabledCamera);
@@ -1631,14 +1844,9 @@ print(dt['access_token']);
       await prefs?.setString(
           "enableContinuousScan", disabledContinuosScan.toString());
 
+      await prefs?.setBool("showDimensions", showDimension!);
 
-      await prefs?.setBool(
-          "showDimensions", showDimension!);
-
-
-      await prefs?.setBool(
-          "showQuantityExceed", showQuantityExceed!);
-
+      await prefs?.setBool("showQuantityExceed", showQuantityExceed!);
 
       print("conditions 936");
       print(selectDevice);
@@ -1686,10 +1894,11 @@ print(dt['access_token']);
                   {"type": "RETURN PICK", "value": getApiResponse[0]['RP']})
               : null;
 
-
           devices[index]['storeDevice'] == 0 && getApiResponse[0]['MJ'] == true
-              ? homeList.add(
-              {"type": "MOVEMENT JOURNAL", "value": getApiResponse[0]['MJ']})
+              ? homeList.add({
+                  "type": "MOVEMENT JOURNAL",
+                  "value": getApiResponse[0]['MJ']
+                })
               : null;
 
           devices[index]['storeDevice'] == 0 && getApiResponse[0]['TO'] == true
@@ -1781,8 +1990,6 @@ print(dt['access_token']);
     } else {
       // Navigator.pop(context);
 
-
-
       print('Form is invalid');
       print(selectDevice);
       print(selectStore);
@@ -1799,7 +2006,6 @@ print(dt['access_token']);
       ),
       onPressed: () {
         if (selectStore == null && selectDevice == null) {
-
           Navigator.pop(context);
 
           showDialogCheck("Please Choose a Store And Device");
@@ -1837,21 +2043,16 @@ print(dt['access_token']);
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-
       title: Text("DynamicsConnect"),
       content: Text("$text"),
-      actions:
-      [noButton, yesButton],
+      actions: [noButton, yesButton],
     );
 
-
-     // show the dialog
+    // show the dialog
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder:
-          (BuildContext context)
-      {
+      builder: (BuildContext context) {
         return alert;
       },
     );

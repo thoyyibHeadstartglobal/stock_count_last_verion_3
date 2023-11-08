@@ -53,7 +53,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     isLogged! ? username= await  prefs?.getString(
         "username"):
     username = null;
-    setState(() {});
 
     companyCode=  await prefs!
         .getString("companyCode");

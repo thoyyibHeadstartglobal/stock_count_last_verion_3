@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqflite.dart';
+import 'dart:io';
 
 class SQLHelper {
   // 1.IMPORTHEADER
@@ -206,16 +208,40 @@ class SQLHelper {
       """);
   }
 
-  static Future<sql.Database> db() async {
-    String? databasespath = await getDatabasesPath();
+  static Future<File> get localfile async{
+
+
+    var databasespath = await getExternalStorageDirectory();
+    // await getDatabasesPath();
     // print();
 
-    print("The original path is : ${databasespath}/dynamicconnectdb.db");
+    print("The file path is : ${databasespath!.path}/stockCountApp/dynamicconnectdb.db");
+    // final path=await localpath;
+
+   var files = File('${databasespath.path}/stockCountApp/dynamicconnectdb.db');
+
+    print("The file is : ${files.absolute.path}");
+
+    return File('${files.absolute.path}');
+  }
+
+  static Future<sql.Database> db() async {
+    // localfile;
+
+    // return;
+    var databasespath = await getExternalStorageDirectory();
+    // await getDatabasesPath();
+    // print();
+
+
+
+    print("The original path is : ${databasespath!.path}/stockCountApp/dynamicconnectdb.db");
     print(await sql.getDatabasesPath());
     // String path = join("dynamicconnectdb.db");
 
+
     return sql.openDatabase(
-      '${databasespath}/dynamicconnectdb.db',
+      '${databasespath.path}/stockCountApp/dynamicconnectdb.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database);

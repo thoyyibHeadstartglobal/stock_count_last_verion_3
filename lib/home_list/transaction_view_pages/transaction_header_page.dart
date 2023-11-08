@@ -708,6 +708,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
           documentNoController?.clear();
           descriptionController?.clear();
           orderNos = [];
+          movementJournals = [];
           selectOrder = null;
           isPostTransactions = false;
           isCloseTransactions = false;
@@ -994,7 +995,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                       child: Row(
                                         children: [
                                           SizedBox(
-                                            width: 10,
+                                            width: 17,
                                           ),
                                           Text(
                                             "Select Journal",
@@ -1002,7 +1003,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                                 color: !isActivateNew! == true
                                                     ? Colors.black26
                                                     : Colors.black,
-                                                fontSize: 15),
+                                                overflow: TextOverflow.visible,
+                                                fontSize: 13),
                                           ),
                                           Spacer(),
                                           Icon(
@@ -1057,12 +1059,12 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                             child: Text(
                                               'Select Journal',
                                               style: TextStyle(
-                                                // fontSize: 14,
+                                                fontSize: 13,
                                                 // fontWeight: FontWeight.bold,
 
                                                 color: Colors.black38,
                                               ),
-                                              overflow: TextOverflow.ellipsis,
+                                              overflow: TextOverflow.visible,
                                             ),
                                           ),
                                         ],
@@ -2166,6 +2168,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                 borderRadius: BorderRadius.circular(10.0)),
                             backgroundColor: Colors.green),
                         onPressed: () async {
+
                           if (selectOrder == "" ||
                               selectOrder == null &&
                                   widget.type != "PO" &&
