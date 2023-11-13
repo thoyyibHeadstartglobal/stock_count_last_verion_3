@@ -851,6 +851,19 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         });
         return;
       }
+
+      if( widget.type == "MJ" &&
+      barcodeScanData[0]['BatchEnabled'].toString() == "1" &&
+          barcodeScanData[0]['BatchedItem'].toString() == "0"){
+
+        showDialogGotData("Batch Does Not Exist");
+
+        setState((){
+          barcodeController.text="";
+        });
+
+        return;
+      }
       setState(() {
         print(barcodeScanData);
         barcodeController.text = barcodeScanData[0]['ITEMBARCODE'];
@@ -963,6 +976,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
   @override
   void dispose() {
 
+    FocusManager.instance.dispose();
     _focusNodeBarcode.dispose();
     _focusNodeQty.dispose();
     controller?.dispose();
@@ -1167,10 +1181,40 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       // Transfer order -TO
       // Return order - RO
 
+
+
+
+
+      if( widget.type == "MJ") {
+
+        var enabledCheck =
+        await _sqlHelper.getITEMMASTERBySearchScanBarcode(
+          widget.transDetails['ITEMBARCODE']
+        );
+
+        print("The available batch :"
+            " ${enabledCheck}.");
+        // "..${ enabledCheck[0]['BatchedItem']}");
+        if (
+        enabledCheck[0]['BatchEnabled'].toString() == "1" &&
+            enabledCheck[0]['BatchedItem'].toString() == "0")
+        {
+
+          showDialogGotData("Batch Does Not Exist");
+
+          return;
+        }
+
+      }
+
+
       if (widget.type == "PO" ||
           widget.type == "RO" ||
           widget.type == "TO" ||
           widget.type == "MJ") {
+
+
+
         setState(() {
           barcodeController.text = widget.transDetails['ITEMBARCODE'];
           itemIdController.text = widget.transDetails['ItemId'] ?? "";
@@ -1276,6 +1320,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
             await _sqlHelper.getImportedDetailsBySearchScanBarcode(
                 widget.transDetails['BARCODE'],
                 widget.transDetails['AXDOCNO'].toString());
+
+
 
         // print();
         print("widget type : 840");
@@ -1483,6 +1529,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
   @override
   void initState() {
+
     getTransactionDetails();
     print("uom data available 493 : ${disabledUOMSelection}");
 
@@ -2020,12 +2067,12 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("995...");
-
-    print(isBatchEnabled);
-    print(BatchedItem!);
-
-    print("998...");
+    // print("995...");
+    //
+    // print(isBatchEnabled);
+    // print(BatchedItem!);
+    //
+    // print("998...");
     return Scaffold(
         // appBar: null,
         body:

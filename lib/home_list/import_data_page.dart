@@ -6,6 +6,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dynamicconnectapp/helper/local_db.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +19,7 @@ import '../common_pages/home_page.dart';
 
 
 class ImportDataPage extends StatefulWidget {
-  ImportDataPage({this.transactionTypes});
+  const ImportDataPage({this.transactionTypes});
   final dynamic transactionTypes;
   @override
   State<ImportDataPage> createState() => _ImportDataPageState();
@@ -77,6 +78,25 @@ class _ImportDataPageState extends State<ImportDataPage> {
     });
   }
 
+
+  @override
+  void didChangeDependencies() {
+
+//   _connectionStatus = ConnectivityResult.none;
+//     // final Connectivity _connectivity = Connectivity();
+// _connectivitySubscription.cancel();
+//     print("Did Change dependency");
+    // _connectionStatus = ConnectivityResult.none;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+
+    _connectivitySubscription.cancel();
+    super.dispose();
+
+  }
 
 
   @override
@@ -205,6 +225,7 @@ class _ImportDataPageState extends State<ImportDataPage> {
   }
 
   var selectStore;
+
   getStoreCode() async {
     transactionTypes.add("Item Master");
     transactionTypes.addAll(widget.transactionTypes);
@@ -223,11 +244,9 @@ class _ImportDataPageState extends State<ImportDataPage> {
     }
   }
 
-  showLoaderDialog(BuildContext context)
+  showLoaderDialog(BuildContext contexts)
   {
-    AlertDialog alert;
-
-    alert= AlertDialog(
+    AlertDialog alert= AlertDialog(
       elevation: 0.0,
       backgroundColor: Colors.white,
       content: Container(
@@ -249,7 +268,7 @@ class _ImportDataPageState extends State<ImportDataPage> {
       // barrierColor: Colors.transparent,
       useSafeArea: true,
       barrierDismissible: false,
-      context: context,
+      context: contexts,
       builder: (BuildContext context) {
         return WillPopScope(onWillPop: () async => false, child: alert);
       },
@@ -304,11 +323,11 @@ class _ImportDataPageState extends State<ImportDataPage> {
     );
   }
 
-  pullDataUser(context) {
+  pullDataUser(BuildContext contextDialog) {
     // print(onpress);
     // return;
     showDialog<bool>(
-        context: context,
+        context: contextDialog,
         builder: (context) {
           return AlertDialog(
             title: Text("DynamicsConnect"),
@@ -321,7 +340,7 @@ class _ImportDataPageState extends State<ImportDataPage> {
                   style:  APPConstants().noText,
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pop(contextDialog);
                 },
               ),
 
@@ -333,7 +352,7 @@ class _ImportDataPageState extends State<ImportDataPage> {
                     style: APPConstants().YesText
                 ),
                 onPressed: () async {
-                  Navigator.pop(context);
+                  Navigator.pop(contextDialog);
 
                   if (selectTransType == "Stock Count")
                   {
@@ -388,9 +407,14 @@ class _ImportDataPageState extends State<ImportDataPage> {
                   else
                   {
 
+
+
+
                     await _sqlHelper
                         .deleteStockCount(transactionNumberController.text.trim());
-                    showLoaderDialog(context);
+
+                    showLoaderDialog(contextDialog);
+
                     pullData(
                       itemsCount: 0 ,
                       transType:transType
@@ -963,7 +987,9 @@ class _ImportDataPageState extends State<ImportDataPage> {
 
       setState(()  {
         result = scanData;
-        print("scan result : 953");
+        if (kDebugMode) {
+          print("scan result : 953");
+        }
 
 
 

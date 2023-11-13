@@ -206,6 +206,18 @@ class SQLHelper {
         unique(DOCNO,ITEMID,ITEMNAME,BARCODE,TRANSTYPE,UOM,BATCHNO,EXPDATE,PRODDATE)
         )
       """);
+
+
+    await database.execute(""" 
+  CREATE TABLE IF NOT EXISTS BackupDetails (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        backUpTime REAL DEFAULT (datetime('now', 'localtime'))
+        )
+        """
+        );
+
+
+
   }
 
 
@@ -228,6 +240,73 @@ class SQLHelper {
       },
     );
   }
+
+
+
+  setBackUpTime()async{
+
+    final db= await SQLHelper.db();
+
+   await db.rawQuery(''
+   'INSERT INTO "BackupDetails" DEFAULT VALUES;'
+       '');
+
+  }
+
+  getLastBackUpDetails()async{
+
+    final db = await SQLHelper.db();
+
+    final List<Map<String, dynamic>> data = await db.rawQuery('SELECT * FROM BackupDetails');
+    print("data...401");
+    print(data);
+
+    var lastId;
+
+    if (data.isNotEmpty ) {
+
+
+      lastId = data.last;
+
+    }
+    else
+    {
+
+      lastId =null;
+
+    }
+
+
+
+    return lastId;
+
+    // final List<Map<String, dynamic>> maps = await db.rawQuery(''
+    //     'select * from  TRANSDETAILS WHERE DOCNO="$DOCNO" AND ITEMID = "$ITEMID" AND ITEMNAME="$ITEMNAME" AND TRANSTYPE="$TRANSTYPE" AND BARCODE="$BARCODE" AND UOM="$UOM";'
+    //     '');
+    // print("db data 234");
+    // print(maps);
+    // return maps;
+
+  }
+
+
+  getBackUpDetails()async{
+
+    final db = await SQLHelper.db();
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery('SELECT * FROM BackupDetails');
+
+    print("data...300");
+
+    print(maps);
+
+    return maps;
+
+  }
+
+
+
+
   //add transaction header
 
   addTrasactionHeader({
