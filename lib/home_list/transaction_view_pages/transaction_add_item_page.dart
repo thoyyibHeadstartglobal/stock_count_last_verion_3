@@ -2067,17 +2067,13 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    // print("995...");
-    //
-    // print(isBatchEnabled);
-    // print(BatchedItem!);
-    //
-    // print("998...");
+
     return Scaffold(
         // appBar: null,
         body:
             // MediaQuery.of(context).orientation == Orientation.landscape
             //     ?
+
 
             ListView(
       physics: ClampingScrollPhysics(),

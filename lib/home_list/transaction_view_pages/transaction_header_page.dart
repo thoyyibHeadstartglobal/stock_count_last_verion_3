@@ -708,6 +708,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
           documentNoController?.clear();
           descriptionController?.clear();
           orderNos = [];
+          selectJournal ="";
           movementJournals = [];
           selectOrder = null;
           isPostTransactions = false;
@@ -725,8 +726,12 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(isActivated);
-    print(activatedStore);
+    if (kDebugMode) {
+      print(isActivated);
+    }
+    if (kDebugMode) {
+      print(activatedStore);
+    }
     return Scaffold(
       // appBar: AppBar(
       //   title: Text("${widget.type} Header page"),
@@ -2781,6 +2786,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                     // isActivateNew = true;
                     // isActivateSave = false;
                     movementJournals=[];
+                    selectJournal ="";
                     selectJournal = null;
                     selectStore = null;
                     selectLocation = null;
