@@ -39,7 +39,8 @@ class SQLHelper {
         TOOUTNEXTDOCNO INTEGER,
         TOINNEXTDOCNO INTEGER,
         MJNEXTDOCNO INTEGER,
-        isDeactivate BOOLEAN
+        isDeactivate BOOLEAN,
+        SetDefaultQtyByOne BOOLEAN
       )
       """);
 
@@ -353,6 +354,22 @@ class SQLHelper {
     return maps;
   }
 
+
+  getFindItemExistOrnotTRANSDETAILSStockCount(
+      {DOCNO, ITEMID, ITEMNAME, BARCODE, TRANSTYPE, UOM}) async {
+    // DOCNO,AXDOCNO,STORECODE,TRANSTYPE,DATAAREAID,DEVICEID
+
+    final db = await SQLHelper.db();
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(''
+        'select * from  TRANSDETAILS WHERE DOCNO="$DOCNO" AND ITEMID = "$ITEMID" AND ITEMNAME="$ITEMNAME" AND STATUS<2 AND TRANSTYPE="$TRANSTYPE" AND BARCODE="$BARCODE" AND UOM="$UOM";'
+        '');
+    print("db data 234");
+    print(maps);
+    return maps;
+  }
+
+
   getFindItemExistOrnotTRANSDETAILS_GRN_STOCKCOUNT(
       {DOCNO, ITEMID, ITEMNAME, BARCODE, TRANSTYPE, UOM, BATCHNO}) async {
     // DOCNO,AXDOCNO,STORECODE,TRANSTYPE,DATAAREAID,DEVICEID
@@ -361,6 +378,22 @@ class SQLHelper {
 
     final List<Map<String, dynamic>> maps = await db.rawQuery(''
         'select * from  TRANSDETAILS WHERE DOCNO="$DOCNO" AND ITEMID = "$ITEMID" AND ITEMNAME="$ITEMNAME" AND TRANSTYPE="$TRANSTYPE" AND BARCODE="$BARCODE" AND UOM="$UOM" AND BATCHNO ="$BATCHNO";'
+        '');
+    print("db data 234");
+    print(maps);
+    return maps;
+  }
+
+
+
+  getFindItemExistOrnotTRANSDETAILS_STOCKCOUNT(
+      {DOCNO, ITEMID, ITEMNAME, BARCODE, TRANSTYPE, UOM, BATCHNO}) async {
+    // DOCNO,AXDOCNO,STORECODE,TRANSTYPE,DATAAREAID,DEVICEID
+
+    final db = await SQLHelper.db();
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(''
+        'select * from  TRANSDETAILS WHERE STATUS=1 AND DOCNO="$DOCNO" AND ITEMID = "$ITEMID" AND ITEMNAME="$ITEMNAME" AND TRANSTYPE="$TRANSTYPE" AND BARCODE="$BARCODE" AND UOM="$UOM" AND BATCHNO ="$BATCHNO";'
         '');
     print("db data 234");
     print(maps);
@@ -403,6 +436,17 @@ class SQLHelper {
 
 // get db data
   Future<dynamic> getHeaderOrders(String? transType) async {
+    final db = await SQLHelper.db();
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(''
+        'SELECT  AXDOCNO FROM importheader WHERE STATUS < 3 AND TRANSTYPE="$transType" ORDER BY  id DESC;'
+        '');
+    print(maps);
+    return maps;
+  }
+
+  // get db data
+  Future<dynamic> getHeaderOrdersStockCount(String? transType) async {
     final db = await SQLHelper.db();
 
     final List<Map<String, dynamic>> maps = await db.rawQuery(''
@@ -471,11 +515,50 @@ class SQLHelper {
   }
 
   // get db data by count
+  Future<dynamic> getIMPORTDETAILSByCountInitStockCount(String? AXDOCNO) async {
+    final db = await SQLHelper.db();
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(''
+        'select * from  IMPORTDETAILS  where AXDOCNO ="$AXDOCNO"  LIMIT 15;'
+        '');
+
+    print(maps);
+    return maps;
+  }
+
+  // get db data by count
   Future<dynamic> getIMPORTDETAILSByCount(int? lastId, String? AXDOCNO) async {
     final db = await SQLHelper.db();
     final List<Map<String, dynamic>> maps = await db.rawQuery(''
         'select * FROM IMPORTDETAILS Where id > $lastId AND  AXDOCNO ="$AXDOCNO" LIMIT 15;'
         '');
+    print(maps);
+    return maps;
+  }
+
+  Future<dynamic> getIMPORTDETAILSByCountStockCount(int? lastId, String? AXDOCNO) async {
+    final db = await SQLHelper.db();
+    final List<Map<String, dynamic>> maps = await db.rawQuery(''
+        'select * FROM IMPORTDETAILS Where id > $lastId  AND  AXDOCNO ="$AXDOCNO" LIMIT 15;'
+        '');
+    print(maps);
+    return maps;
+  }
+  //STATUS >1 AND
+
+  Future<dynamic> getTRANSDETAILSDetailsBySearchStockCount(
+      String? key, String? transType) async {
+    final db = await SQLHelper.db();
+
+    String dt = "'%$key%'";
+    print(
+        'SELECT  * FROM TRANSDETAILS WHERE (ITEMID  LIKE $dt OR ITEMNAME  LIKE $dt)'
+            ' AND (TRANSTYPE="$transType" AND STATUS >0 ORDER BY LISTID  DESC);');
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(''
+        'SELECT  * FROM TRANSDETAILS WHERE ( ITEMID  LIKE $dt OR ITEMNAME  LIKE $dt)'
+        ' AND (TRANSTYPE="$transType" AND STATUS >0 ORDER BY LISTID DESC  LIMIT 15;');
+
     print(maps);
     return maps;
   }
@@ -498,11 +581,40 @@ class SQLHelper {
     return maps;
   }
 
+
+  Future<dynamic> getTRANSDETAILSDetailsBySearchStock(
+      String? key, String? transType) async {
+    final db = await SQLHelper.db();
+
+    String dt = "'%$key%'";
+    print(
+        'SELECT  * FROM TRANSDETAILS WHERE (ITEMID  LIKE $dt OR ITEMNAME  LIKE $dt)'
+            ' AND (TRANSTYPE="$transType" AND STATUS >0 ORDER BY LISTID  DESC);');
+
+    final List<Map<String, dynamic>> maps = await db.rawQuery(''
+        'SELECT  * FROM TRANSDETAILS WHERE ( ITEMID  LIKE $dt OR ITEMNAME  LIKE $dt)'
+        ' AND (TRANSTYPE="$transType" AND STATUS >0 ORDER BY LISTID DESC  LIMIT 15;');
+
+    print(maps);
+    return maps;
+  }
+
   // get db data
   Future<dynamic> getIMPORTDETAILS(int? lastId, String? AXDOCNO) async {
     final db = await SQLHelper.db();
     final List<Map<String, dynamic>> maps = await db.rawQuery(''
         'select * FROM IMPORTDETAILS Where id > $lastId AND  AXDOCNO ="$AXDOCNO" LIMIT 15;'
+        '');
+    print(maps);
+    return maps;
+  }
+
+
+  // get db data
+  Future<dynamic> getIMPORTDETAILSSTOCKCOUNT(int? lastId, String? AXDOCNO) async {
+    final db = await SQLHelper.db();
+    final List<Map<String, dynamic>> maps = await db.rawQuery(''
+        'select * FROM IMPORTDETAILS Where id > $lastId AND STATUS<3 AND  AXDOCNO ="$AXDOCNO" LIMIT 15;'
         '');
     print(maps);
     return maps;
@@ -538,6 +650,22 @@ class SQLHelper {
     print(dt);
     final List<Map<String, dynamic>> maps = await db.rawQuery(''
         'select * from  IMPORTDETAILS WHERE  AXDOCNO ="$AXDOCNO" AND (ITEMID  LIKE $dt  OR  ITEMNAME  LIKE $dt);'
+        '');
+    print(maps);
+    return maps;
+  }
+
+
+  // get db data by imported details
+  Future<dynamic> getImportedDetailsBySearchStockCount(
+      String? key, String? AXDOCNO) async {
+    print("axdoc no..368");
+    print(AXDOCNO);
+    final db = await SQLHelper.db();
+    String dt = "'%$key%'";
+    print(dt);
+    final List<Map<String, dynamic>> maps = await db.rawQuery(''
+        'select * from  IMPORTDETAILS WHERE  AXDOCNO ="$AXDOCNO" AND STATUS<1 AND (ITEMID  LIKE $dt  OR  ITEMNAME  LIKE $dt);'
         '');
     print(maps);
     return maps;
@@ -745,6 +873,7 @@ class SQLHelper {
   }
 
   deleteAllFromHistoryPurchaseSscc(String type, id) async {
+
     final db = await SQLHelper.db();
     try {
       await db.rawQuery(''
@@ -1413,7 +1542,8 @@ class SQLHelper {
       TOOUTNEXTDOCNO,
       TOINNEXTDOCNO,
       MJNEXTDOCNO,
-      isDeactivate) async {
+      isDeactivate,
+      SetDefaultQtyByOne) async {
     final db = await SQLHelper.db();
 
     print("DB Line mj : ${MJNEXTDOCNO}");
@@ -1430,7 +1560,8 @@ class SQLHelper {
       "TOOUTNEXTDOCNO": TOOUTNEXTDOCNO,
       "TOINNEXTDOCNO": TOINNEXTDOCNO,
       "MJNEXTDOCNO": MJNEXTDOCNO,
-      "isDeactivate": isDeactivate
+      "isDeactivate": isDeactivate,
+      "SetDefaultQtyByOne" :SetDefaultQtyByOne
     };
     // return 1;
     final id = await db.insert('APPGENERALDATA', data,
@@ -1451,7 +1582,9 @@ class SQLHelper {
       TOOUTNEXTDOCNO,
       TOINNEXTDOCNO,
       MJNEXTDOCNO,
-      isDeactivate) async {
+      isDeactivate,
+      SetDefaultQtyByOne
+      ) async {
     final db = await SQLHelper.db();
     final data = {
       "id": Id,
@@ -1466,7 +1599,8 @@ class SQLHelper {
       "TOOUTNEXTDOCNO": TOOUTNEXTDOCNO,
       "TOINNEXTDOCNO": TOINNEXTDOCNO,
       "MJNEXTDOCNO": MJNEXTDOCNO,
-      "isDeactivate": isDeactivate
+      "isDeactivate": isDeactivate,
+      "SetDefaultQtyByOne":SetDefaultQtyByOne
     };
 
     final id = await db.update('APPGENERALDATA', data,
@@ -1513,6 +1647,7 @@ class SQLHelper {
 
   Future<int> updateTRANSDETAILSWithQty(int Id, qty) async {
     final db = await SQLHelper.db();
+
     // "DEVICEID": DEVICEID,
     // "STORECODE": STORECODE,
     // "PONEXTDOCNO": PONEXTDOCNO,
@@ -1525,9 +1660,8 @@ class SQLHelper {
 
     List<Map<String, dynamic>>? dt;
     try {
-      // dt = await db.rawQuery('SELECT MAX(LISTID) FROM TRANSDETAILS');
+      dt = await db.rawQuery('SELECT MAX(LISTID) FROM TRANSDETAILS');
 
-      dt = await db.rawQuery("SELECT MAX(LISTID) FROM TRANSDETAILS");
 
       print("1420");
       print(dt[0]['MAX(LISTID)']);
@@ -1538,11 +1672,14 @@ class SQLHelper {
       lastId = 1;
     }
 
+
     print("data...1351");
+
+    print("In db  exist  Line 1659 : ${dt![0]['MAX(LISTID)']}");
     // print(dt[0]['LISTID']);
 
     // return "";
-    if (dt![0]['MAX(LISTID)'] == null) {
+    if (dt[0]['MAX(LISTID)'] == null) {
       lastId = 1;
     } else {
       lastId = dt[0]['MAX(LISTID)'] + 1;
@@ -1551,10 +1688,23 @@ class SQLHelper {
     nextId = lastId;
 
     final data = {"QTY": qty, "LISTID": nextId};
+
+    print("Data : ${data}");
+
+
+    print("DB..");
+
+    List<dynamic> exists=[];
+
+
+
+
     final id = await db.update('TRANSDETAILS', data,
-        where: "id = ?",
-        whereArgs: [Id],
+
+        where: "id = ? AND STATUS = ?",
+        whereArgs: [Id,1],
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
+
 
     return id;
   }
@@ -1624,8 +1774,20 @@ class SQLHelper {
 
     if (TRANSTYPE == 4 || TRANSTYPE == 1) {
       List<dynamic> exist = [];
+      print("In db  exist  Line 1746 : ${TRANSTYPE}");
+      exist =
+      TRANSTYPE == 1 ?
 
-      exist = await getFindItemExistOrnotTRANSDETAILS_GRN_STOCKCOUNT(
+      await getFindItemExistOrnotTRANSDETAILS_STOCKCOUNT(
+          DOCNO: DOCNO,
+          ITEMID: ITEMID,
+          ITEMNAME: ITEMNAME,
+          BARCODE: BARCODE,
+          TRANSTYPE: TRANSTYPE,
+          UOM: UOM,
+          BATCHNO: BATCHNO)
+      :
+      await getFindItemExistOrnotTRANSDETAILS_GRN_STOCKCOUNT(
           DOCNO: DOCNO,
           ITEMID: ITEMID,
           ITEMNAME: ITEMNAME,
@@ -1637,6 +1799,7 @@ class SQLHelper {
       print("In db  exist  Line 1518 : ${TRANSTYPE}");
 
       if (exist.isNotEmpty) {
+
         await updateTRANSDETAILSWithQty(exist[0]['id'],
             int.parse(exist[0]['QTY']) + int.parse(QTY.toString()));
         return;
@@ -1999,7 +2162,8 @@ class SQLHelper {
           "TOOUTNEXTDOCNO": data.last['TOOUTNEXTDOCNO'],
           "TOINNEXTDOCNO": data.last['TOINNEXTDOCNO'],
           "MJNEXTDOCNO": data.last['MJNEXTDOCNO'],
-          "isDeactivate": data.last['isDeactivate']
+          "isDeactivate": data.last['isDeactivate'],
+          "SetDefaultQtyByOne" : data.last['SetDefaultQtyByOne']
         };
         return dt;
       } else {
@@ -2089,7 +2253,51 @@ class SQLHelper {
     }
   }
 
-  getTRANSDETAILSINHeader(String? transType) async {
+
+
+  getTRANSDETAILSStockCount(String? transType)
+  async {
+
+
+    final db = await SQLHelper.db();
+
+    try {
+      final data = await db.rawQuery(
+          'SELECT * FROM TRANSDETAILS where STATUS <3 AND   TRANSTYPE="$transType" ORDER BY LISTID DESC LIMIT 15');
+      print("data...401");
+
+      print(data);
+      if (data != [] || data != null) {
+        // final lastId = data.last['id'];
+        // final typeDocument = data.last['transactionType'];
+        // final device = data.last['DEVICEID'];
+        // print("last...");
+        // print(lastId);
+        // var dt = {
+        //   "id": data.last['id'],
+        //   "DEVICEID": data.last['DEVICEID'],
+        //   "STORECODE": data.last['STORECODE'],
+        //   "PONEXTDOCNO": data.last['PONEXTDOCNO'],
+        //   "GRNNEXTDOCNO": data.last['GRNNEXTDOCNO'],
+        //   "RONEXTDOCNO": data.last['RONEXTDOCNO'],
+        //   "RPNEXTDOCNO": data.last['RPNEXTDOCNO'],
+        //   "STNEXTDOCNO": data.last['STNEXTDOCNO'],
+        //   "TONEXTDOCNO": data.last['TONEXTDOCNO'],
+        //   "TOOUTNEXTDOCNO": data.last['TOOUTNEXTDOCNO'],
+        //   "TOINNEXTDOCNO": data.last['TOINNEXTDOCNO'],
+        //   "isDeactivate": data.last['isDeactivate']
+        // };
+        return data;
+      } else {
+        return "";
+      }
+    } catch (e) {
+      return "";
+    }
+  }
+
+  getTRANSDETAILSINHeader(String? transType) async
+  {
     final db = await SQLHelper.db();
 
     try {
@@ -2126,6 +2334,48 @@ class SQLHelper {
       return "";
     }
   }
+
+  getTRANSDETAILSINHeaderByStockCount(String? transType) async
+  {
+    final db = await SQLHelper.db();
+
+    try {
+      final data = await db.rawQuery(
+          'SELECT * FROM TRANSDETAILS where STATUS =1 AND   TRANSTYPE="$transType"');
+      print("data...401");
+
+      print(data);
+      if (data != [] || data != null) {
+        // final lastId = data.last['id'];
+        // final typeDocument = data.last['transactionType'];
+        // final device = data.last['DEVICEID'];
+        // print("last...");
+        // print(lastId);
+        // var dt = {
+        //   "id": data.last['id'],
+        //   "DEVICEID": data.last['DEVICEID'],
+        //   "STORECODE": data.last['STORECODE'],
+        //   "PONEXTDOCNO": data.last['PONEXTDOCNO'],
+        //   "GRNNEXTDOCNO": data.last['GRNNEXTDOCNO'],
+        //   "RONEXTDOCNO": data.last['RONEXTDOCNO'],
+        //   "RPNEXTDOCNO": data.last['RPNEXTDOCNO'],
+        //   "STNEXTDOCNO": data.last['STNEXTDOCNO'],
+        //   "TONEXTDOCNO": data.last['TONEXTDOCNO'],
+        //   "TOOUTNEXTDOCNO": data.last['TOOUTNEXTDOCNO'],
+        //   "TOINNEXTDOCNO": data.last['TOINNEXTDOCNO'],
+        //   "isDeactivate": data.last['isDeactivate']
+        // };
+        return data;
+      } else {
+        return "";
+      }
+    } catch (e) {
+      return "";
+    }
+  }
+
+
+
 
   getTRANSDETAILSHistory(String? transType, String? DOCNO) async {
     final db = await SQLHelper.db();

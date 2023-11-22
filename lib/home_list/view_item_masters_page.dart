@@ -990,22 +990,22 @@ class _ViewItemsOldPageState extends State<ViewItemsOldPage> {
                 footer: CustomFooter(
                   builder: (BuildContext ? context,LoadStatus ? mode){
                     Widget body ;
-                    print("last index 272");
-                    print(mode);
+                    // print("last index 272");
+                    // print(mode);
                     // print(mode?.index == items.length-1);
-                    print(mode == LoadStatus.noMore);
+                    // print(mode == LoadStatus.noMore);
                     if( itemMasters.length == itemMastersLists .length){
-                      print("full loaded");
+                      // print("full loaded");
                       body = Container();
                     }
                     else{
 
                     }
                     if(mode==LoadStatus.idle){
-                      print(LoadStatus.idle);
-                      print("ideal condition");
-                      print(itemMasters.length == itemMastersLists .length);
-                      print("ideal condition");
+                      // print(LoadStatus.idle);
+                      // print("ideal condition");
+                      // print(itemMasters.length == itemMastersLists .length);
+                      // print("ideal condition");
                       if(itemMastersLists.length <=itemMasters.length){
 
                         body = Container()
@@ -1116,6 +1116,7 @@ class _ViewItemsOldPageState extends State<ViewItemsOldPage> {
 
                                           return;
                                         }
+
                                         if(widget.transactionType=="PO"){
 
                                           var dt = await  _sqlHelper.getFindItemExistOrnotTRANSDETAILS(

@@ -244,7 +244,9 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
   }
 
   gettransactionDetails() async {
-    transactionDetails = await _sqlHelper.getTRANSDETAILS(widget.type == 'ST'
+    transactionDetails =
+
+    await _sqlHelper.getTRANSDETAILS(widget.type == 'ST'
         ? "1"
         : widget.type == 'PO'
             ? "3"
@@ -291,7 +293,14 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     print("key");
     print(key);
 
-    transactionDetails = await _sqlHelper.getTRANSDETAILSDetailsBySearch(
+    transactionDetails =
+    // widget.type == 'ST'?
+    //
+    // await _sqlHelper.getTRANSDETAILSDetailsBySearchStockCount(
+    // key,"1"):
+
+
+    await _sqlHelper.getTRANSDETAILSDetailsBySearch(
         key,
         widget.type == 'ST'
             ? "1"
@@ -329,6 +338,7 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     setState(() {
       isLoading = false;
     });
+
   }
 
   set() {
@@ -406,7 +416,35 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
                                 });
                                 return;
                               }
-                              var result = await _sqlHelper
+                              var result =
+                                  widget.type == 'ST' ?
+                              await _sqlHelper
+                              .getTRANSDETAILSDetailsBySearchStock(
+                              barcodeController.text,
+                              widget.type == 'ST'
+                              ? "1"
+                                  : widget.type == 'PO'
+                              ? "3"
+                                  : widget.type == 'GRN'
+                              ? "4"
+                                  : widget.type == 'RO'
+                              ? "9"
+                                  : widget.type == 'RP'
+                              ? "10"
+                                  : widget.type == 'TO'
+                              ? "11"
+                                  : widget.type ==
+                              'TO-OUT'
+                              ? "5"
+                                  : widget.type ==
+                              'TO-IN'
+                              ? "6"
+                                  : widget.type ==
+                              'MJ'
+                              ? "22"
+                                  : "")
+                              :
+                              await _sqlHelper
                                   .getTRANSDETAILSDetailsBySearch(
                                       barcodeController.text,
                                       widget.type == 'ST'
@@ -439,6 +477,7 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
                                   transactionDetailsLists = [];
                                   transactionDetails = [];
                                 });
+
                                 await setValueLoadtransactionDetails(
                                     barcodeController.text);
                                 setState(() {
@@ -603,21 +642,17 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
                               builder:
                                   (BuildContext? context, LoadStatus? mode) {
                                 Widget body;
-                                print("last index 272");
-                                print(mode);
+                                // print("last index 272");
+                                // print(mode);
                                 // print(mode?.index == items.length-1);
-                                print(mode == LoadStatus.noMore);
+                                // print(mode == LoadStatus.noMore);
                                 if (transactionDetails.length ==
                                     transactionDetailsLists.length) {
-                                  print("full loaded");
+                                  // print("full loaded");
                                   body = Container();
                                 } else {}
                                 if (mode == LoadStatus.idle) {
-                                  print(LoadStatus.idle);
-                                  print("ideal condition");
-                                  print(transactionDetails.length ==
-                                      transactionDetailsLists.length);
-                                  print("ideal condition");
+
                                   if (transactionDetailsLists.length <=
                                       transactionDetails.length) {
                                     body = Container()
@@ -652,7 +687,271 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
                             onLoading: _onLoading,
                             child: ListView.builder(
                               itemBuilder: (context, int index) {
-                                return InkWell(
+                                return
+                                widget.type =='ST'
+                                  ?
+                                InkWell(
+                                  hoverColor: Colors.red,
+                                  onTap: () {},
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          color: Colors.yellow[50],
+                                          borderRadius:
+                                          BorderRadius.circular(15.0),
+                                          border: Border.all(
+                                              color: Colors.black12, width: 1.2)
+                                        // color: Colors.red,
+                                      ),
+                                      margin: EdgeInsets.only(
+                                          right: 10.0,
+                                          bottom: 10.0,
+                                          top: 10.0,
+                                          left: 10.0),
+                                      padding: EdgeInsets.only(
+                                          left: 10.0, bottom: 15, top: 15),
+                                      //   height: 300,
+
+                                      child: Column(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Expanded(child: Text("Status  :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                  index]
+                                                  ['STATUS'] == 1 ?
+                                                  "New" :
+                                                  transactionDetailsLists[
+                                                  index] ['STATUS'] == 2 ? "Posted" :
+                                                  ""))
+
+                                            ],
+                                          ),
+                                          SizedBox(height: 5,),
+                                          Row(
+                                            children: [
+                                              Expanded(child: Text("Sl No  :")),
+                                              Expanded(
+                                                  child: Text("${index + 1}"))
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              // {id: 2, ITEMBARCODE: 3330000307227, ItemId: 33300003,
+                                              //   ItemName: 21ST CENT FOLICACID TAB 100S,
+                                              //   DATAAREAID: 1000, WAREHOUSE: ,
+                                              //   CONFIGID: , COLORID: , SIZEID: , STYLEID: ,
+                                              //   INVENTSTATUS: , QTY: 0.0, UNIT: PACK, ItemAmount: 0.0}
+                                              Expanded(
+                                                  child: Text("Item ID :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                      index]
+                                                      ['ITEMID'] ??
+                                                          "")),
+                                              Expanded(
+                                                  child: IconButton(
+                                                    hoverColor: Colors.red,
+                                                    onPressed: () async {
+
+                                                      // return;
+
+                                                      showDialogMessage(
+                                                          context,
+                                                          transactionDetailsLists[
+                                                          index]['id'],
+                                                          index);
+                                                      // return;
+
+                                                      // await _sqlHelper.addTRANSDETAILS(
+                                                      //     HRecId :  transactionData[0]['RecId']  ,
+                                                      //     DOCNO :  transactionData[0]['DOCNO'] ,
+                                                      //     ITEMID :transactionDetailsLists[index]['ITEMID'] ,
+                                                      //     ITEMNAME : transactionDetailsLists[index]['ITEMNAME'],
+                                                      //     TRANSTYPE : widget.transactionType == "STOCK COUNT" ? 1 :"" ,
+                                                      //     DEVICEID :activatedDevice ,
+                                                      //     QTY : transactionDetailsLists[index]['QTY'],
+                                                      //     UOM  : transactionDetailsLists[index]['UOM'],
+                                                      //     BARCODE :transactionDetailsLists[index]['BARCODE'],
+                                                      //     CREATEDDATE : DateTime.now().toString() ,
+                                                      //     INVENTSTATUS : transactionDetailsLists[index]['INVENTSTATUS'],
+                                                      //     SIZEID : transactionDetailsLists[index]['SIZEID'],
+                                                      //     COLORID :  transactionDetailsLists[index]['COLORID'],
+                                                      //     CONFIGID :  transactionDetailsLists[index]['CONFIGID'],
+                                                      //     STYLESID :  transactionDetailsLists[index]['STYLESID'],
+                                                      //     STORECODE :  activatedStore,
+                                                      //     LOCATION :  transactionData[0]['VRLOCATION'].toString()
+                                                      // );
+                                                      //
+                                                      // Navigator.push(context, MaterialPageRoute(
+                                                      //     builder: (context)=>TransactionViewPage(
+                                                      //       currentIndex: 1,
+                                                      //       pageType: widget.transactionType,
+                                                      //     )));
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.delete_forever_outlined,
+                                                      color: Colors.red,
+                                                      size: 45,
+                                                    ),
+                                                  ))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text("BARCODE  :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                      index]
+                                                      ['BARCODE'] ??
+                                                          ""))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text("Item Name :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                      index]
+                                                      ['ITEMNAME'] ??
+                                                          ""))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(child: Text("QTY : ")),
+                                              Expanded(
+                                                  child: Text(
+                                                      "${transactionDetailsLists[index]['QTY'] ?? ""}   ${transactionDetailsLists[index]['UOM'] ?? ""}"))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text("BATCH NO  :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                      index]
+                                                      ['BATCHNO'] ??
+                                                          ""))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text(
+                                                      "Manufacturer Date :")),
+                                              Expanded(
+                                                  child: Text(
+                                                    // DateTime.parse(
+                                                      transactionDetailsLists[
+                                                      index]
+                                                      [
+                                                      'PRODDATE']
+                                                          .toString()
+                                                          // )
+                                                          ==
+                                                          "null"
+                                                          ? ""
+                                                          : transactionDetailsLists[
+                                                      index]
+                                                      ['PRODDATE']
+                                                          .toString()
+                                                    // .substring(0,10)
+                                                  ))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text("Expiry Date :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                      index]
+                                                      [
+                                                      'EXPDATE']
+                                                          .toString() ==
+                                                          "null"
+                                                          ? ""
+                                                          : transactionDetailsLists[
+                                                      index]
+                                                      ['EXPDATE']
+                                                          .toString()
+                                                    // .substring(0,10)
+
+                                                  ))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child:
+                                                  Text("Batch Enabled :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      transactionDetailsLists[
+                                                      index]
+                                                      [
+                                                      'BatchEnabled']
+                                                          .toString() ==
+                                                          "1"
+                                                          ? "true"
+                                                          : "false"))
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  child:
+                                                  Text("Batched Item :")),
+                                              Expanded(
+                                                  child: Text(
+                                                      "${transactionDetailsLists[index]['BatchedItem'].toString() == "1" ? "true" : "false"}"))
+                                            ],
+                                          ),
+                                        ],
+                                      )),
+                                )
+                                :
+
+                                  InkWell(
                                   hoverColor: Colors.red,
                                   onTap: () {},
                                   child: Container(
@@ -705,10 +1004,7 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
                                                   child: IconButton(
                                                 hoverColor: Colors.red,
                                                 onPressed: () async {
-                                                  print(transactionDetailsLists[
-                                                      index]);
-                                                  // print(widget.transactionType);
-                                                  print(transType);
+
                                                   // return;
 
                                                   showDialogMessage(
@@ -941,7 +1237,7 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
                   Navigator.pop(context);
                   // print(transactionDetailsLists[index]);
                   // print(widget.transactionType);
-                  print(transType);
+
                   // return;
                   var ind;
                   setState(() {

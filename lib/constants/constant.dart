@@ -14,7 +14,7 @@ class APPConstants {
 
 
 
-  static var appVersion ="v2.0";
+  static var appVersion ="v3.0";
 
 
    TextStyle bodyText= TextStyle(

@@ -49,13 +49,14 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
 
   TextEditingController MJNextDocNoController = TextEditingController();
 
+  TextEditingController NoOfBarcodePushedToStockCountController =new TextEditingController(text: "1");
   bool disabledCamera = false;
   bool disabledUOMSelection = false;
   bool disabledContinuosScan = false;
 
   bool? showDimension = false;
 
-  bool? showQuantityExceed = false;
+  bool? setQuantityDefault = false;
 
   final SQLHelper _sqlHelper = SQLHelper();
   bool? isLoad = true;
@@ -701,11 +702,17 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
     print("...169");
     print(updateDevice);
 
-    showDimension = await prefs?.getBool("showDimensions") == null
-        ? false
-        : await prefs?.getBool("showDimensions");
+    // showDimension = await prefs?.getBool("showDimensions") == null
+    //     ? false
+    //     : await prefs?.getBool("showDimensions");
 
     showDimension = prefs?.getBool("showDimensions") == true ? true : false;
+
+    setQuantityDefault =  prefs?.getBool("setQuantityDefault")== true
+    ? true: false;
+    setState((){
+
+    });
 
     // showQuantityExceed =
     // prefs?.getBool("showQuantityExceed") == true ? true : false;
@@ -820,6 +827,9 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
       RPNextDocNoController.text = APPGENERALDATASave['RPNEXTDOCNO'].toString();
       RONextDocNoController.text = APPGENERALDATASave['RONEXTDOCNO'].toString();
       MJNextDocNoController.text = APPGENERALDATASave['MJNEXTDOCNO'].toString();
+      print("The data is 827");
+print(APPGENERALDATASave['SetDefaultQtyByOne'].toString());
+      NoOfBarcodePushedToStockCountController.text = APPGENERALDATASave['SetDefaultQtyByOne'].toString();
 
       selectDevice = APPGENERALDATASave['DEVICEID'].toString();
       selectStore = APPGENERALDATASave['STORECODE'].toString();
@@ -1113,7 +1123,6 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
                         ),),
                       ),
                     ),
-
                     SizedBox(
                       width: 5,
                     ),
@@ -2053,16 +2062,42 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
                               focusedBorder: APPConstants().focusInputBorder,
                               enabledBorder: APPConstants().enableInputBorder,
                               isDense: true,
-                              contentPadding: EdgeInsets.only(
+                              contentPadding:
+                              const EdgeInsets.only(
                                   left: 10.0, bottom: 10.0, top: 10.0),
                               // hintText: "TOIN -Next Doc No",
                               labelText: "MJ -Next Doc No",
-                              labelStyle: TextStyle(color: Colors.black26),
-                              border: OutlineInputBorder(
+                              labelStyle: const TextStyle(color: Colors.black26),
+                              border: const OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey))),
                         ),
                         SizedBox(
                           height: 10,
+                        ),
+
+                        TextFormField(
+                          // readOnly: true,
+                          validator: (value) =>
+                          value!.isEmpty ? 'Required *' : null,
+                          controller: NoOfBarcodePushedToStockCountController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+\.?\d{0,1}')),
+                          ],
+                          keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                          decoration: InputDecoration(
+                              focusedBorder: APPConstants().focusInputBorder,
+                              enabledBorder: APPConstants().enableInputBorder,
+                              isDense: true,
+                              contentPadding:
+                              const EdgeInsets.only(
+                                  left: 10.0, bottom: 10.0, top: 10.0),
+                              // hintText: "TOIN -Next Doc No",
+                              labelText: "No of Barcode pushed to D365 at a time (Stock Count)",
+                              labelStyle: const TextStyle(color: Colors.black26),
+                              border: const OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey))),
                         ),
                         Row(
                           children: [
@@ -2155,36 +2190,36 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
                             )
                           ],
                         ),
-                        // Row(
-                        //   children: [
-                        //
-                        //     // SizedBox(width: 5,),
-                        //     Expanded(
-                        //
-                        //       child: Row(
-                        //
-                        //         children: [
-                        //           Container(
-                        //             width: 30,
-                        //             child: Checkbox(
-                        //
-                        //               activeColor: APPConstants().colorRed,
-                        //               value:showQuantityExceed,
-                        //               onChanged: (v) {
-                        //                 showQuantityExceed = v!;
-                        //                 setState(() {});
-                        //               },
-                        //             ),
-                        //           ),
-                        //           Text(
-                        //             "Show Quantity Exceed",
-                        //             style: TextStyle(fontSize: 11),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     )
-                        //   ],
-                        // ),
+                        Row(
+                          children: [
+
+                            // SizedBox(width: 5,),
+                            Expanded(
+
+                              child: Row(
+
+                                children: [
+                                  Container(
+                                    width: 30,
+                                    child: Checkbox(
+
+                                      activeColor: APPConstants().colorRed,
+                                      value:setQuantityDefault,
+                                      onChanged: (v) {
+                                        setQuantityDefault = v!;
+                                        setState(() {});
+                                      },
+                                    ),
+                                  ),
+                                  Text(
+                                    "Set stock count qty deafult to '1'",
+                                    style: TextStyle(fontSize: 11),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
 
                         Row(
                           children: [
@@ -2276,7 +2311,7 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
 
       await prefs?.setBool("showDimensions", showDimension!);
 
-      await prefs?.setBool("showQuantityExceed", showQuantityExceed!);
+      await prefs?.setBool("setQuantityDefault", setQuantityDefault!);
 
       print("conditions 936");
       print(selectDevice);
@@ -2388,7 +2423,8 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
             TOOutNextDocNoController.text,
             TOINNextDocNoController.text,
             MJNextDocNoController.text,
-            true);
+            true,
+        NoOfBarcodePushedToStockCountController.text);
         listenStatusValues();
         await activateDeviceOrUpdateDevice();
       } else {
@@ -2413,7 +2449,8 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
             TOOutNextDocNoController.text,
             TOINNextDocNoController.text,
             MJNextDocNoController.text,
-            true);
+            true,
+        NoOfBarcodePushedToStockCountController.text);
         listenStatusValues();
         await activateDeviceOrUpdateDevice();
       }
@@ -2423,6 +2460,7 @@ class _AppGeneralPageState extends State<AppGeneralPage> {
       print('Form is invalid');
       print(selectDevice);
       print(selectStore);
+
     }
   }
 

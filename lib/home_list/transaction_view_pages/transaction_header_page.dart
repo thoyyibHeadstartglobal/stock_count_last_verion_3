@@ -96,9 +96,9 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
   @override
   void dispose() {
 
-    FocusManager.instance.dispose();
+    // FocusManager.instance.dispose();
     _connectivitySubscription.cancel();
-    Focus.of(context).dispose();
+    // Focus.of(context).dispose();
     FocusScope.of(context).unfocus();
     super.dispose();
   }
@@ -205,7 +205,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
   getOrderNos() async {
     orderNos = [];
-    orderNos = await _sqlHelper.getHeaderOrders(widget.type == 'ST'
+    orderNos =
+    await _sqlHelper.getHeaderOrders(widget.type == 'ST'
         ? "1"
         : widget.type == 'PO'
             ? "3"
@@ -230,9 +231,13 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
   List<dynamic> transactionData = [];
   List<dynamic> transactionDetails = [];
   List<dynamic> transactionDetailsList = [];
+
   getToken() async {
+
     await getOrderNos();
-    transactionData = await _sqlHelper.getTRANSHEADER(widget.type == 'ST'
+
+    transactionData =
+    await _sqlHelper.getTRANSHEADER(widget.type == 'ST'
         ? "1"
         : widget.type == 'PO'
             ? "3"
@@ -267,6 +272,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       isActivateNew = true;
       isActivateSave = true;
     }
+
 
     transactionDetails =
         await _sqlHelper.getTRANSDETAILSINHeader(widget.type == 'ST'
@@ -726,12 +732,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print(isActivated);
-    }
-    if (kDebugMode) {
-      print(activatedStore);
-    }
+
+
     return Scaffold(
       // appBar: AppBar(
       //   title: Text("${widget.type} Header page"),
@@ -2519,105 +2521,222 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                   )),
                 ],
               ),
+              Visibility(
+                visible:  widget.type != "ST",
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: IgnorePointer(
+                      ignoring: !isCloseTransactions!,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              // backgroundColor:  Color(0xffed648e)
+                              backgroundColor: Colors.red),
+                          onPressed: () async {
+
+                            await _sqlHelper.updateStatusStockCount(
+                                2,
+                                documentNoController?.text.trim() ?? "",
+                                widget.type == 'ST'
+                                    ? "1"
+                                    : widget.type == 'PO'
+                                        ? "3"
+                                        : widget.type == 'GRN'
+                                            ? "4"
+                                            : widget.type == 'RO'
+                                                ? "9"
+                                                : widget.type == 'RP'
+                                                    ? "10"
+                                                    : widget.type == 'TO'
+                                                        ? "11"
+                                                        : widget.type == "TO-OUT"
+                                                            ? "5"
+                                                            : widget.type ==
+                                                                    "TO-IN"
+                                                                ? "6"
+                                                                : "",
+                                selectOrder);
+
+                            if (transactionDetails.isNotEmpty) {
+                              isPostTransactions = true;
+                              isCloseTransactions = false;
+                              setState(() {});
+                            }
+                          },
+                          child: Text(
+                            "CLOSE TRANSACTION",
+                            style: TextStyle(
+                                color: !isCloseTransactions!
+                                    ? APPConstants().disabledRed
+                                    : Colors.white),
+                          )),
+                    )),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible:  widget.type != "ST",
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: IgnorePointer(
+                      ignoring: !isPostTransactions!,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              backgroundColor: Colors.red
+                              // Color(0xffed648e)
+                              ),
+                          onPressed: () async {
+                            if (_connectionStatus == ConnectivityResult.none) {
+                              print("Internet connection false 431");
+
+                              showDialogGotData("No Internet Connection");
+
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //
+                              //   const SnackBar(
+                              //     duration:Duration(seconds: 2) ,
+                              //     backgroundColor: Colors.red,
+                              //       content: Text(
+                              //         'No Internet Connection',
+                              //         textAlign: TextAlign.center,
+                              //       )),
+                              // );
+
+                              // Navigator.pop(context);
+
+                              return;
+                            }
+
+                            showDialogGotDataPost(
+                                "Do You Want to Post This Transaction ? ");
+
+                            print("post transactions");
+                          },
+                          child: Text(
+                            "POST TRANSACTION",
+                            style: TextStyle(
+                                color: !isPostTransactions!
+                                    ? APPConstants().disabledRed
+                                    : Colors.white),
+                          )),
+                    )),
+                  ],
+                ),
+              ),
+
+              Visibility(
+                visible:  widget.type == "ST",
+
+                child:     Row(
+                  children: [
+                    Expanded(
+                        child: IgnorePointer(
+                          ignoring: !isPostTransactions!,
+                          child: TextButton(
+                              style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0)),
+                                  backgroundColor: Colors.red
+                                // Color(0xffed648e)
+                              ),
+                              onPressed: () async {
+                                if (_connectionStatus == ConnectivityResult.none) {
+                                  print("Internet connection false 431");
+
+                                  showDialogGotData("No Internet Connection");
+
+                                  // ScaffoldMessenger.of(context).showSnackBar(
+                                  //
+                                  //   const SnackBar(
+                                  //     duration:Duration(seconds: 2) ,
+                                  //     backgroundColor: Colors.red,
+                                  //       content: Text(
+                                  //         'No Internet Connection',
+                                  //         textAlign: TextAlign.center,
+                                  //       )),
+                                  // );
+
+                                  // Navigator.pop(context);
+
+                                  return;
+                                }
+
+                                showDialogGotDataPost(
+                                    "Do You Want to Post This Transaction ? ");
+
+                                print("post transactions");
+                              },
+                              child: Text(
+                                "POST TRANSACTION",
+                                style: TextStyle(
+                                    color: !isPostTransactions!
+                                        ? APPConstants().disabledRed
+                                        : Colors.white),
+                              )),
+                        )),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: widget.type == "ST",
+
+                child:
               Row(
                 children: [
                   Expanded(
                       child: IgnorePointer(
-                    ignoring: !isCloseTransactions!,
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            // backgroundColor:  Color(0xffed648e)
-                            backgroundColor: Colors.red),
-                        onPressed: () async {
-                          await _sqlHelper.updateStatusStockCount(
-                              2,
-                              documentNoController?.text.trim() ?? "",
-                              widget.type == 'ST'
-                                  ? "1"
-                                  : widget.type == 'PO'
+                        ignoring: !isCloseTransactions!,
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                // backgroundColor:  Color(0xffed648e)
+                                backgroundColor: Colors.red),
+                            onPressed: () async {
+                              await _sqlHelper.updateStatusStockCount(
+                                  2,
+                                  documentNoController?.text.trim() ?? "",
+                                  widget.type == 'ST'
+                                      ? "1"
+                                      : widget.type == 'PO'
                                       ? "3"
                                       : widget.type == 'GRN'
-                                          ? "4"
-                                          : widget.type == 'RO'
-                                              ? "9"
-                                              : widget.type == 'RP'
-                                                  ? "10"
-                                                  : widget.type == 'TO'
-                                                      ? "11"
-                                                      : widget.type == "TO-OUT"
-                                                          ? "5"
-                                                          : widget.type ==
-                                                                  "TO-IN"
-                                                              ? "6"
-                                                              : "",
-                              selectOrder);
-                          if (transactionDetails.length > 0) {
-                            isPostTransactions = true;
-                            isCloseTransactions = false;
-                            setState(() {});
-                          }
-                        },
-                        child: Text(
-                          "CLOSE TRANSACTION",
-                          style: TextStyle(
-                              color: !isCloseTransactions!
-                                  ? APPConstants().disabledRed
-                                  : Colors.white),
-                        )),
-                  )),
+                                      ? "4"
+                                      : widget.type == 'RO'
+                                      ? "9"
+                                      : widget.type == 'RP'
+                                      ? "10"
+                                      : widget.type == 'TO'
+                                      ? "11"
+                                      : widget.type == "TO-OUT"
+                                      ? "5"
+                                      : widget.type ==
+                                      "TO-IN"
+                                      ? "6"
+                                      : "",
+                                  selectOrder);
+                              if (transactionDetails.length > 0) {
+                                isPostTransactions = true;
+                                isCloseTransactions = false;
+                                setState(() {});
+                              }
+                            },
+                            child: Text(
+                              "CLOSE TRANSACTION",
+                              style: TextStyle(
+                                  color: !isCloseTransactions!
+                                      ? APPConstants().disabledRed
+                                      : Colors.white),
+                            )),
+                      )),
                 ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                      child: IgnorePointer(
-                    ignoring: !isPostTransactions!,
-                    child: TextButton(
-                        style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0)),
-                            backgroundColor: Colors.red
-                            // Color(0xffed648e)
-                            ),
-                        onPressed: () async {
-                          if (_connectionStatus == ConnectivityResult.none) {
-                            print("Internet connection false 431");
+              ),),
 
-                            showDialogGotData("No Internet Connection");
-
-                            // ScaffoldMessenger.of(context).showSnackBar(
-                            //
-                            //   const SnackBar(
-                            //     duration:Duration(seconds: 2) ,
-                            //     backgroundColor: Colors.red,
-                            //       content: Text(
-                            //         'No Internet Connection',
-                            //         textAlign: TextAlign.center,
-                            //       )),
-                            // );
-
-                            // Navigator.pop(context);
-
-                            return;
-                          }
-
-                          showDialogGotDataPost(
-                              "Do You Want to Post This Transaction ? ");
-
-                          print("post transactions");
-                        },
-                        child: Text(
-                          "POST TRANSACTION",
-                          style: TextStyle(
-                              color: !isPostTransactions!
-                                  ? APPConstants().disabledRed
-                                  : Colors.white),
-                        )),
-                  )),
-                ],
-              ),
               Row(
                 children: [
                   Expanded(
@@ -2638,6 +2757,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                           ))),
                 ],
               ),
+
             ],
           ),
         ),
