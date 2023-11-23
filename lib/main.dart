@@ -70,6 +70,8 @@ var connectionStatus;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
+        // navigatorObservers:[_NavigatorHistory],
       debugShowCheckedModeBanner: false,
       // title: 'Flutter Demo',
       // theme: ThemeData(

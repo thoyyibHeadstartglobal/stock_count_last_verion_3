@@ -309,6 +309,13 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     // isCloseTransactions =false;
 
     if (transactionData.length > 0) {
+      pageStatus = await _sqlHelper.countedStockTotal(
+          AXDOCNO:transactionData[0]['AXDOCNO'] ,
+          DOCNO:transactionData[0]['DOCNO']
+      );
+
+      setState((){
+      });
       transactionData[0]['STATUS'] == 0
           ? isActivateSave = true
           : transactionData[0]['STATUS'] == 2
@@ -450,17 +457,29 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       // getTatmeenDetails();
       print(token);
     } catch (e) {}
+
+
+
+
   }
 
+  dynamic pageStatus;
   String? docNo;
 
   getUserData() async {
+
+
+
+
     setState(() {
       isActivated = true;
     });
     prefs = await SharedPreferences.getInstance();
     username = await prefs?.getString("username");
     companyCode = await prefs!.getString("companyCode");
+    await prefs?.setBool("lineDeleted", true);
+    print(await prefs?.getBool("lineDeleted"));
+    print("Line Deleted as: 469 : ");
 
     // password = await prefs?.getString("password");
     // print(context.router?.currentPath);
@@ -2757,6 +2776,19 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                           ))),
                 ],
               ),
+
+              SizedBox(height: 20,),
+
+              Wrap(
+                children: [
+                        Text("${pageStatus??""}",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red
+                        ),)
+                ],
+              )
 
             ],
           ),

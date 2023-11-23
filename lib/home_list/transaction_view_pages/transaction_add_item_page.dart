@@ -639,12 +639,12 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
             print("line 679 : ${!_focusNodeBarcode.hasFocus}"
                 "${!_focusNodeQty.hasFocus}");
 
-            if (!_focusNodeBarcode.hasFocus) {
-              // Focus.of(context).unfocus();
-
-              // Focus.of(context).notifyListeners();
-              Focus.of(context).requestFocus(_focusNodeQty);
-            }
+            // if (!_focusNodeBarcode.hasFocus) {
+            //   // Focus.of(context).unfocus();
+            //
+            //   // Focus.of(context).notifyListeners();
+            //   Focus.of(context).requestFocus(_focusNodeQty);
+            // }
           } else {
             print("Line 744 ");
 // return;
@@ -963,19 +963,19 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       });
     }
 
-    if (barcodeController.text.trim() != "") {
-      FocusScope.of(context).requestFocus(_focusNodeQty);
-      print(barcodeScanData);
-      // FocusManager.instance.primaryFocus?.unfocus();
-      //
-      //  Focus.of(context).requestFocus(_focusNodeBarcode);
-      // FocusScope.of(context).focusedChild?.unfocus();
-      //
-      // Focus.of(context).requestFocus(_focusNodeBarcode);
-    } else {
-      FocusScope.of(context).requestFocus(_focusNodeBarcode);
-      print(barcodeScanData);
-    }
+    // if (barcodeController.text.trim() != "") {
+    //   FocusScope.of(context).requestFocus(_focusNodeQty);
+    //   print(barcodeScanData);
+    //   // FocusManager.instance.primaryFocus?.unfocus();
+    //   //
+    //   //  Focus.of(context).requestFocus(_focusNodeBarcode);
+    //   // FocusScope.of(context).focusedChild?.unfocus();
+    //   //
+    //   // Focus.of(context).requestFocus(_focusNodeBarcode);
+    // } else {
+    //   FocusScope.of(context).requestFocus(_focusNodeBarcode);
+    //   print(barcodeScanData);
+    // }
   }
 
   Future<void> _onQRViewCreated(QRViewController controller) async {
@@ -1042,6 +1042,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
   @override
   void dispose() {
+
 
     // FocusManager?.instance.dispose();
     _focusNodeBarcode.dispose();
@@ -1139,8 +1140,11 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
   DateTime nowDate = DateTime.now();
   bool? lineDeleted = false;
+  bool ? defaultStockCountCheck =false;
 
   getTransactionDetails() async {
+
+
     widget.isImportedSearch != null && widget.isImportedSearch!
         ? setState(() {
             importedSearch = true;
@@ -1212,7 +1216,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     print(widget.transDetails);
     print(importedSearch);
 
+
     if (lineDeleted != null && lineDeleted!) {
+      // await prefs!.setBool("lineDeleted", false);
       FocusScope.of(context).requestFocus(_focusNodeBarcode);
 
       itemIdController.clear();
@@ -1234,9 +1240,11 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
       setState(() {});
 
+
       await prefs!.setBool("lineDeleted", false);
 
       return;
+
     }
 
     if (importedSearch != null && importedSearch!) {
@@ -1283,6 +1291,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
 
         setState(() {
+
           barcodeController.text = widget.transDetails['ITEMBARCODE'];
           itemIdController.text = widget.transDetails['ItemId'] ?? "";
           descriptionController.text = widget.transDetails['ItemName'] ?? "";
@@ -1295,6 +1304,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
           styleController.text = widget.transDetails['STYLEID'] ?? "";
           configController.text = widget.transDetails['CONFIGID'] ?? "";
           print( "Line 1180 ..${barcodeScanData}");
+
 
           remainedQuantityController.text =
               widget.transDetails['QTY']?.toString() ?? "";
@@ -1447,35 +1457,76 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         bool ? val = enabledCheck[0]['BatchEnabled'].toString() =="1" &&
                 enabledCheck[0]['BatchedItem'].toString() =="0";
 
-        if(
-        importedSearch !=null
-            && importedSearch!
-        && transType == "STOCK COUNT" &&
-            !val)
-        {
+        if(importedSearch != null && importedSearch! && widget.transDetails != null
+            &&
+            defaultStockCountCheck! && transType == "STOCK COUNT" ){
 
+          setState((){
+            qtyController.text= "1";
 
-          ScaffoldMessenger.of(context)
-              .showSnackBar(
-            const SnackBar(
-                backgroundColor:
-                Colors.red,
-                content: Text(
-                  'Item Adding Successfully',
-                  textAlign:
-                  TextAlign.center,
-                )),
-          );
-
-
-          Future.delayed(Duration(seconds: 3),(){
-            ScaffoldMessenger.of(context).clearSnackBars();
           });
+          FocusManager.instance.primaryFocus!.requestFocus(_focusNodeQty);
+
+          if(lineDeleted!){
+
+            itemIdController.clear();
+            barcodeController.clear();
+            descriptionController.clear();
+            uomController.clear();
+            sizeController.clear();
+            colorController.clear();
+            styleController.clear();
+            configController.clear();
+            qtyController.clear();
+            expDateController.clear();
+            productionDateController.clear();
+            batchNoController.clear();
+            selectedEXPDate = null;
+            selectedMGFDate = null;
+
+            remainedQuantityController.clear();
+
+            setState(() {});
+
+            await prefs!.setBool("lineDeleted", false);
+
+          }
+
 
         }
+
+
+        // if(
+        // importedSearch !=null
+        //     && importedSearch!
+        // && transType == "STOCK COUNT" &&
+        //     !val)
+        // {
+        //
+        //
+        //   ScaffoldMessenger.of(context)
+        //       .showSnackBar(
+        //     const SnackBar(
+        //         backgroundColor:
+        //         Colors.red,
+        //         content: Text(
+        //           'Item Adding Successfully',
+        //           textAlign:
+        //           TextAlign.center,
+        //         )),
+        //   );
+        //
+        //
+        //   Future.delayed(Duration(seconds: 3),(){
+        //     ScaffoldMessenger.of(context).clearSnackBars();
+        //   });
+
+        // }
+
       }
 
-      FocusScope.of(context).requestFocus(_focusNodeQty);
+      // FocusScope.of(context).requestFocus(_focusNodeQty);
+
     }
 
     if (barcodeController.text.trim() == "") {
@@ -1674,6 +1725,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     updateDevice = await prefs!.getString("updateDevice");
 
     lineDeleted = await prefs!.getBool("lineDeleted") ?? false;
+
+    defaultStockCountCheck = await prefs!.getBool("setQuantityDefault")??false;
+
+
     print("...169");
     print(updateDevice);
 
@@ -1730,6 +1785,15 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       // getTatmeenDetails();
       // print(token);
     } catch (e) {}
+
+    if( barcodeController.text != ""){
+
+      FocusScope.of(context).requestFocus(_focusNodeQty);
+
+    }
+    else{
+      FocusScope.of(context).requestFocus(_focusNodeBarcode);
+    }
   }
 
   bool? isFocus = true;
@@ -1746,9 +1810,15 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
   void initState() {
 
     getTransactionDetails();
-    print("uom data available 493 : ${disabledUOMSelection}");
+
 
     getToken();
+
+
+    print("Line Deleted 1810 : ${lineDeleted}");
+    print(widget.transDetails);
+
+
 
     _focusNodeBarcode.addListener(() async {
       // if(barcodeController.text.trim() != ""){
@@ -1836,6 +1906,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         // });
       }
     });
+
+
     super.initState();
   }
 
@@ -2285,6 +2357,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
   Widget build(BuildContext context) {
 
      // print("Adding Parameter : ${disabledContinuosScan}");
+
 
 
     return Scaffold(
@@ -5231,7 +5304,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                 }
 
-                                lineDeleted = await prefs!.setBool("lineDeleted",true);
+                                // lineDeleted = await prefs!.setBool("lineDeleted",true);
                               }
                             }
                             FocusScope.of(context)
@@ -5684,6 +5757,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                               batchNoController.clear();
                               remainedQuantityController.clear();
 
+                              // await prefs!.setBool("lineDeleted",true);
+
                               setState(() {});
                               selectedEXPDate = null;
                               selectedMGFDate = null;
@@ -5695,17 +5770,17 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                 .requestFocus(_focusNodeBarcode);
                           }
 
-                          if (_focusNodeQty.hasFocus &&
-                              qtyController.text == "") {
-                            // FocusScope.of(context)
-                            // .unfocus();
-                            FocusScope.of(context)
-                                .requestFocus(_focusNodeBarcode);
-                          } else {}
-                          // FocusManager.instance.primaryFocus?.unfocus();
-                          // Focus.of(context).unfocus();
-                          FocusScope.of(context)
-                              .requestFocus(_focusNodeBarcode);
+                          // if (_focusNodeQty.hasFocus &&
+                          //     qtyController.text == "") {
+                          //   // FocusScope.of(context)
+                          //   // .unfocus();
+                          //   FocusScope.of(context)
+                          //       .requestFocus(_focusNodeBarcode);
+                          // } else {}
+                          // // FocusManager.instance.primaryFocus?.unfocus();
+                          // // Focus.of(context).unfocus();
+                          // FocusScope.of(context)
+                          //     .requestFocus(_focusNodeBarcode);
                           // FocusScope.of(context).requestFocus( FocusNode());
                           setState(() {
                             isFocus = true;
@@ -6148,10 +6223,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         //   isPostTransactions = false;
         //   isCloseTransactions = false;
         // });
-        showDialogGotData(
-            "Transaction Posted ${responseJson[0]['Message'].toString()}fully");
+        // showDialogGotData(
+        //     "Transaction Posted ${responseJson[0]['Message'].toString()}fully");
 
-        lineDeleted = await prefs!.setBool("lineDeleted",true);
+        // lineDeleted = await prefs!.setBool("lineDeleted",true);
 
       } else {
         showDialogGotData(responseJson[0]['Message'].toString());

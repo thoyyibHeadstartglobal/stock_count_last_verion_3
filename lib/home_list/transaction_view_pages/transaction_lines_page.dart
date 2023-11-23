@@ -56,6 +56,11 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
   var transType = "";
 
   getTransTypes() {
+
+
+    print("Line 459 The previous route is : lines");
+
+
     print(widget.type);
     if (widget.type == "ST") {
       setState(() {
@@ -168,6 +173,7 @@ class _TranscationLinesPageState extends State<TranscationLinesPage> {
     getStore = await prefs!.getString("getStore");
     getDeactivate = await prefs!.getString("deactivate");
     updateDevice = await prefs!.getString("updateDevice");
+
 
 
     lineDeleted = await prefs!.setBool("lineDeleted", true);

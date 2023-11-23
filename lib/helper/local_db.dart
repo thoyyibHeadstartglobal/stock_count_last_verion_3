@@ -340,6 +340,44 @@ class SQLHelper {
     return maps;
   }
 
+
+  countedStockTotal({AXDOCNO,DOCNO}) async {
+    final db = await SQLHelper.db();
+    // final List<Map<String, dynamic>> maps = await db.rawQuery('''SELECT SUM(price) as Total TRANSDETAILS WHERE "
+    //     "DOCNO="$DOCNO" AND ITEMID = "$ITEMID" AND ITEMNAME="$ITEMNAME" AND TRANSTYPE="$TRANSTYPE" AND BARCODE="$BARCODE" AND UOM="$UOM";''');
+
+    final List<Map<String, dynamic>> totalCounted = await db.rawQuery(''
+        'SELECT SUM(QTY) as countedQty  from  TRANSDETAILS Where (STATUS=1 OR STATUS=2) AND TRANSTYPE=1 AND DOCNO ="$DOCNO" AND AXDOCNO="$AXDOCNO";'
+        '');
+
+    final List<Map<String, dynamic>> toBePosted = await db.rawQuery(''
+        'SELECT SUM(QTY) as waitingToPost  from  TRANSDETAILS Where STATUS=1 AND TRANSTYPE=1 AND DOCNO ="$DOCNO" AND AXDOCNO="$AXDOCNO";'
+        '');
+
+    final List<Map<String, dynamic>> posted = await db.rawQuery(''
+        'SELECT SUM(QTY) as posted  from  TRANSDETAILS Where STATUS>1 AND TRANSTYPE=1 AND DOCNO ="$DOCNO" AND AXDOCNO="$AXDOCNO";'
+        '');
+
+    // print(maps.toList());
+    print("Result 250 db");
+    int ? totalCnt=  totalCounted[0]['countedQty'].toString()== "0"? 0:
+    totalCounted[0]['countedQty'];
+
+    int ? toBePost=  toBePosted[0]['waitingToPost'].toString()== "0"? 0:
+    toBePosted[0]['waitingToPost'];
+
+    int ? Fullposted=  posted[0]['posted'].toString()== "0"? 0:
+    posted[0]['posted'];
+
+    return
+      "Total Counted : ${totalCnt ??0} , Posted : ${Fullposted??0} , "
+          "To Be Posted : ${toBePost ?? 0}";
+      // "toBePosted":toBePosted[0]['waitingToPost']??0,
+      // "posted":posted[0]['posted'] ??0 ";
+
+  }
+
+
   getFindItemExistOrnotTRANSDETAILS(
       {DOCNO, ITEMID, ITEMNAME, BARCODE, TRANSTYPE, UOM}) async {
     // DOCNO,AXDOCNO,STORECODE,TRANSTYPE,DATAAREAID,DEVICEID
@@ -1561,8 +1599,10 @@ class SQLHelper {
       "TOINNEXTDOCNO": TOINNEXTDOCNO,
       "MJNEXTDOCNO": MJNEXTDOCNO,
       "isDeactivate": isDeactivate,
-      "SetDefaultQtyByOne" :SetDefaultQtyByOne
+      "SetDefaultQtyByOne" : SetDefaultQtyByOne
     };
+
+
     // return 1;
     final id = await db.insert('APPGENERALDATA', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);

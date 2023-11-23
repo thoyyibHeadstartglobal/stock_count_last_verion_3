@@ -580,6 +580,7 @@ class _ViewItemsOldPageState extends State<ViewItemsOldPage> {
  dynamic activatedDevice;
  getUserData() async {
 
+   await prefs!.setBool("lineDeleted", false);
 
    getTransTypes();
 

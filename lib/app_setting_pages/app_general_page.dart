@@ -2155,6 +2155,7 @@ print(APPGENERALDATASave['SetDefaultQtyByOne'].toString());
                                       value: disabledContinuosScan,
                                       onChanged: (v) {
                                         disabledContinuosScan = v!;
+                                        setQuantityDefault =false;
                                         setState(() {});
                                       },
                                     ),
@@ -2192,28 +2193,31 @@ print(APPGENERALDATASave['SetDefaultQtyByOne'].toString());
                         ),
                         Row(
                           children: [
-
                             // SizedBox(width: 5,),
                             Expanded(
 
                               child: Row(
 
                                 children: [
+
                                   Container(
                                     width: 30,
-                                    child: Checkbox(
+                                    child:
+                                    Checkbox(
 
                                       activeColor: APPConstants().colorRed,
                                       value:setQuantityDefault,
                                       onChanged: (v) {
                                         setQuantityDefault = v!;
+                                        disabledContinuosScan = false;
                                         setState(() {});
                                       },
                                     ),
                                   ),
                                   Text(
-                                    "Set stock count qty deafult to '1'",
-                                    style: TextStyle(fontSize: 11),
+                                    "Set Stock Count qty deafult to '1'",
+                                    style:
+                                    TextStyle(fontSize: 11),
                                   ),
                                 ],
                               ),

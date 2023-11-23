@@ -409,6 +409,7 @@
 //   }
 //
 //
+
 //   pushTransactionToPost() async {
 //
 //     // print(_connectionStatus.runtimeType);
@@ -2020,6 +2021,43 @@ String ?   tenantId;
   String ?  getStore;
 
   List<dynamic> transactionDetails =[];
+
+  showDialogGotRoute({String? text, dynamic op}) {
+    // set up the button
+    Widget scanButton = TextButton(
+      style: APPConstants().btnBackgroundYes,
+      child: Text(
+        "Ok",
+        style: APPConstants().YesText,
+      ),
+      onPressed: () {
+        print("Scanning code");
+        setState(() {});
+        Navigator.pop(context);
+        op;
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("DynamicsConnect"),
+      content: Text("$text"),
+      actions: [
+        scanButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+
   showDialogGotData(BuildContext contextMsg ,String text) {
     // set up the button
     Widget yesButton = TextButton(
@@ -2119,7 +2157,7 @@ String ?   tenantId;
         ? true
         : false;
 
-
+     await prefs!.setBool("lineDeleted", false);
     // showQuantityExceed = await prefs?.getBool("showQuantityExceed") == null ||
     //     await prefs?.getBool("showQuantityExceed") == false
     //     ? false
@@ -2365,9 +2403,13 @@ String ?   tenantId;
       print(res.body);
 
 
+       print(responseJson[0]['Message'].toString().contains("success"));
 
+       print("Msg response");
       if (responseJson[0]['Message'].toString().contains("success"))
       {
+
+
 
         await _sqlHelper.updateStatusStockCount(
             2, transactionData[0]['DOCNO'] ?? "",
@@ -2395,8 +2437,7 @@ String ?   tenantId;
 
 
 
-        showDialogGotData(context,
-            "Transaction Posted ${responseJson[0]['Message'].toString()}fully");
+
         // ScaffoldMessenger.of(context)
         //     .showSnackBar(
         //   const SnackBar(
@@ -2414,15 +2455,24 @@ String ?   tenantId;
         // });
 
 
+        // WidgetsBinding.instance.addPostFrameCallback((_) async {
+        //   showDialogGotRoute(
+        //       op:
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    TransactionViewPage(
-                      currentIndex: 1,
-                      pageType: widget
-                          .transactionType,
-                    )));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          TransactionViewPage(
+                            currentIndex: 1,
+                            isImportedSearch: true,
+                            pageType: widget
+                                .transactionType,
+                          )));
+    // ,
+    //           text: "Transaction Posted ${responseJson[0]['Message'].toString()}fully");
+    //     });
+
+
 
 
 
@@ -2437,9 +2487,11 @@ String ?   tenantId;
   }
 
 
-  getImportedDetails() async {
+  getImportedDetails() async
+  {
     transactionData =
-    await _sqlHelper.getTRANSHEADER(widget.transactionType == "STOCK COUNT"
+    await _sqlHelper.getTRANSHEADER(
+        widget.transactionType == "STOCK COUNT"
         ? "1"
         : widget.transactionType == "PO"
         ? "3"
@@ -2573,7 +2625,9 @@ String ?   tenantId;
             ),
             TextFormField(
               textInputAction: TextInputAction.go,
-              onFieldSubmitted: (value) async {
+              onFieldSubmitted: (value)
+              async
+              {
                 var result =
                 widget.transactionType== "STOCK COUNT" ||
                     widget.transactionType == "ST" ?
@@ -3169,16 +3223,44 @@ String ?   tenantId;
 
                                                       return;
                                                     }
+                                                    else{
 
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                TransactionViewPage(
-                                                                  currentIndex: 1,
-                                                                  pageType: widget
-                                                                      .transactionType,
-                                                                )));
+
+                                                      WidgetsBinding.instance.addPostFrameCallback((_) async {
+                                                        showDialogGotRoute(
+                                                            op:    Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder: (context) =>
+                                                                        TransactionViewPage(
+                                                                          currentIndex: 1,
+                                                                          isImportedSearch: true,
+                                                                          pageType: widget
+                                                                              .transactionType,
+                                                                        ))),
+                                                            text: "Item Adding Successfully");
+                                                      });
+
+
+
+                                                      // ScaffoldMessenger.of(context)
+                                                      //     .showSnackBar(
+                                                      //   const SnackBar(
+                                                      //       backgroundColor:
+                                                      //       Colors.red,
+                                                      //       content: Text(
+                                                      //         'Item Adding Successfully',
+                                                      //         textAlign:
+                                                      //         TextAlign.center,
+                                                      //       )),
+                                                      // );
+                                                      //
+                                                      // Future.delayed(Duration(seconds: 2),(){
+                                                      //   ScaffoldMessenger.of(context).clearSnackBars();
+                                                      // });
+                                                    }
+
+                                                   // ;
 
                                                     print("line 759 .");
                                                     print(d);
@@ -3251,15 +3333,10 @@ String ?   tenantId;
                                                     print("Item Are Equal ...");
                                                     // return;
                                                   await  pushTransactionToPost();
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                TransactionViewPage(
-                                                                  currentIndex: 1,
-                                                                  pageType: widget
-                                                                      .transactionType,
-                                                                )));
+
+
+
+
                                                   return;
                                                   }
 

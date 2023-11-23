@@ -22,7 +22,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController confirmPasswordController = new TextEditingController();
 
   bool isLoading = false;
-  SQLHelper _sqlHelper = SQLHelper();
+  final SQLHelper _sqlHelper = SQLHelper();
 
   final _formKey = GlobalKey<FormState>();
   bool showPassword = false;
