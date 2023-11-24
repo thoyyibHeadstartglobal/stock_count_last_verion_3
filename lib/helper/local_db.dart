@@ -378,6 +378,52 @@ class SQLHelper {
   }
 
 
+
+
+  countedStockTotalFull({AXDOCNO,DOCNO}) async {
+    final db = await SQLHelper.db();
+    // final List<Map<String, dynamic>> maps = await db.rawQuery('''SELECT SUM(price) as Total TRANSDETAILS WHERE "
+    //     "DOCNO="$DOCNO" AND ITEMID = "$ITEMID" AND ITEMNAME="$ITEMNAME" AND TRANSTYPE="$TRANSTYPE" AND BARCODE="$BARCODE" AND UOM="$UOM";''');
+
+    final List<Map<String, dynamic>> totalCounted = await db.rawQuery(''
+        'SELECT SUM(QTY) as countedQty  from  TRANSDETAILS Where (STATUS=1 OR STATUS=2) AND TRANSTYPE=1 AND DOCNO ="$DOCNO" AND AXDOCNO="$AXDOCNO";'
+        '');
+
+
+    int ? totalCnt=  totalCounted[0]['countedQty'].toString()== "0"? 0:
+    totalCounted[0]['countedQty'];
+
+
+    return
+      totalCnt ?? 0;
+
+
+  }
+
+
+  countedStockTotalPostStatus({AXDOCNO,DOCNO}) async {
+    final db = await SQLHelper.db();
+
+
+
+    final List<Map<String, dynamic>> toBePosted = await db.rawQuery(''
+        'SELECT SUM(QTY) as waitingToPost  from  TRANSDETAILS Where STATUS=1 AND TRANSTYPE=1 AND DOCNO ="$DOCNO" AND AXDOCNO="$AXDOCNO";'
+        '');
+
+
+
+    int ? toBePost=  toBePosted[0]['waitingToPost'].toString()== "0"?
+    0:
+
+    toBePosted[0]['waitingToPost'];
+
+
+    return toBePost ?? 0;
+
+
+  }
+
+
   getFindItemExistOrnotTRANSDETAILS(
       {DOCNO, ITEMID, ITEMNAME, BARCODE, TRANSTYPE, UOM}) async {
     // DOCNO,AXDOCNO,STORECODE,TRANSTYPE,DATAAREAID,DEVICEID

@@ -1792,7 +1792,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
     }
     else{
-      FocusScope.of(context).requestFocus(_focusNodeBarcode);
+     mounted ? FocusScope.of(context).requestFocus(_focusNodeBarcode):null;
     }
   }
 

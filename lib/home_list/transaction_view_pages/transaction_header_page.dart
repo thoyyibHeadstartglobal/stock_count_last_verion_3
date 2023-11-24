@@ -95,7 +95,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
   @override
   void dispose() {
-
     // FocusManager.instance.dispose();
     _connectivitySubscription.cancel();
     // Focus.of(context).dispose();
@@ -105,7 +104,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
   @override
   void initState() {
-
     FocusManager.instance.primaryFocus!.unfocus();
 
     // Focus.of(context).dispose();
@@ -203,10 +201,12 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
   //   }
   // }
 
+  dynamic toBePosted = 0;
+  dynamic fullCountPosted = 0;
+
   getOrderNos() async {
     orderNos = [];
-    orderNos =
-    await _sqlHelper.getHeaderOrders(widget.type == 'ST'
+    orderNos = await _sqlHelper.getHeaderOrders(widget.type == 'ST'
         ? "1"
         : widget.type == 'PO'
             ? "3"
@@ -221,11 +221,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                             : widget.type == 'TO-IN'
                                 ? "6"
                                 : "");
-
-    orderNos.forEach((element) {
-      print("elements 160");
-      print(element);
-    });
   }
 
   List<dynamic> transactionData = [];
@@ -233,11 +228,9 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
   List<dynamic> transactionDetailsList = [];
 
   getToken() async {
-
     await getOrderNos();
 
-    transactionData =
-    await _sqlHelper.getTRANSHEADER(widget.type == 'ST'
+    transactionData = await _sqlHelper.getTRANSHEADER(widget.type == 'ST'
         ? "1"
         : widget.type == 'PO'
             ? "3"
@@ -259,9 +252,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                             ? "22"
                                             : "");
 
-    print("data is 94 : ${widget.type}");
-    print(transactionData);
-
     setState(() {});
     if (transactionData == "" || transactionData.length == 0) {
       print("list is empty : $transactionData");
@@ -272,7 +262,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
       isActivateNew = true;
       isActivateSave = true;
     }
-
 
     transactionDetails =
         await _sqlHelper.getTRANSDETAILSINHeader(widget.type == 'ST'
@@ -295,34 +284,194 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                             ? "22"
                                             : "");
 
-    print(transactionDetails.length);
-    print("Line 224 ");
+    if(widget.type == "ST" || widget.type =="STOCK COUNT"){
+      if (transactionDetails.isNotEmpty) {
+        if (transactionData[0]['STATUS'] < 2) {
+          isCloseTransactions = true;
+          setState(() {});
+        }
 
-    if (transactionDetails.isNotEmpty && transactionData[0]['STATUS'] < 2) {
-      isCloseTransactions = true;
-      setState(() {});
-    } else {
-      isCloseTransactions = false;
-      setState(() {});
+
+        else {
+
+        }
+
+        if ( widget.type == "ST" ||
+            widget.type=="STOCK COUNT") {
+
+          pageStatus = await _sqlHelper.countedStockTotal(
+              AXDOCNO: transactionData[0]['AXDOCNO'],
+              DOCNO: transactionData[0]['DOCNO']);
+
+          toBePosted = await _sqlHelper.countedStockTotalPostStatus(
+              AXDOCNO: transactionData[0]['AXDOCNO'],
+              DOCNO: transactionData[0]['DOCNO']);
+
+          fullCountPosted = await _sqlHelper.countedStockTotalFull(
+              AXDOCNO: transactionData[0]['AXDOCNO'],
+              DOCNO: transactionData[0]['DOCNO']) ??
+              0;
+          // isPostTransactions = true;
+          // isCloseTransactions = false;
+
+          setState(() {});
+
+
+
+          print("Condition is true : 374 ");
+
+          isCloseTransactions = true;
+          isPostTransactions= true;
+          setState(() {});
+
+
+          if (transactionDetails.isNotEmpty && transactionData[0]['STATUS'] < 2
+
+              && toBePosted == 0
+              &&
+              (widget.type == "ST" ||
+                  widget.type == "STOCK COUNT")
+              &&
+              fullCountPosted != 0 ) {
+            isCloseTransactions = false;
+
+            isPostTransactions= true;
+
+            setState(() {});
+          } else {
+
+
+            if( transactionData[0]['STATUS'] < 2
+                && toBePosted == 0
+                && (widget.type == "ST"
+                    || widget.type == "STOCK COUNT")
+                && fullCountPosted == 0)
+            {
+
+              print("The condition is true...line 353");
+
+              isCloseTransactions = true;
+              isPostTransactions= false;
+              setState(() {});
+
+            }
+            else
+            {
+              isCloseTransactions = false;
+              isPostTransactions= true;
+              setState(() {});
+            }
+
+
+          }
+
+
+
+
+
+
+          print("Data is posted : ${toBePosted}");
+
+          transactionData[0]['STATUS'] == 0
+              ? isActivateSave = true
+              : transactionData[0]['STATUS'] == 2
+              ? isPostTransactions = true
+              : transactionData[0]['STATUS'] == 3
+              ? isActivateNew = false
+              : "";
+          setState(() {});
+          if (transactionData[0]['STATUS'] < 3) {
+            // widget.type == 'PO' ?
+            // selectLocation =     transactionData[0]['VRLOCATION'].toString() ??"" : selectLocation =  "";
+            // widget.type == 'PO' ?
+            if (widget.type == 'ST') {
+              print("ST ...143");
+              selectLocation = transactionData[0]['VRLOCATION']?.toString() ?? "";
+              if(transactionData[0]['STATUS']==2)
+              {
+                isPostTransactions= false;
+                isCloseTransactions=true;
+                setState((){
+
+                });
+              }
+              else{
+                isCloseTransactions=true;
+                setState((){
+
+                });
+              }
+
+            }
+            documentNoController?.text = transactionData[0]['DOCNO'] ?? "";
+            descriptionController?.text = transactionData[0]['DESCRIPTION'] ?? "";
+            selectOrder = transactionData[0]['AXDOCNO'] == ""
+                ? null
+                : transactionData[0]['AXDOCNO'] ?? "";
+            setState(() {});
+            if (transactionData[0]['TYPEDESCR'] == "TO") {
+              selectStore = transactionData[0]['TOSTORECODE'] ?? "";
+              setState(() {});
+            }
+
+            if (transactionData[0]['TYPEDESCR'] == "MJ") {
+              selectJournal = transactionData[0]['JournalName'] ?? "";
+              setState(() {});
+            }
+
+            print("137 ..data : ${transactionData[0]['AXDOCNO']}");
+            print(selectStore);
+          }
+          print("433 given status : ${transactionData[0]['STATUS']}");
+
+        }
+        // isPostTransactions= true;
+
+      }
+      else
+
+      {
+
+        print("The given Status is : ${transactionData}");
+
+        // isCloseTransactions = false;
+        // setState(() {});
+        // if(transactionData.isEmpty){
+        isCloseTransactions = true;
+
+
+        setState(() {});
+
+        print("${!isCloseTransactions!} ${fullCountPosted ==0}${toBePosted==0}");
+
+        print("The given Status is : ${transactionData}"
+            "closed : ${isCloseTransactions} posted : ${isPostTransactions} "
+            "full count : ${fullCountPosted}"
+            "To be  posted : ${toBePosted}");
+        // }
+        // isPostTransactions= false;
+
+      }
     }
-    // isPostTransactions =false;
-    // isCloseTransactions =false;
+    else{
+      if (transactionDetails.isNotEmpty && transactionData[0]['STATUS'] < 2) {
+        isCloseTransactions = true;
+        setState(() {});
+      } else {
+        isCloseTransactions = false;
+        setState(() {});
+      }
+    }
 
-    if (transactionData.length > 0) {
-      pageStatus = await _sqlHelper.countedStockTotal(
-          AXDOCNO:transactionData[0]['AXDOCNO'] ,
-          DOCNO:transactionData[0]['DOCNO']
-      );
 
-      setState((){
-      });
+    if (transactionData.isNotEmpty) {
       transactionData[0]['STATUS'] == 0
           ? isActivateSave = true
           : transactionData[0]['STATUS'] == 2
-              ? isPostTransactions = true
-              : transactionData[0]['STATUS'] == 3
-                  ? isActivateNew = false
-                  : "";
+          ? isPostTransactions = true
+          : transactionData[0]['STATUS'] == 3
+          ? isActivateNew = false
+          : "";
       setState(() {});
       if (transactionData[0]['STATUS'] < 3) {
         // widget.type == 'PO' ?
@@ -352,6 +501,14 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
         print(selectStore);
       }
     }
+
+
+
+
+
+
+
+
 
     print("init Api :  ${transactionData.toString()}");
     print("init Api");
@@ -430,7 +587,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     print(url);
 
     try {
-      var map = new Map<String, dynamic>();
+      var map = Map<String, dynamic>();
       map['tenant_id'] = '$tenantId';
       map['client_id'] = '$clientId';
       map['client_secret'] = '$clientSecretId';
@@ -460,20 +617,16 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
 
 
-
   }
 
   dynamic pageStatus;
   String? docNo;
 
   getUserData() async {
-
-
-
-
     setState(() {
       isActivated = true;
     });
+
     prefs = await SharedPreferences.getInstance();
     username = await prefs?.getString("username");
     companyCode = await prefs!.getString("companyCode");
@@ -598,8 +751,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
     var body = {
       "contract": {
-
-
         //     transType == "STOCK COUNT"
         //         ? 1
         //         : widget.type == "GRN"
@@ -614,7 +765,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
         // ? 9
         //     : transType == "TRANSFER ORDER"
         // ? 11
-
 
         "JournalName": transactionData[0]['TRANSTYPE'].toString() == "22"
             ? transactionData[0]['JournalName']
@@ -697,6 +847,9 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
       if (responseJson[0]['Message'].toString().contains("success")) {
         await _sqlHelper.updateStatusStockCount(
+            widget.type == 'ST'
+                 ? 2
+                :
             3,
             documentNoController?.text.trim() ?? "",
             widget.type == 'ST'
@@ -720,8 +873,207 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                                 : "",
             selectOrder);
 
-        setState(() {
-          // setState(() {
+        // setState(() {
+        //   // setState(() {
+        //   isActivated = false;
+        //
+        //   isActivateSave = true;
+        //   // });
+        //
+        //   selectStore = null;
+        //   selectLocation = null;
+        //   isActivateNew = false;
+        //   documentNoController?.clear();
+        //   descriptionController?.clear();
+        //   orderNos = [];
+        //   selectJournal = "";
+        //   movementJournals = [];
+        //   selectOrder = null;
+        //   // isPostTransactions = false;
+        //   // isCloseTransactions = false;
+        //
+        // });
+
+
+
+        if(widget.type == "ST")
+        {
+          if(widget.type == "ST" || widget.type =="STOCK COUNT"){
+            if (transactionDetails.isNotEmpty) {
+              if (transactionData[0]['STATUS'] < 2) {
+                isCloseTransactions = true;
+                setState(() {});
+              }
+
+
+              else {
+
+              }
+
+              if ( widget.type == "ST" ||
+                  widget.type=="STOCK COUNT") {
+
+                pageStatus = await _sqlHelper.countedStockTotal(
+                    AXDOCNO: transactionData[0]['AXDOCNO'],
+                    DOCNO: transactionData[0]['DOCNO']);
+
+                toBePosted = await _sqlHelper.countedStockTotalPostStatus(
+                    AXDOCNO: transactionData[0]['AXDOCNO'],
+                    DOCNO: transactionData[0]['DOCNO']);
+
+                fullCountPosted = await _sqlHelper.countedStockTotalFull(
+                    AXDOCNO: transactionData[0]['AXDOCNO'],
+                    DOCNO: transactionData[0]['DOCNO']) ??
+                    0;
+                // isPostTransactions = true;
+                // isCloseTransactions = false;
+
+                setState(() {});
+
+
+
+                print("Condition is true : 374 ");
+
+                isCloseTransactions = true;
+                isPostTransactions= true;
+                setState(() {});
+
+
+                if (transactionDetails.isNotEmpty && transactionData[0]['STATUS'] < 2
+
+                    && toBePosted == 0
+                    &&
+                    (widget.type == "ST" ||
+                        widget.type == "STOCK COUNT")
+                    &&
+                    fullCountPosted != 0 ) {
+                  isCloseTransactions = false;
+
+                  isPostTransactions= true;
+
+                  setState(() {});
+                } else {
+
+
+                  if( transactionData[0]['STATUS'] < 2
+                      && toBePosted == 0
+                      && (widget.type == "ST"
+                          || widget.type == "STOCK COUNT")
+                      && fullCountPosted == 0)
+                  {
+
+                    print("The condition is true...line 353");
+
+                    isCloseTransactions = true;
+                    isPostTransactions= false;
+                    setState(() {});
+
+                  }
+                  else
+                  {
+                    isCloseTransactions = false;
+                    isPostTransactions= true;
+                    setState(() {});
+                  }
+
+
+                }
+
+
+
+
+
+
+                print("Data is posted : ${toBePosted}");
+
+                transactionData[0]['STATUS'] == 0
+                    ? isActivateSave = true
+                    : transactionData[0]['STATUS'] == 2
+                    ? isPostTransactions = true
+                    : transactionData[0]['STATUS'] == 3
+                    ? isActivateNew = false
+                    : "";
+                setState(() {});
+                if (transactionData[0]['STATUS'] < 3) {
+                  // widget.type == 'PO' ?
+                  // selectLocation =     transactionData[0]['VRLOCATION'].toString() ??"" : selectLocation =  "";
+                  // widget.type == 'PO' ?
+                  if (widget.type == 'ST') {
+                    print("ST ...143");
+                    selectLocation = transactionData[0]['VRLOCATION']?.toString() ?? "";
+                    if(transactionData[0]['STATUS']==2)
+                    {
+                      isPostTransactions= false;
+                      isCloseTransactions=true;
+                      setState((){
+
+                      });
+                    }
+                    else{
+                      isCloseTransactions=true;
+                      setState((){
+
+                      });
+                    }
+
+                  }
+                  documentNoController?.text = transactionData[0]['DOCNO'] ?? "";
+                  descriptionController?.text = transactionData[0]['DESCRIPTION'] ?? "";
+                  selectOrder = transactionData[0]['AXDOCNO'] == ""
+                      ? null
+                      : transactionData[0]['AXDOCNO'] ?? "";
+                  setState(() {});
+                  if (transactionData[0]['TYPEDESCR'] == "TO") {
+                    selectStore = transactionData[0]['TOSTORECODE'] ?? "";
+                    setState(() {});
+                  }
+
+                  if (transactionData[0]['TYPEDESCR'] == "MJ") {
+                    selectJournal = transactionData[0]['JournalName'] ?? "";
+                    setState(() {});
+                  }
+
+                  print("137 ..data : ${transactionData[0]['AXDOCNO']}");
+                  print(selectStore);
+                }
+                print("433 given status : ${transactionData[0]['STATUS']}");
+
+              }
+              // isPostTransactions= true;
+
+            }
+            else
+
+            {
+
+              print("The given Status is : ${transactionData}");
+
+              // isCloseTransactions = false;
+              // setState(() {});
+              // if(transactionData.isEmpty){
+              isCloseTransactions = true;
+
+
+              setState(() {});
+
+              print("${!isCloseTransactions!} ${fullCountPosted ==0}${toBePosted==0}");
+
+              print("The given Status is : ${transactionData}"
+                  "closed : ${isCloseTransactions} posted : ${isPostTransactions} "
+                  "full count : ${fullCountPosted}"
+                  "To be  posted : ${toBePosted}");
+              // }
+              // isPostTransactions= false;
+
+            }
+          }
+          // isPostTransactions = false;
+          // isCloseTransactions = false;
+          // setState((){
+          //
+          // });
+        }
+        else{
           isActivated = false;
 
           isActivateSave = true;
@@ -733,12 +1085,15 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
           documentNoController?.clear();
           descriptionController?.clear();
           orderNos = [];
-          selectJournal ="";
+          selectJournal = "";
           movementJournals = [];
           selectOrder = null;
           isPostTransactions = false;
           isCloseTransactions = false;
-        });
+          setState((){
+
+          });
+        }
         showDialogGotData(
             "Transaction Posted ${responseJson[0]['Message'].toString()}fully");
       } else {
@@ -751,8 +1106,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       // appBar: AppBar(
       //   title: Text("${widget.type} Header page"),
@@ -2052,7 +2405,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               documentNoController?.text =
                                   "${widget.type}-${activatedDevice}-${docNo ?? ""}";
                               print(documentNoController?.text);
-                            await   getMovementJournal();
+                              await getMovementJournal();
                               setState(() {
                                 isActivated = false;
                                 isActivateNew = true;
@@ -2194,7 +2547,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                 borderRadius: BorderRadius.circular(10.0)),
                             backgroundColor: Colors.green),
                         onPressed: () async {
-
                           if (selectOrder == "" ||
                               selectOrder == null &&
                                   widget.type != "PO" &&
@@ -2521,10 +2873,12 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                                                   ? "22"
                                                                   : "");
 
+
                           setState(() {
                             isActivated = true;
                             isActivateSave = true;
                             isActivateNew = true;
+                            // isCloseTransactions=true;
                           });
                         }
                         //     widget.type=="TO-OUT" ? "5":
@@ -2541,7 +2895,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                 ],
               ),
               Visibility(
-                visible:  widget.type != "ST",
+                visible: widget.type != "ST",
                 child: Row(
                   children: [
                     Expanded(
@@ -2554,7 +2908,6 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                               // backgroundColor:  Color(0xffed648e)
                               backgroundColor: Colors.red),
                           onPressed: () async {
-
                             await _sqlHelper.updateStatusStockCount(
                                 2,
                                 documentNoController?.text.trim() ?? "",
@@ -2570,7 +2923,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                                                     ? "10"
                                                     : widget.type == 'TO'
                                                         ? "11"
-                                                        : widget.type == "TO-OUT"
+                                                        : widget.type ==
+                                                                "TO-OUT"
                                                             ? "5"
                                                             : widget.type ==
                                                                     "TO-IN"
@@ -2596,7 +2950,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                 ),
               ),
               Visibility(
-                visible:  widget.type != "ST",
+                visible: widget.type != "ST",
                 child: Row(
                   children: [
                     Expanded(
@@ -2649,113 +3003,177 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
               ),
 
               Visibility(
-                visible:  widget.type == "ST",
-
-                child:     Row(
+                visible: widget.type == "ST",
+                child: Row(
                   children: [
                     Expanded(
                         child: IgnorePointer(
-                          ignoring: !isPostTransactions!,
-                          child: TextButton(
-                              style: TextButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0)),
-                                  backgroundColor: Colors.red
-                                // Color(0xffed648e)
+                      ignoring: toBePosted ==0,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              backgroundColor: Colors.red
+                              // Color(0xffed648e)
                               ),
-                              onPressed: () async {
-                                if (_connectionStatus == ConnectivityResult.none) {
-                                  print("Internet connection false 431");
+                          onPressed: () async {
 
-                                  showDialogGotData("No Internet Connection");
+                            if (_connectionStatus == ConnectivityResult.none) {
+                              print("Internet connection false 431");
 
-                                  // ScaffoldMessenger.of(context).showSnackBar(
-                                  //
-                                  //   const SnackBar(
-                                  //     duration:Duration(seconds: 2) ,
-                                  //     backgroundColor: Colors.red,
-                                  //       content: Text(
-                                  //         'No Internet Connection',
-                                  //         textAlign: TextAlign.center,
-                                  //       )),
-                                  // );
+                              showDialogGotData("No Internet Connection");
 
-                                  // Navigator.pop(context);
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //
+                              //   const SnackBar(
+                              //     duration:Duration(seconds: 2) ,
+                              //     backgroundColor: Colors.red,
+                              //       content: Text(
+                              //         'No Internet Connection',
+                              //         textAlign: TextAlign.center,
+                              //       )),
+                              // );
 
-                                  return;
-                                }
+                              // Navigator.pop(context);
 
-                                showDialogGotDataPost(
-                                    "Do You Want to Post This Transaction ? ");
+                              return;
+                            }
 
-                                print("post transactions");
-                              },
-                              child: Text(
-                                "POST TRANSACTION",
-                                style: TextStyle(
-                                    color: !isPostTransactions!
-                                        ? APPConstants().disabledRed
-                                        : Colors.white),
-                              )),
-                        )),
+                            showDialogGotDataPost(
+                                "Do You Want to Post This Transaction ? ");
+
+                            print("post transactions");
+                          },
+                          child: Text(
+                            "POST TRANSACTION",
+                            style: TextStyle(
+                                color: toBePosted ==0
+                                    ? APPConstants().disabledRed
+                                    : Colors.white),
+                          )),
+                    )),
                   ],
                 ),
               ),
+
+              // Text(
+              //     "${!isCloseTransactions! &&
+              //         fullCountPosted == 0
+              //         &&
+              //         (widget.type == "ST" || widget.type == "STOCK COUNT") &&
+              //         toBePosted !=0}"),
+              // Text(isCloseTransactions.toString()),
+              // Text(fullCountPosted.toString()),
+              // Text(toBePosted.toString()),
+
               Visibility(
-                visible: widget.type == "ST",
+                visible: widget.type=="ST",
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: IgnorePointer(
+                      ignoring: isCloseTransactions!
+                          &&
+                          ( toBePosted !=0
+                           || fullCountPosted ==0)
+                          // &&
+                          // (fullCountPosted == 0
+                          //    )
+                          // &&
+                          // (widget.type == "ST" || widget.type == "STOCK COUNT") &&
+                          // toBePosted !=0
+                          ,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              // backgroundColor:  Color(0xffed648e)
+                              backgroundColor: Colors.red),
+                          onPressed: ()
+                          async {
+                            print(toBePosted);
+                               if(fullCountPosted==0 || toBePosted !=0 )
+                               {
+                                 return;
+                               }
+                            if (
+                                (widget.type == "ST" || widget.type == "STOCK COUNT") &&
+                               toBePosted !=0 ) {
+                              print("Data is return");
+                              return;
+                            }
 
-                child:
-              Row(
-                children: [
-                  Expanded(
-                      child: IgnorePointer(
-                        ignoring: !isCloseTransactions!,
-                        child: TextButton(
-                            style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0)),
-                                // backgroundColor:  Color(0xffed648e)
-                                backgroundColor: Colors.red),
-                            onPressed: () async {
-                              await _sqlHelper.updateStatusStockCount(
-                                  2,
-                                  documentNoController?.text.trim() ?? "",
-                                  widget.type == 'ST'
-                                      ? "1"
-                                      : widget.type == 'PO'
-                                      ? "3"
-                                      : widget.type == 'GRN'
-                                      ? "4"
-                                      : widget.type == 'RO'
-                                      ? "9"
-                                      : widget.type == 'RP'
-                                      ? "10"
-                                      : widget.type == 'TO'
-                                      ? "11"
-                                      : widget.type == "TO-OUT"
-                                      ? "5"
-                                      : widget.type ==
-                                      "TO-IN"
-                                      ? "6"
-                                      : "",
-                                  selectOrder);
-                              if (transactionDetails.length > 0) {
-                                isPostTransactions = true;
-                                isCloseTransactions = false;
-                                setState(() {});
-                              }
-                            },
-                            child: Text(
-                              "CLOSE TRANSACTION",
-                              style: TextStyle(
-                                  color: !isCloseTransactions!
-                                      ? APPConstants().disabledRed
-                                      : Colors.white),
-                            )),
-                      )),
-                ],
-              ),),
+                            await _sqlHelper.updateStatusStockCount(
+                                3,
+                                documentNoController?.text.trim() ?? "",
+                                (widget.type == 'ST' ||
+                                        widget.type == "STOCK COUNT")
+                                    ? "1"
+                                    : widget.type == 'PO'
+                                        ? "3"
+                                        : widget.type == 'GRN'
+                                            ? "4"
+                                            : widget.type == 'RO'
+                                                ? "9"
+                                                : widget.type == 'RP'
+                                                    ? "10"
+                                                    : widget.type == 'TO'
+                                                        ? "11"
+                                                        : widget.type ==
+                                                                "TO-OUT"
+                                                            ? "5"
+                                                            : widget.type ==
+                                                                    "TO-IN"
+                                                                ? "6"
+                                                                : "",
+                                selectOrder);
 
+                            if (transactionDetails.isNotEmpty)
+                            {
+
+                              print("transaction details is not empty"
+                                  ": ${isPostTransactions}");
+
+                              isPostTransactions = true;
+                              isCloseTransactions = false;
+
+
+                              setState(() {});
+
+
+                              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                                showDialogGotRoute(
+                                    op: Navigator.push(
+                                        context, MaterialPageRoute(builder: (context) =>
+                                    LandingHomePage())),
+                                    text: "Transaction has been closed");
+                              });
+
+                              return;
+                            }
+
+                          },
+                          child: Text(
+                            "CLOSE TRANSACTION",
+                            style: TextStyle(
+                                color:
+                                isCloseTransactions!
+                                    &&
+                                    ( toBePosted !=0
+                                        || fullCountPosted ==0)
+                                    // &&
+                                    // (fullCountPosted == 0
+                                    // )
+                                    // &&
+                                    // (widget.type == "ST" || widget.type == "STOCK COUNT") &&
+                                    // toBePosted !=0
+                                    ? APPConstants().disabledRed
+                                    : Colors.white),
+                          )),
+                    )),
+                  ],
+                ),
+              ),
               Row(
                 children: [
                   Expanded(
@@ -2777,19 +3195,25 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                 ],
               ),
 
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
 
-              Wrap(
-                children: [
-                        Text("${pageStatus??""}",
+              Visibility(
+                  visible:
+                      (widget.type == "ST" || widget.type == "STOCK COUNT") &&
+                          fullCountPosted != 0,
+                  child: Wrap(
+                    children: [
+                      Text(
+                        "${pageStatus ?? ""}",
                         style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red
-                        ),)
-                ],
-              )
-
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      )
+                    ],
+                  ))
             ],
           ),
         ),
@@ -2834,6 +3258,41 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     // show the dialog
     showDialog(
       barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showDialogGotRoute({String? text, dynamic op}) {
+    // set up the button
+    Widget scanButton = TextButton(
+      style: APPConstants().btnBackgroundYes,
+      child: Text(
+        "Ok",
+        style: APPConstants().YesText,
+      ),
+      onPressed: () {
+        print("Scanning code");
+        setState(() {});
+        Navigator.pop(context);
+        op;
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("DynamicsConnect"),
+      content: Text("$text"),
+      actions: [
+        scanButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return alert;
@@ -2937,8 +3396,8 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                     isActivated = false;
                     // isActivateNew = true;
                     // isActivateSave = false;
-                    movementJournals=[];
-                    selectJournal ="";
+                    movementJournals = [];
+                    selectJournal = "";
                     selectJournal = null;
                     selectStore = null;
                     selectLocation = null;
@@ -2953,6 +3412,34 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
                   showDialogGotData("Transaction Deleted");
                   getOrderNos();
                   // Navigator.pop(context);
+
+                  transactionData = await _sqlHelper.getTRANSHEADER(
+                      widget.type == 'ST'
+                          ? "1"
+                          : widget.type == 'PO'
+                          ? "3"
+                          : widget.type == 'GRN'
+                          ? "4"
+                          : widget.type == 'RO'
+                          ? "9"
+                          : widget.type == 'RP'
+                          ? "10"
+                          : widget.type == 'TO'
+                          ? "11"
+                          : widget.type == "TO-OUT"
+                          ? "5"
+                          : widget.type ==
+                          "TO-IN"
+                          ? "6"
+                          : widget.type ==
+                          "MJ"
+                          ? "22"
+                          : "");
+                  transactionData.isEmpty  && widget.type !="ST"?
+                      setState((){
+                        isCloseTransactions =false;
+                        isPostTransactions = false;
+                  }):null;
                 },
               ),
             ],
@@ -2973,7 +3460,7 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     var ur = "$getMovementJournals";
 
     // var ur =
-        // "https://hsins28ce7a8bf606d8744bdevaos.axcloud.dynamics.com/api/services/CustomServiceGroup/CustomService/getJournalName";
+    // "https://hsins28ce7a8bf606d8744bdevaos.axcloud.dynamics.com/api/services/CustomServiceGroup/CustomService/getJournalName";
     print(ur);
     var js = json.encode(body);
     var res = await http.post(headers: headers, Uri.parse(ur), body: js);
@@ -2981,16 +3468,9 @@ class _TranscationHeaderPageState extends State<TranscationHeaderPage> {
     // print(responseJson);
 
     if (res.statusCode == 200 || res.statusCode == 201) {
-
-
-      print("got it device movement journal");
-
       setState(() {
         movementJournals = responseJson[0]['InventJourName'];
-
       });
-
-
     }
   }
 }
