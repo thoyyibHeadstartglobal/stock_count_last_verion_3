@@ -387,7 +387,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     }
   }
 
-
   getBarcodeWithscan() async {
     print("scanned 374");
     print(transactionData.length);
@@ -523,7 +522,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         print("Old qty : ${dtTotal[0]['Total'].toString()}");
         print("Total qty : 506 ${totalqty}");
 
-
         remainedQuantityController.text = (dt.length < 0
             ? barcodeScanData[0]['QTY']?.toString()
             : totalqty.toString())!;
@@ -564,17 +562,20 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
             await _sqlHelper.updateTRANSDETAILSWithQty(
                 dt[0]['id'], int.parse(dt[0]['QTY']) + 1);
 
-            List<dynamic > pushedStocks= [];
-            print("lines items 568:${APPGENERALDATASave['RPNEXTDOCNO'].toString()}");
+            List<dynamic> pushedStocks = [];
+            print(
+                "lines items 568:${APPGENERALDATASave['RPNEXTDOCNO'].toString()}");
             // pushedStocks= await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1");
-            pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+            pushedStocks.addAll(
+                await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
             print(widget.type);
-            print("${pushedStocks.length.toString()} ${APPGENERALDATASave['RPNEXTDOCNO'].toString()}");
+            print(
+                "${pushedStocks.length.toString()} ${APPGENERALDATASave['RPNEXTDOCNO'].toString()}");
 
-
-            if(widget.type =="ST" &&
-                pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-            ){
+            if (widget.type == "ST" &&
+                pushedStocks.length ==
+                    int.parse(
+                        APPGENERALDATASave['SetDefaultQtyByOne'].toString())) {
               pushTransactionToPost();
             }
 
@@ -684,59 +685,58 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
             // print("Batch Values : ${isBatchEnabled}"
             //     "${BatchedItem}");
-            print("lines items 686:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-            List<dynamic > pushedStocks= [];
-            pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+            print(
+                "lines items 686:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+            List<dynamic> pushedStocks = [];
+            pushedStocks.addAll(
+                await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
 
-            if(widget.type =="ST" &&
-                pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-            ){
-             await pushTransactionToPost();
+            if (widget.type == "ST" &&
+                pushedStocks.length ==
+                    int.parse(
+                        APPGENERALDATASave['SetDefaultQtyByOne'].toString())) {
+              await pushTransactionToPost();
             }
           }
 
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(
+                  'Item Adding Successfully',
+                  textAlign: TextAlign.center,
+                )),
+          );
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  backgroundColor: Colors.red,
-                  content: Text(
-                    'Item Adding Successfully',
-                    textAlign: TextAlign.center,
-                  )),
-            );
+          setState(() {
+            selectOUM = null;
+            barcodeController.text = "";
+            itemIdController.text = "";
+            descriptionController.text = "";
 
-            setState(() {
-              selectOUM = null;
-              barcodeController.text = "";
-              itemIdController.text = "";
-              descriptionController.text = "";
+            sizeController.text = "";
+            colorController.text = "";
+            styleController.text = "";
+            configController.text = "";
 
-              sizeController.text = "";
-              colorController.text = "";
-              styleController.text = "";
-              configController.text = "";
+            // isBatchEnabled = false;
+            // BatchedItem = false;
 
-              // isBatchEnabled = false;
-              // BatchedItem = false;
+            batchNoController.text = "";
 
-              batchNoController.text = "";
+            expDateController.text = "";
+            productionDateController.text = "";
 
-              expDateController.text = "";
-              productionDateController.text = "";
+            selectOUM = null;
+            selectedEXPDate = null;
+            uomController.text = "";
+            selectedMGFDate = null;
 
-              selectOUM = null;
-              selectedEXPDate = null;
-              uomController.text = "";
-              selectedMGFDate = null;
+            remainedQuantityController.text = "";
 
-              remainedQuantityController.text = "";
-
-              qtyController.text = "";
-            });
-            FocusScope.of(context).requestFocus(_focusNodeBarcode);
-
-
-
+            qtyController.text = "";
+          });
+          FocusScope.of(context).requestFocus(_focusNodeBarcode);
 
           Focus.of(context).requestFocus(_focusNodeBarcode);
 
@@ -819,17 +819,18 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
             await getUserData();
 
-            print("lines items 822:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-            List<dynamic > pushedStocks= [];
-            pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+            print(
+                "lines items 822:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+            List<dynamic> pushedStocks = [];
+            pushedStocks.addAll(
+                await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
 
-            if(widget.type =="ST" &&
-                pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-            ){
+            if (widget.type == "ST" &&
+                pushedStocks.length ==
+                    int.parse(
+                        APPGENERALDATASave['SetDefaultQtyByOne'].toString())) {
               await pushTransactionToPost();
             }
-
-
 
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -839,7 +840,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                     textAlign: TextAlign.center,
                   )),
             );
-
 
             setState(() {
               barcodeController.text = "";
@@ -870,8 +870,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
               uomController.text = "";
             });
             FocusScope.of(context).requestFocus(_focusNodeBarcode);
-
-
           } else {}
         }
       }
@@ -900,37 +898,133 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       print("print line 392...${enabledCheck[0]['BatchedItem'].toString()}");
     }
 
-    if (widget.type == "PO" || widget.type == "RO" || widget.type == "TO"
-    || widget.type == "MJ") {
-
+    if (widget.type == "PO" ||
+        widget.type == "RO" ||
+        widget.type == "TO" ||
+        widget.type == "MJ") {
       // var enabledCheck= await _sqlHelper.
       // getITEMMASTERBySearchScanBarcode(barcodeController.text);
 
       barcodeScanData = await _sqlHelper
           .getITEMMASTERBySearchScanBarcode(barcodeController.text);
 
-      if(barcodeScanData.isEmpty){
-
+      if (barcodeScanData.isEmpty) {
         showDialogGotData("Item Does Not Exist");
 
-        setState((){
-          barcodeController.text="";
+        setState(() {
+          barcodeController.text = "";
         });
         return;
       }
 
-      if( widget.type == "MJ" &&
-      barcodeScanData[0]['BatchEnabled'].toString() == "1" &&
-          barcodeScanData[0]['BatchedItem'].toString() == "0"){
+      if (widget.type == "PO" && barcodeScanData[0]['ItemPOBlocked']==1) {
 
+        setState(() {
+          barcodeController.text = "";
+        });
+        // FocusManager.instance.primaryFocus?.unfocus();
+        ScaffoldMessenger.of(context).showSnackBar(
+
+          const SnackBar(
+              behavior: SnackBarBehavior.fixed,
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+              content:
+              SizedBox(height: 20,
+                child:
+                Align(
+                    alignment: Alignment.topCenter,
+                    child:
+                    Text(
+                      'Item Blocked For Purchase Order',
+                      textAlign: TextAlign.center,
+
+                    )
+                ),
+              )),
+
+        );
+
+        Future.delayed(Duration(seconds:3),() {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        });
+        FocusScope.of(context).requestFocus(_focusNodeBarcode);
+        return;
+      }
+
+
+      if ((widget.type == "MJ" ||
+          widget.type == "TO") && barcodeScanData[0]['ItemInventBlocked']==1) {
+
+
+        setState(() {
+          barcodeController.text = "";
+        });
+        // FocusManager.instance.primaryFocus?.unfocus();
+        ScaffoldMessenger.of(context).showSnackBar(
+
+          widget.type == "MJ" ?
+            SnackBar(
+                behavior: SnackBarBehavior.fixed,
+                backgroundColor: Colors.red,
+                duration: Duration(seconds: 3),
+                content:
+                SizedBox(height: 20,
+                  child:
+                  // widget.type == "MJ" ?
+                  Align(
+                      alignment: Alignment.topCenter,
+                      child:
+
+                      Text(
+
+                          'Item Blocked For Movement Journal',
+                          textAlign: TextAlign.center
+                      )
+                    // :Text('Item Blocked For Movement Journal',
+                    // textAlign: TextAlign.center)
+                  ),
+                )):
+           SnackBar(
+              behavior: SnackBarBehavior.fixed,
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+              content:
+              SizedBox(height: 20,
+                child:
+                // widget.type == "MJ" ?
+                Align
+                  (
+                    alignment: Alignment.topCenter,
+                    child:
+                    Text('Item Blocked For Transfer Order',
+                        textAlign: TextAlign.center)
+                ),
+              )),
+
+        );
+
+        Future.delayed(Duration(seconds:3),() {
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        });
+        FocusScope.of(context).requestFocus(_focusNodeBarcode);
+        return;
+      }
+
+
+      if (widget.type == "MJ" &&
+          barcodeScanData[0]['BatchEnabled'].toString() == "1" &&
+          barcodeScanData[0]['BatchedItem'].toString() == "0") {
         showDialogGotData("Batch Does Not Exist");
 
-        setState((){
-          barcodeController.text="";
+        setState(() {
+          barcodeController.text = "";
         });
 
         return;
       }
+
+
       setState(() {
         print(barcodeScanData);
         barcodeController.text = barcodeScanData[0]['ITEMBARCODE'];
@@ -950,9 +1044,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
             barcodeScanData[0]['QTY']?.toString() ?? "";
 
         isBatchEnabled =
-        barcodeScanData[0]['BatchEnabled'].toString() == "1" ? true : false;
+            barcodeScanData[0]['BatchEnabled'].toString() == "1" ? true : false;
         BatchedItem =
-        barcodeScanData[0]['BatchedItem'].toString() == "1" ? true : false;
+            barcodeScanData[0]['BatchedItem'].toString() == "1" ? true : false;
         // itemIdController.text = barcodeScanData[0]['ITEMiD']??"";
         // descriptionController.text = barcodeScanData[0]['ITEMNAME']??"";
         // uomController.text = barcodeScanData[0]['UOM']??"";
@@ -1042,8 +1136,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
   @override
   void dispose() {
-
-
     // FocusManager?.instance.dispose();
     _focusNodeBarcode.dispose();
     _focusNodeQty.dispose();
@@ -1140,11 +1232,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
   DateTime nowDate = DateTime.now();
   bool? lineDeleted = false;
-  bool ? defaultStockCountCheck =false;
+  bool? defaultStockCountCheck = false;
 
   getTransactionDetails() async {
-
-
     widget.isImportedSearch != null && widget.isImportedSearch!
         ? setState(() {
             importedSearch = true;
@@ -1216,7 +1306,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     print(widget.transDetails);
     print(importedSearch);
 
-
     if (lineDeleted != null && lineDeleted!) {
       // await prefs!.setBool("lineDeleted", false);
       FocusScope.of(context).requestFocus(_focusNodeBarcode);
@@ -1240,11 +1329,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
       setState(() {});
 
-
       await prefs!.setBool("lineDeleted", false);
 
       return;
-
     }
 
     if (importedSearch != null && importedSearch!) {
@@ -1256,32 +1343,20 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       // Transfer order -TO
       // Return order - RO
 
-
-
-
-
-      if( widget.type == "MJ") {
-
-        var enabledCheck =
-        await _sqlHelper.getITEMMASTERBySearchScanBarcode(
-          widget.transDetails['ITEMBARCODE']
-        );
+      if (widget.type == "MJ") {
+        var enabledCheck = await _sqlHelper.getITEMMASTERBySearchScanBarcode(
+            widget.transDetails['ITEMBARCODE']);
 
         print("The available batch :"
             " ${enabledCheck}.");
         // "..${ enabledCheck[0]['BatchedItem']}");
-        if (
-        enabledCheck[0]['BatchEnabled'].toString() == "1" &&
-            enabledCheck[0]['BatchedItem'].toString() == "0")
-        {
-
+        if (enabledCheck[0]['BatchEnabled'].toString() == "1" &&
+            enabledCheck[0]['BatchedItem'].toString() == "0") {
           showDialogGotData("Batch Does Not Exist");
 
           return;
         }
-
       }
-
 
       if (widget.type == "PO" ||
           widget.type == "RO" ||
@@ -1289,9 +1364,102 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
           widget.type == "MJ") {
 
 
+        print("purchase order print Line 1270");
+
+
+        if (widget.type == "PO" && widget.transDetails['ItemPOBlocked']==1) {
+
+          // FocusManager.instance.primaryFocus?.unfocus();
+          ScaffoldMessenger.of(context).showSnackBar(
+
+            const SnackBar(
+              behavior: SnackBarBehavior.fixed,
+                backgroundColor: Colors.red,
+                duration: Duration(seconds: 3),
+                content:
+                SizedBox(height: 20,
+                    child:
+                Align(
+                  alignment: Alignment.topCenter,
+                  child:
+                Text(
+                    'Item Blocked For Purchase Order',
+                    textAlign: TextAlign.center,
+
+                  )
+                ),
+                )),
+
+          );
+          Future.delayed(Duration(seconds:3),() {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          });
+          FocusScope.of(context).requestFocus(_focusNodeBarcode);
+
+          return;
+        }
+
+
+        if ((widget.type == "MJ" ||
+            widget.type == "TO") && widget.transDetails['ItemInventBlocked']==1) {
+
+
+          setState(() {
+            barcodeController.text = "";
+          });
+          // FocusManager.instance.primaryFocus?.unfocus();
+          ScaffoldMessenger.of(context).showSnackBar(
+
+            widget.type == "MJ" ?
+            SnackBar(
+                behavior: SnackBarBehavior.fixed,
+                backgroundColor: Colors.red,
+                duration: Duration(seconds: 3),
+                content:
+                SizedBox(height: 20,
+                  child:
+                  // widget.type == "MJ" ?
+                  Align(
+                      alignment: Alignment.topCenter,
+                      child:
+
+                      Text(
+
+                          'Item Blocked For Movement Journal',
+                          textAlign: TextAlign.center
+                      )
+                    // :Text('Item Blocked For Movement Journal',
+                    // textAlign: TextAlign.center)
+                  ),
+                )):
+            SnackBar(
+                behavior: SnackBarBehavior.fixed,
+                backgroundColor: Colors.red,
+                duration: Duration(seconds: 3),
+                content:
+                SizedBox(height: 20,
+                  child:
+                  // widget.type == "MJ" ?
+                  Align
+                    (
+                      alignment: Alignment.topCenter,
+                      child:
+                      Text('Item Blocked For Transfer Order',
+                          textAlign: TextAlign.center)
+                  ),
+                )),
+
+          );
+
+          Future.delayed(Duration(seconds:3),() {
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          });
+          FocusScope.of(context).requestFocus(_focusNodeBarcode);
+          return;
+        }
+
 
         setState(() {
-
           barcodeController.text = widget.transDetails['ITEMBARCODE'];
           itemIdController.text = widget.transDetails['ItemId'] ?? "";
           descriptionController.text = widget.transDetails['ItemName'] ?? "";
@@ -1303,8 +1471,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
           colorController.text = widget.transDetails['COLORID'] ?? "";
           styleController.text = widget.transDetails['STYLEID'] ?? "";
           configController.text = widget.transDetails['CONFIGID'] ?? "";
-          print( "Line 1180 ..${barcodeScanData}");
-
+          print("Line 1180 ..${barcodeScanData}");
 
           remainedQuantityController.text =
               widget.transDetails['QTY']?.toString() ?? "";
@@ -1398,8 +1565,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                 widget.transDetails['BARCODE'],
                 widget.transDetails['AXDOCNO'].toString());
 
-
-
         // print();
         print("widget type : 840");
         print(dtq);
@@ -1453,22 +1618,20 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         print("print line 391...${enabledCheck[0]['BatchEnabled'].toString()}");
         print("print line 392...${enabledCheck[0]['BatchedItem'].toString()}");
 
+        bool? val = enabledCheck[0]['BatchEnabled'].toString() == "1" &&
+            enabledCheck[0]['BatchedItem'].toString() == "0";
 
-        bool ? val = enabledCheck[0]['BatchEnabled'].toString() =="1" &&
-                enabledCheck[0]['BatchedItem'].toString() =="0";
-
-        if(importedSearch != null && importedSearch! && widget.transDetails != null
-            &&
-            defaultStockCountCheck! && transType == "STOCK COUNT" ){
-
-          setState((){
-            qtyController.text= "1";
-
+        if (importedSearch != null &&
+            importedSearch! &&
+            widget.transDetails != null &&
+            defaultStockCountCheck! &&
+            transType == "STOCK COUNT") {
+          setState(() {
+            qtyController.text = "1";
           });
           FocusManager.instance.primaryFocus!.requestFocus(_focusNodeQty);
 
-          if(lineDeleted!){
-
+          if (lineDeleted!) {
             itemIdController.clear();
             barcodeController.clear();
             descriptionController.clear();
@@ -1489,12 +1652,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
             setState(() {});
 
             await prefs!.setBool("lineDeleted", false);
-
           }
-
-
         }
-
 
         // if(
         // importedSearch !=null
@@ -1536,10 +1695,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     }
   }
 
-
-  List<dynamic> transactionDetails =[];
-  int ? setDefaultStockCount = 1;
-
+  List<dynamic> transactionDetails = [];
+  int? setDefaultStockCount = 1;
 
   getToken() async {
     getTransTypes();
@@ -1547,24 +1704,24 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     transactionData = await _sqlHelper.getTRANSHEADER(widget.type == 'ST'
         ? "1"
         : widget.type == 'PO'
-        ? "3"
-        : widget.type == 'GRN'
-        ? "4"
-        : widget.type == 'RO'
-        ? "9"
-        : widget.type == 'RP'
-        ? "10"
-        : widget.type == 'TO'
-        ? "11"
-        : widget.type == "TO-OUT"
-        ? "5"
-        : widget.type == "TO-IN"
-        ? "6"
-        : widget.type == "MJ"
-        ? "22"
-        : widget.type == "MJ"
-        ? "22"
-        : "");
+            ? "3"
+            : widget.type == 'GRN'
+                ? "4"
+                : widget.type == 'RO'
+                    ? "9"
+                    : widget.type == 'RP'
+                        ? "10"
+                        : widget.type == 'TO'
+                            ? "11"
+                            : widget.type == "TO-OUT"
+                                ? "5"
+                                : widget.type == "TO-IN"
+                                    ? "6"
+                                    : widget.type == "MJ"
+                                        ? "22"
+                                        : widget.type == "MJ"
+                                            ? "22"
+                                            : "");
 
     print("data is 94 : ${widget.type}");
     print(transactionData);
@@ -1580,28 +1737,26 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     //   isActivateSave = true;
     // }
 
-
     transactionDetails =
-    await _sqlHelper.getTRANSDETAILSINHeader(widget.type == 'ST'
-        ? "1"
-        : widget.type == 'PO'
-        ? "3"
-        : widget.type == 'GRN'
-        ? "4"
-        : widget.type == 'RO'
-        ? "9"
-        : widget.type == 'RP'
-        ? "10"
-        : widget.type == 'TO'
-        ? "11"
-        : widget.type == "TO-OUT"
-        ? "5"
-        : widget.type == "TO-IN"
-        ? "6"
-        : widget.type == "MJ"
-        ? "22"
-        : "");
-
+        await _sqlHelper.getTRANSDETAILSINHeader(widget.type == 'ST'
+            ? "1"
+            : widget.type == 'PO'
+                ? "3"
+                : widget.type == 'GRN'
+                    ? "4"
+                    : widget.type == 'RO'
+                        ? "9"
+                        : widget.type == 'RP'
+                            ? "10"
+                            : widget.type == 'TO'
+                                ? "11"
+                                : widget.type == "TO-OUT"
+                                    ? "5"
+                                    : widget.type == "TO-IN"
+                                        ? "6"
+                                        : widget.type == "MJ"
+                                            ? "22"
+                                            : "");
 
     print(transactionDetails.length);
     print("Line 224 ");
@@ -1663,7 +1818,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     print("camera status");
     print(await prefs?.getString("camera"));
 
-    username = await prefs?.getString("username") ??"";
+    username = await prefs?.getString("username") ?? "";
     disableCamera = await prefs?.getString("camera");
 
     var v = await prefs?.getString("disableCamera");
@@ -1726,8 +1881,8 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
     lineDeleted = await prefs!.getBool("lineDeleted") ?? false;
 
-    defaultStockCountCheck = await prefs!.getBool("setQuantityDefault")??false;
-
+    defaultStockCountCheck =
+        await prefs!.getBool("setQuantityDefault") ?? false;
 
     print("...169");
     print(updateDevice);
@@ -1786,13 +1941,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       // print(token);
     } catch (e) {}
 
-    if( barcodeController.text != ""){
-
+    if (barcodeController.text != "") {
       FocusScope.of(context).requestFocus(_focusNodeQty);
-
-    }
-    else{
-     mounted ? FocusScope.of(context).requestFocus(_focusNodeBarcode):null;
+    } else {
+      mounted ? FocusScope.of(context).requestFocus(_focusNodeBarcode) : null;
     }
   }
 
@@ -1808,17 +1960,12 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
   @override
   void initState() {
-
     getTransactionDetails();
-
 
     getToken();
 
-
     print("Line Deleted 1810 : ${lineDeleted}");
     print(widget.transDetails);
-
-
 
     _focusNodeBarcode.addListener(() async {
       // if(barcodeController.text.trim() != ""){
@@ -1906,7 +2053,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         // });
       }
     });
-
 
     super.initState();
   }
@@ -2352,20 +2498,15 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-     // print("Adding Parameter : ${disabledContinuosScan}");
-
-
+    // print("Adding Parameter : ${disabledContinuosScan}");
 
     return Scaffold(
         // appBar: null,
         body:
             // MediaQuery.of(context).orientation == Orientation.landscape
             //     ?
-
 
             ListView(
       physics: ClampingScrollPhysics(),
@@ -2546,25 +2687,19 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                           print(transactionData);
                           // return;
-                          if( widget.type != "ST" ){
+                          if (widget.type != "ST") {
                             if (transactionData[0]['STATUS'] > 1) {
                               showDialogGotData(
                                   "Cannot add item,Document Status is'Closed'");
                               return;
                             }
-                          }
-                          else{
+                          } else {
                             if (transactionData[0]['STATUS'] > 2) {
                               showDialogGotData(
                                   "Cannot add item,Document Status is'Closed'");
                               return;
                             }
-
                           }
-
-
-
-
 
                           // return;
 
@@ -3527,11 +3662,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                             DateFormat("yyyy-MM-ddTHH:mm:ss")
                                 .format(selectedEXPDate!);
 
-                        print("Widget type = ${ widget.type}");
+                        print("Widget type = ${widget.type}");
 
                         if (transactionData[0]['STATUS'] > 1 &&
-
-                        widget.type !="ST") {
+                            widget.type != "ST") {
                           showDialogGotData(
                               "Cannot add item,Document Status is'Closed'");
                           return;
@@ -3667,18 +3801,20 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                   await getUserData();
 
-                                  print("lines items 3545:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                  List<dynamic > pushedStocks= [];
-                                  pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                  print(
+                                      "lines items 3545:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                  List<dynamic> pushedStocks = [];
+                                  pushedStocks.addAll(await _sqlHelper
+                                      .getTRANSDETAILSINHeaderByStockCount(
+                                          "1"));
 
-                                  if(widget.type =="ST" &&
-                                      pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                  ){
+                                  if (widget.type == "ST" &&
+                                      pushedStocks.length ==
+                                          int.parse(APPGENERALDATASave[
+                                                  'SetDefaultQtyByOne']
+                                              .toString())) {
                                     await pushTransactionToPost();
                                   }
-
-
-
                                 } else {
                                   await _sqlHelper.updateTRANSDETAILSWithQty(
                                       dt[0]['id'],
@@ -3790,16 +3926,19 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                 await getUserData();
 
-                                print("lines items 3667:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                List<dynamic > pushedStocks= [];
-                                pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                print(
+                                    "lines items 3667:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                List<dynamic> pushedStocks = [];
+                                pushedStocks.addAll(await _sqlHelper
+                                    .getTRANSDETAILSINHeaderByStockCount("1"));
 
-                                if(widget.type =="ST" &&
-                                    pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                ){
+                                if (widget.type == "ST" &&
+                                    pushedStocks.length ==
+                                        int.parse(APPGENERALDATASave[
+                                                'SetDefaultQtyByOne']
+                                            .toString())) {
                                   await pushTransactionToPost();
                                 }
-
                               }
                             }
 
@@ -3920,16 +4059,20 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                       BatchEnabled: isBatchEnabled,
                                       BatchedItem: BatchedItem);
 
-                                  print("lines items 3797:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                  List<dynamic > pushedStocks= [];
-                                  pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                  print(
+                                      "lines items 3797:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                  List<dynamic> pushedStocks = [];
+                                  pushedStocks.addAll(await _sqlHelper
+                                      .getTRANSDETAILSINHeaderByStockCount(
+                                          "1"));
 
-                                  if(widget.type =="ST" &&
-                                      pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                  ){
+                                  if (widget.type == "ST" &&
+                                      pushedStocks.length ==
+                                          int.parse(APPGENERALDATASave[
+                                                  'SetDefaultQtyByOne']
+                                              .toString())) {
                                     await pushTransactionToPost();
                                   }
-
                                 } else {
                                   await _sqlHelper.updateTRANSDETAILSWithQty(
                                       dt[0]['id'],
@@ -3951,8 +4094,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                   isFocus = false;
                                 });
                                 FocusScope.of(context).unfocus();
-
-
                               }
                             } else {
                               if (
@@ -4023,17 +4164,19 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                     BatchEnabled: isBatchEnabled,
                                     BatchedItem: BatchedItem);
 
+                                print(
+                                    "lines items 3901:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                List<dynamic> pushedStocks = [];
+                                pushedStocks.addAll(await _sqlHelper
+                                    .getTRANSDETAILSINHeaderByStockCount("1"));
 
-                                print("lines items 3901:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                List<dynamic > pushedStocks= [];
-                                pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
-
-                                if(widget.type =="ST" &&
-                                    pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                ){
+                                if (widget.type == "ST" &&
+                                    pushedStocks.length ==
+                                        int.parse(APPGENERALDATASave[
+                                                'SetDefaultQtyByOne']
+                                            .toString())) {
                                   await pushTransactionToPost();
                                 }
-
 
                                 itemIdController.clear();
                                 barcodeController.clear();
@@ -4050,8 +4193,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                   isFocus = false;
                                 });
                                 FocusScope.of(context).unfocus();
-
-
                               }
                             }
                           }
@@ -4169,13 +4310,17 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                     BatchEnabled: isBatchEnabled,
                                     BatchedItem: BatchedItem);
 
-                                print("lines items 4046:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                List<dynamic > pushedStocks= [];
-                                pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                print(
+                                    "lines items 4046:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                List<dynamic> pushedStocks = [];
+                                pushedStocks.addAll(await _sqlHelper
+                                    .getTRANSDETAILSINHeaderByStockCount("1"));
 
-                                if(widget.type =="ST" &&
-                                    pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                ){
+                                if (widget.type == "ST" &&
+                                    pushedStocks.length ==
+                                        int.parse(APPGENERALDATASave[
+                                                'SetDefaultQtyByOne']
+                                            .toString())) {
                                   await pushTransactionToPost();
                                 }
                               } else {
@@ -4233,13 +4378,17 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                               await getUserData();
 
-                              print("lines items 4110:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                              List<dynamic > pushedStocks= [];
-                              pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                              print(
+                                  "lines items 4110:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                              List<dynamic> pushedStocks = [];
+                              pushedStocks.addAll(await _sqlHelper
+                                  .getTRANSDETAILSINHeaderByStockCount("1"));
 
-                              if(widget.type =="ST" &&
-                                  pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                              ){
+                              if (widget.type == "ST" &&
+                                  pushedStocks.length ==
+                                      int.parse(APPGENERALDATASave[
+                                              'SetDefaultQtyByOne']
+                                          .toString())) {
                                 await pushTransactionToPost();
                               }
                             }
@@ -4259,7 +4408,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                               isFocus = false;
                               importedSearch = false;
                             });
-
 
                             // Navigator.push(context, MaterialPageRoute(
                             //     builder: (context)=>TransactionViewPage(
@@ -4380,13 +4528,17 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                 await getUserData();
 
-                                print("lines items 4257:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                List<dynamic > pushedStocks= [];
-                                pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                print(
+                                    "lines items 4257:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                List<dynamic> pushedStocks = [];
+                                pushedStocks.addAll(await _sqlHelper
+                                    .getTRANSDETAILSINHeaderByStockCount("1"));
 
-                                if(widget.type =="ST" &&
-                                    pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                ){
+                                if (widget.type == "ST" &&
+                                    pushedStocks.length ==
+                                        int.parse(APPGENERALDATASave[
+                                                'SetDefaultQtyByOne']
+                                            .toString())) {
                                   await pushTransactionToPost();
                                 }
                               } else {
@@ -4446,13 +4598,17 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                               await getUserData();
 
-                              print("lines items 4323:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                              List<dynamic > pushedStocks= [];
-                              pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                              print(
+                                  "lines items 4323:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                              List<dynamic> pushedStocks = [];
+                              pushedStocks.addAll(await _sqlHelper
+                                  .getTRANSDETAILSINHeaderByStockCount("1"));
 
-                              if(widget.type =="ST" &&
-                                  pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                              ){
+                              if (widget.type == "ST" &&
+                                  pushedStocks.length ==
+                                      int.parse(APPGENERALDATASave[
+                                              'SetDefaultQtyByOne']
+                                          .toString())) {
                                 await pushTransactionToPost();
                               }
                             }
@@ -4589,8 +4745,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                           //
                           // return;
 
-                          if (isBatchEnabled! && !BatchedItem!
-                          && widget.type == "ST" ||
+                          if (isBatchEnabled! &&
+                                  !BatchedItem! &&
+                                  widget.type == "ST" ||
                               widget.type == "GRN") {
                             if (selectedMGFDate == null) {
                               showDialogGotData("Manufacturer Date Required");
@@ -4616,11 +4773,10 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                               : DateFormat("yyyy-MM-ddTHH:mm:ss")
                                   .format(selectedEXPDate!);
 
-                          print("Widget type = ${ widget.type}");
+                          print("Widget type = ${widget.type}");
 
                           if (transactionData[0]['STATUS'] > 1 &&
-
-                              widget.type !="ST") {
+                              widget.type != "ST") {
                             showDialogGotData(
                                 "Cannot add item,Document Status is'Closed'");
                             return;
@@ -4751,15 +4907,18 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                         BatchEnabled: isBatchEnabled,
                                         BatchedItem: BatchedItem);
 
+                                    print(
+                                        "lines items 4626:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                    List<dynamic> pushedStocks = [];
+                                    pushedStocks.addAll(await _sqlHelper
+                                        .getTRANSDETAILSINHeaderByStockCount(
+                                            "1"));
 
-
-                                    print("lines items 4626:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                    List<dynamic > pushedStocks= [];
-                                    pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
-
-                                    if(widget.type =="ST" &&
-                                        pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                    ){
+                                    if (widget.type == "ST" &&
+                                        pushedStocks.length ==
+                                            int.parse(APPGENERALDATASave[
+                                                    'SetDefaultQtyByOne']
+                                                .toString())) {
                                       await pushTransactionToPost();
                                     }
                                   } else {
@@ -4856,18 +5015,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                       PRODDATE: selectedMGFDate.toString(),
                                       // selectedmgfDateFormatted.toString(),
                                       BatchEnabled: isBatchEnabled,
-                                      BatchedItem: BatchedItem
-                                  );
+                                      BatchedItem: BatchedItem);
 
                                   await getUserData();
 
-                                  print("lines items 4734:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                  List<dynamic > pushedStocks= [];
-                                  pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                  print(
+                                      "lines items 4734:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                  List<dynamic> pushedStocks = [];
+                                  pushedStocks.addAll(await _sqlHelper
+                                      .getTRANSDETAILSINHeaderByStockCount(
+                                          "1"));
 
-                                  if(widget.type =="ST" &&
-                                      pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                  ){
+                                  if (widget.type == "ST" &&
+                                      pushedStocks.length ==
+                                          int.parse(APPGENERALDATASave[
+                                                  'SetDefaultQtyByOne']
+                                              .toString())) {
                                     await pushTransactionToPost();
                                   }
 
@@ -4966,7 +5129,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                               batchNoController.text.trim() &&
                                           widget.type == "GRN" ||
                                       widget.type == "ST") {
-
                                     if (importedSearch != null &&
                                         importedSearch!) {
                                       print("Line 4627");
@@ -5023,13 +5185,18 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                       await getUserData();
 
-                                      print("lines items 4896:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                      List<dynamic > pushedStocks= [];
-                                      pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                      print(
+                                          "lines items 4896:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                      List<dynamic> pushedStocks = [];
+                                      pushedStocks.addAll(await _sqlHelper
+                                          .getTRANSDETAILSINHeaderByStockCount(
+                                              "1"));
 
-                                      if(widget.type =="ST" &&
-                                          pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                      ){
+                                      if (widget.type == "ST" &&
+                                          pushedStocks.length ==
+                                              int.parse(APPGENERALDATASave[
+                                                      'SetDefaultQtyByOne']
+                                                  .toString())) {
                                         await pushTransactionToPost();
                                       }
                                     } else {
@@ -5092,13 +5259,18 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                       await getUserData();
 
-                                      print("lines items 4965:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                      List<dynamic > pushedStocks= [];
-                                      pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                      print(
+                                          "lines items 4965:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                      List<dynamic> pushedStocks = [];
+                                      pushedStocks.addAll(await _sqlHelper
+                                          .getTRANSDETAILSINHeaderByStockCount(
+                                              "1"));
 
-                                      if(widget.type =="ST" &&
-                                          pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                      ){
+                                      if (widget.type == "ST" &&
+                                          pushedStocks.length ==
+                                              int.parse(APPGENERALDATASave[
+                                                      'SetDefaultQtyByOne']
+                                                  .toString())) {
                                         await pushTransactionToPost();
                                       }
                                     }
@@ -5206,13 +5378,18 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                         BatchedItem: BatchedItem);
                                     await getUserData();
 
-                                    print("lines items 5079:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                    List<dynamic > pushedStocks= [];
-                                    pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                    print(
+                                        "lines items 5079:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                    List<dynamic> pushedStocks = [];
+                                    pushedStocks.addAll(await _sqlHelper
+                                        .getTRANSDETAILSINHeaderByStockCount(
+                                            "1"));
 
-                                    if(widget.type =="ST" &&
-                                        pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                    ){
+                                    if (widget.type == "ST" &&
+                                        pushedStocks.length ==
+                                            int.parse(APPGENERALDATASave[
+                                                    'SetDefaultQtyByOne']
+                                                .toString())) {
                                       await pushTransactionToPost();
                                     }
                                   } else {
@@ -5266,16 +5443,20 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                         BatchEnabled: isBatchEnabled,
                                         BatchedItem: BatchedItem);
 
-
                                     await getUserData();
 
-                                    print("lines items 5142:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                    List<dynamic > pushedStocks= [];
-                                    pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                    print(
+                                        "lines items 5142:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                    List<dynamic> pushedStocks = [];
+                                    pushedStocks.addAll(await _sqlHelper
+                                        .getTRANSDETAILSINHeaderByStockCount(
+                                            "1"));
 
-                                    if(widget.type =="ST" &&
-                                        pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                    ){
+                                    if (widget.type == "ST" &&
+                                        pushedStocks.length ==
+                                            int.parse(APPGENERALDATASave[
+                                                    'SetDefaultQtyByOne']
+                                                .toString())) {
                                       await pushTransactionToPost();
                                     }
                                   }
@@ -5301,7 +5482,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                     isFocus = false;
                                   });
                                   FocusScope.of(context).unfocus();
-
                                 }
 
                                 // lineDeleted = await prefs!.setBool("lineDeleted",true);
@@ -5314,9 +5494,7 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                           if (widget.type == "PO" ||
                               widget.type == "RO" ||
                               widget.type == "TO" ||
-                          widget.type== "MJ")
-                          {
-
+                              widget.type == "MJ") {
                             if (importedSearch != null && importedSearch!) {
                               print("Data from imported Search");
                               print(widget.transDetails);
@@ -5429,13 +5607,18 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                                       BatchedItem: BatchedItem);
                                   await getUserData();
 
-                                  print("lines items 5300:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                  List<dynamic > pushedStocks= [];
-                                  pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                  print(
+                                      "lines items 5300:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                  List<dynamic> pushedStocks = [];
+                                  pushedStocks.addAll(await _sqlHelper
+                                      .getTRANSDETAILSINHeaderByStockCount(
+                                          "1"));
 
-                                  if(widget.type =="ST" &&
-                                      pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                  ){
+                                  if (widget.type == "ST" &&
+                                      pushedStocks.length ==
+                                          int.parse(APPGENERALDATASave[
+                                                  'SetDefaultQtyByOne']
+                                              .toString())) {
                                     await pushTransactionToPost();
                                   }
                                 } else {
@@ -5447,16 +5630,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                               } else {
                                 print("Line 5050");
 
+                                var enabledCheck = await _sqlHelper
+                                    .getITEMMASTERBySearchScanBarcode(
+                                        barcodeController.text);
 
-                                var enabledCheck = await
-                                _sqlHelper.getITEMMASTERBySearchScanBarcode(barcodeController.text);
-
-                                setState((){
-
-                                  isBatchEnabled =
-                                  enabledCheck[0]['BatchEnabled'].toString() == "1" ? true : false;
-                                  BatchedItem =
-                                  enabledCheck[0]['BatchedItem'].toString() == "1" ? true : false;
+                                setState(() {
+                                  isBatchEnabled = enabledCheck[0]
+                                                  ['BatchEnabled']
+                                              .toString() ==
+                                          "1"
+                                      ? true
+                                      : false;
+                                  BatchedItem = enabledCheck[0]['BatchedItem']
+                                              .toString() ==
+                                          "1"
+                                      ? true
+                                      : false;
                                 });
                                 // return;
 
@@ -5504,13 +5693,17 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                 await getUserData();
 
-                                print("lines items 5375:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                List<dynamic > pushedStocks= [];
-                                pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                print(
+                                    "lines items 5375:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                List<dynamic> pushedStocks = [];
+                                pushedStocks.addAll(await _sqlHelper
+                                    .getTRANSDETAILSINHeaderByStockCount("1"));
 
-                                if(widget.type =="ST" &&
-                                    pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                ){
+                                if (widget.type == "ST" &&
+                                    pushedStocks.length ==
+                                        int.parse(APPGENERALDATASave[
+                                                'SetDefaultQtyByOne']
+                                            .toString())) {
                                   await pushTransactionToPost();
                                 }
                               }
@@ -5657,13 +5850,18 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                   await getUserData();
 
-                                  print("lines items 5528:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                  List<dynamic > pushedStocks= [];
-                                  pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                  print(
+                                      "lines items 5528:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                  List<dynamic> pushedStocks = [];
+                                  pushedStocks.addAll(await _sqlHelper
+                                      .getTRANSDETAILSINHeaderByStockCount(
+                                          "1"));
 
-                                  if(widget.type =="ST" &&
-                                      pushedStocks.length == int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                  ){
+                                  if (widget.type == "ST" &&
+                                      pushedStocks.length ==
+                                          int.parse(APPGENERALDATASave[
+                                                  'SetDefaultQtyByOne']
+                                              .toString())) {
                                     await pushTransactionToPost();
                                   }
                                 } else {
@@ -5675,15 +5873,22 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                               } else {
                                 print("Line 5229");
 
-                                var enabledCheck = await
-                                _sqlHelper.getITEMMASTERBySearchScanBarcode(barcodeController.text);
+                                var enabledCheck = await _sqlHelper
+                                    .getITEMMASTERBySearchScanBarcode(
+                                        barcodeController.text);
 
-                                setState((){
-
-                                  isBatchEnabled =
-                                  enabledCheck[0]['BatchEnabled'].toString() == "1" ? true : false;
-                                  BatchedItem =
-                                  enabledCheck[0]['BatchedItem'].toString() == "1" ? true : false;
+                                setState(() {
+                                  isBatchEnabled = enabledCheck[0]
+                                                  ['BatchEnabled']
+                                              .toString() ==
+                                          "1"
+                                      ? true
+                                      : false;
+                                  BatchedItem = enabledCheck[0]['BatchedItem']
+                                              .toString() ==
+                                          "1"
+                                      ? true
+                                      : false;
                                 });
                                 // return;
 
@@ -5731,14 +5936,17 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
                                 await getUserData();
 
-                                print("lines items 5602:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
-                                List<dynamic > pushedStocks= [];
-                                pushedStocks.addAll(await _sqlHelper.getTRANSDETAILSINHeaderByStockCount("1"));
+                                print(
+                                    "lines items 5602:${APPGENERALDATASave['SetDefaultQtyByOne'].toString()}");
+                                List<dynamic> pushedStocks = [];
+                                pushedStocks.addAll(await _sqlHelper
+                                    .getTRANSDETAILSINHeaderByStockCount("1"));
 
-                                if(widget.type =="ST" &&
+                                if (widget.type == "ST" &&
                                     pushedStocks.length ==
-                                        int.parse(APPGENERALDATASave['SetDefaultQtyByOne'].toString())
-                                ){
+                                        int.parse(APPGENERALDATASave[
+                                                'SetDefaultQtyByOne']
+                                            .toString())) {
                                   await pushTransactionToPost();
                                 }
                               }
@@ -6033,13 +6241,11 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         );
   }
 
-
   List<dynamic> transactionDetailsList = [];
 
   String? username;
 
   pushTransactionToPost() async {
-
     // print(_connectionStatus.runtimeType);
 
     var tk = 'Bearer ${token.toString()}';
@@ -6098,8 +6304,6 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
 
     var body = {
       "contract": {
-
-
         //     transType == "STOCK COUNT"
         //         ? 1
         //         : widget.type == "GRN"
@@ -6115,44 +6319,43 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
         //     : transType == "TRANSFER ORDER"
         // ? 11
 
-
         "JournalName": transactionData[0]['TRANSTYPE'].toString() == "22"
             ? transactionData[0]['JournalName']
             : "",
         "DeviceNumSeq": transactionData[0]['TRANSTYPE'].toString() == "1"
             ? APPGENERALDATASave['STNEXTDOCNO']
             : transactionData[0]['TRANSTYPE'].toString() == "3"
-            ? APPGENERALDATASave['PONEXTDOCNO']
-            : transactionData[0]['TRANSTYPE'].toString() == "4"
-            ? APPGENERALDATASave['GRNNEXTDOCNO']
-            : transactionData[0]['TRANSTYPE'].toString() == "10"
-            ? APPGENERALDATASave['RPNEXTDOCNO']
-            : transactionData[0]['TRANSTYPE'].toString() == "5"
-            ? APPGENERALDATASave['TOOUTNEXTDOCNO']
-            : transactionData[0]['TRANSTYPE'].toString() == "6"
-            ? APPGENERALDATASave['TOINNEXTDOCNO']
-            : transactionData[0]['TRANSTYPE'].toString() ==
-            "9"
-            ? APPGENERALDATASave['RONEXTDOCNO']
-            : transactionData[0]['TRANSTYPE']
-            .toString() ==
-            "11"
-            ? APPGENERALDATASave['TONEXTDOCNO']
-            : transactionData[0]['TRANSTYPE']
-            .toString() ==
-            "22"
-            ? APPGENERALDATASave['MJNEXTDOCNO']
-            : "",
+                ? APPGENERALDATASave['PONEXTDOCNO']
+                : transactionData[0]['TRANSTYPE'].toString() == "4"
+                    ? APPGENERALDATASave['GRNNEXTDOCNO']
+                    : transactionData[0]['TRANSTYPE'].toString() == "10"
+                        ? APPGENERALDATASave['RPNEXTDOCNO']
+                        : transactionData[0]['TRANSTYPE'].toString() == "5"
+                            ? APPGENERALDATASave['TOOUTNEXTDOCNO']
+                            : transactionData[0]['TRANSTYPE'].toString() == "6"
+                                ? APPGENERALDATASave['TOINNEXTDOCNO']
+                                : transactionData[0]['TRANSTYPE'].toString() ==
+                                        "9"
+                                    ? APPGENERALDATASave['RONEXTDOCNO']
+                                    : transactionData[0]['TRANSTYPE']
+                                                .toString() ==
+                                            "11"
+                                        ? APPGENERALDATASave['TONEXTDOCNO']
+                                        : transactionData[0]['TRANSTYPE']
+                                                    .toString() ==
+                                                "22"
+                                            ? APPGENERALDATASave['MJNEXTDOCNO']
+                                            : "",
 
         "DOCNO": transactionData[0]['DOCNO'],
-        "AXDOCNO":transactionData[0]['AXDOCNO'],
+        "AXDOCNO": transactionData[0]['AXDOCNO'],
         "STORECODE": activatedStore,
         "TOSTORECODE": "",
         "TRANSTYPE": transactionData[0]['TRANSTYPE'].toString(),
         "STATUS": transactionData[0]['STATUS'].toString(),
         "USERNAME": username,
-        "VRLOCATION": transactionData[0]['VRLOCATION']  ?? "0",
-        "DESCRIPTION": transactionData[0]['DESRIPTION']  ?? "",
+        "VRLOCATION": transactionData[0]['VRLOCATION'] ?? "0",
+        "DESCRIPTION": transactionData[0]['DESRIPTION'] ?? "",
         "CREATEDDATE": transactionData[0]['CREATEDDATE'].toString(),
         "DATAAREAID": companyCode ?? "",
         "DEVICEID": activatedDevice,
@@ -6160,10 +6363,9 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       }
     };
 
-      print("request body ...435");
-      print(transactionDetailsList.length);
-      print(json.encode(body));
-
+    print("request body ...435");
+    print(transactionDetailsList.length);
+    print(json.encode(body));
 
     // return;
 
@@ -6195,14 +6397,12 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
       print("Post closed success");
       print(res.body);
 
-
-
       if (responseJson[0]['Message'].toString().contains("success")) {
-
-
         await _sqlHelper.updateStatusStockCount(
-            2, transactionData[0]['DOCNO'] ?? "",
-                "1", transactionData[0]['AXDOCNO']);
+            2,
+            transactionData[0]['DOCNO'] ?? "",
+            "1",
+            transactionData[0]['AXDOCNO']);
 
         // setState(() {
         //   // setState(() {
@@ -6236,5 +6436,3 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
     }
   }
 }
-
-
