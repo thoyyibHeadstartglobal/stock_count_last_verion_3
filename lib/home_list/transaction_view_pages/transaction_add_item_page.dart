@@ -5495,6 +5495,23 @@ class _TranscationAddItemPageState extends State<TranscationAddItemPage> {
                               widget.type == "RO" ||
                               widget.type == "TO" ||
                               widget.type == "MJ") {
+
+                            if(widget.type== "MJ"){
+
+                              print("Movement Journal count :  Line 4826");
+                              var mjCount =await _sqlHelper.TRANSDETAILSCOUNTMJ();
+
+                              print("Movement Journal count : ${mjCount[0]['COUNT(*)'].runtimeType.toString()}");
+
+
+                              if(mjCount[0]['COUNT(*)'] ==1000 ){
+
+                                showDialogGotData("Maximum size should not exceed 1000");
+                                return;
+                              }
+
+
+                            }
                             if (importedSearch != null && importedSearch!) {
                               print("Data from imported Search");
                               print(widget.transDetails);
